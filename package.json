@@ -8,16 +8,23 @@
   "author": "hirzi",
   "license": "MIT",
   "scripts": {
+    "tsc:build": "tsc --build",
+    "db:sync": "tsc --build && typeorm schema:sync",
+    "db:drop": "tsc --build && typeorm schema:drop",
+    "db:migration": "tsc --build && typeorm migration:create -n",
+    "db:migrate": "tsc --build && typeorm migration:run",
     "debug": "tsc --build && node -r ts-node/register --nolazy src/server.ts"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "graphql": "^15.5.0",
     "mysql2": "^2.2.5",
     "pino": "^6.11.1",
     "pino-pretty": "^4.7.1",
     "reflect-metadata": "^0.1.13",
+    "type-graphql": "^1.1.1",
     "typeorm": "^0.2.31"
   },
   "devDependencies": {

@@ -2,28 +2,19 @@ import { createServer } from 'http'
 
 import 'reflect-metadata'
 import express from 'express'
-import dotenv, { DotenvConfigOptions } from 'dotenv'
 import bodyParser from 'body-parser'
 
 import 'tsconfig-paths/register'
 
 import connectDB from '@/db/connection'
 import log from './utils/logger'
-
-// - environtment configuration initiate
-process.env.NODE_ENV = process.env.NODE_ENV || 'dev'
-const { NODE_ENV: ENV } = process.env
-const envConfig: DotenvConfigOptions = {
-  path : `${__dirname}/../.env/${ENV}`,
-  debug: ENV === 'dev'
-}
-dotenv.config(envConfig)
+import setEnv from './utils/env'
 
 const main = async () => {
   const app = express()
 
   await connectDB()
-    .then(() => log.info('Database successfully connected'))
+    .then(() => log.info('Database connected successfully'))
     .catch((err) => log.error(err.message))
 
   // - body parser
@@ -50,5 +41,6 @@ const main = async () => {
 }
 
 (async function () {
+  setEnv()
   await main()
 }())

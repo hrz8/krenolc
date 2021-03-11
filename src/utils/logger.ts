@@ -4,8 +4,10 @@ const options: LoggerOptions = {
   prettyPrint: {
     colorize     : true,
     translateTime: 'HH:MM:ss yyyy-mm-dd',
-    ignore       : 'pid'
+    ignore       : 'pid,hostname'
   }
 }
 
-export default pino(options)
+const log = pino(options)
+
+export default log
