@@ -7,16 +7,10 @@ export default class BaseRepository<TEntity> extends Repository<TEntity> {
 
   public async findLatest(): Promise<TEntity> {
     const result = await this.repository()
-      .createQueryBuilder('bot')
-      .orderBy('bot.createdAt', 'DESC')
+      .createQueryBuilder(this.target.toString())
+      .orderBy(`${this.target.toString()}.createdAt`, 'DESC')
       .limit(1)
       .getMany()
     return result[0]
   }
 }
-
-// export default abstract class BaseRepository<TEntity> {
-//   public repository(): Repository<TEntity>
-
-//   find(): Promise<TEntity[]>
-// }

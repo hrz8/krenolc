@@ -8,10 +8,26 @@ import {
   UpdateDateColumn
 } from 'typeorm'
 
-export type BotContent = { modules: any, content: any }
+export interface Content {
+  modules: {
+    [moduleId: string]: {
+      enabled: boolean,
+      [other: string]: any
+    }
+  },
+  content: {
+    [contentId: string]: {
+      content: {
+        text: string | Array<string>,
+        buttons?: Array<any>,
+        quickReplies?: Array<any>
+      }
+    }
+  }
+}
 
 export interface BotInsertPayload {
-  content: BotContent
+  content: Content
 }
 
 @Entity()
@@ -20,7 +36,7 @@ export default class Bot extends BaseEntity {
   id!: string
 
   @Column('simple-json')
-  content!: BotContent
+  content!: Content
 
   @CreateDateColumn()
   createdAt!: Date

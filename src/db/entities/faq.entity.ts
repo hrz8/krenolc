@@ -8,7 +8,9 @@ import {
   UpdateDateColumn
 } from 'typeorm'
 
-type Content = { dataset: Array<any> }
+export interface Content {
+  dataset: Array<any>
+}
 
 export interface FaqInsertPayload {
   content: Content
