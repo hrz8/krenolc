@@ -13,25 +13,19 @@ const ormconfig = () => {
   // - set connection options
   const options: ConnectionOptions = {
     // - dbms
-    type    : 'mysql',
+    type       : 'mysql',
     // - connection
-    host    : DB_URL,
-    port    : Number(DB_PORT),
-    username: DB_USER,
-    password: DB_PASSWORD,
-    database: DB_NAME,
+    host       : DB_URL,
+    port       : Number(DB_PORT),
+    username   : DB_USER,
+    password   : DB_PASSWORD,
+    database   : DB_NAME,
     // - file-ing
-    entities: [
-      `${__dirname}/src/db/entities/*.js`
-    ],
-    migrations: [
-      `${__dirname}/src/db/migrations/*.js`
-    ],
-    subscribers: [
-      `${__dirname}/src/db/subscribers/*.js`
-    ],
+    entities   : [`${__dirname}/src/db/entities/*.js`],
+    migrations : [`${__dirname}/src/db/migrations/*.js`],
+    subscribers: [`${__dirname}/src/db/subscribers/*.js`],
     // - typeorm cli
-    cli: {
+    cli        : {
       entitiesDir   : `${__dirname}/src/db/entities`,
       migrationsDir : `${__dirname}/src/db/migrations`,
       subscribersDir: `${__dirname}/src/db/subscribers`

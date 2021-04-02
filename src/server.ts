@@ -2,7 +2,6 @@ import { createServer } from 'http'
 
 import 'reflect-metadata'
 import express from 'express'
-import bodyParser from 'body-parser'
 
 import 'tsconfig-paths/register'
 
@@ -22,19 +21,11 @@ const main = async () => {
 
   await BotFactory.init()
 
-  // - body parser
-  app.use(
-    bodyParser.json({
-      limit: '50mb'
-    })
-  )
-
-  app.use(
-    bodyParser.urlencoded({
-      limit   : '50mb',
-      extended: true
-    })
-  )
+  app.use(express.json())
+  app.use(express.urlencoded({
+    limit   : '50mb',
+    extended: true
+  }))
 
   // - app routes
   app.use(apiRouter)

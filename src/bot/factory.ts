@@ -1,8 +1,7 @@
 import BotTemplate from './template'
 
 export default class BotFactory {
-  private static bots: BotTemplate[] = [
-  ];
+  private static bots: BotTemplate[] = [];
 
   public static async init(): Promise<void> {
     const brain = process.env.BRAIN || 'KRY'

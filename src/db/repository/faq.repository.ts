@@ -3,11 +3,24 @@ import Faq, { Content as FaqContent } from '../entities/faq.entity'
 import BaseRepository from './base'
 
 @EntityRepository(Faq)
-export class FaqRepo extends BaseRepository<Faq> {
+export class FaqRepository extends BaseRepository<Faq> {
   public async getLatestContent(): Promise<FaqContent> {
-    const faq = await this.findLatest()
-    return faq?.content
+    try {
+      const faq = await this.findLatest()
+      return faq?.content
+    } catch (error) {
+      return {} as FaqContent
+    }
+  }
+
+  public async getAllContent(): Promise<FaqContent[]> {
+    try {
+      const faq = await this.find()
+      return faq.map((f: any) => f.content)
+    } catch (error) {
+      return [] as FaqContent[]
+    }
   }
 }
 
-export default (): FaqRepo => getCustomRepository(FaqRepo)
+export default (): FaqRepository => getCustomRepository(FaqRepository)

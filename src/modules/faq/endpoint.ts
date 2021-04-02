@@ -1,11 +1,46 @@
-import { Request, Response } from 'express'
-import Faq from '~/src/db/entities/faq.entity'
-import BaseEndpoint from '../_base/endpoint'
+import { NextFunction } from 'express'
+import faqRepository from '~/src/db/repository/faq.repository'
+import { Context, Endpoint } from '~/src/types/modules'
 
-export default class FaqEndpoint extends BaseEndpoint<Faq> {
-  public async getDefault(req: Request, res: Response): Promise<void> {
-    const faq = await this.repo.findLatest()
-    res.status(200)
-      .send(faq)
+const endpoints: Endpoint = {
+  getAll: {
+    before: [
+      (ctx: Context, action: any, next: NextFunction) => {
+        console.log('this')
+        next()
+      },
+      (ctx: Context, action: any, next: NextFunction) => {
+        console.log('is')
+        next()
+      },
+      (ctx: Context, action: any, next: NextFunction) => {
+        console.log('middleware')
+      }
+    ],
+    async handler(ctx: Context) {
+      const faqs = await faqRepository()
+        .getAllContent()
+      return {
+        status  : 200,
+        response: {
+          data: faqs
+        }
+      }
+    }
+  },
+  getDefault: {
+    before: [],
+    async handler(ctx: Context) {
+      const faq = await faqRepository()
+        .getLatestContent()
+      return {
+        status  : 200,
+        response: {
+          data: faq
+        }
+      }
+    }
   }
 }
+
+export default endpoints
