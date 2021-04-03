@@ -15,11 +15,11 @@ const ormconfig = () => {
     // - dbms
     type       : 'mysql',
     // - connection
-    host       : DB_URL,
-    port       : Number(DB_PORT),
-    username   : DB_USER,
-    password   : DB_PASSWORD,
-    database   : DB_NAME,
+    host       : DB_URL || 'localhost',
+    port       : Number(DB_PORT) || 3006,
+    username   : DB_USER || 'root',
+    password   : DB_PASSWORD || '',
+    database   : DB_NAME || 'krenolc',
     // - file-ing
     entities   : [`${__dirname}/src/db/entities/*.js`],
     migrations : [`${__dirname}/src/db/migrations/*.js`],
