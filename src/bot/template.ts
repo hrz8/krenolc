@@ -5,7 +5,7 @@ import Modules, { ModuleType } from '../modules'
 
 import botRepository from '../db/repository/bot.repository'
 import { Content as BotContent } from '../db/entities/bot.entity'
-import { EndpointAction } from '../types/modules'
+import { EndpointAction } from '../types/endpoint'
 
 export default class BotTemplate {
   public brain = ''
