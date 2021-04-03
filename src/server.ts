@@ -21,6 +21,7 @@ const main = async () => {
 
   await BotFactory.init()
 
+  // express body parser
   app.use(express.json())
   app.use(express.urlencoded({
     limit   : '50mb',
@@ -31,10 +32,10 @@ const main = async () => {
   app.use(apiRouter)
 
   // - http server
-  const { PORT } = process.env
+  const PORT = process.env.PORT || 3009
   const server = createServer(app)
   server.listen(
-    PORT || 3009,
+    PORT,
     () => log.info(`Server running on port ${PORT}`)
   )
 }
