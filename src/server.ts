@@ -29,7 +29,7 @@ const main = async () => {
   }))
 
   // - app routes
-  app.use(apiRouter)
+  app.use(apiRouter())
 
   // - http server
   const PORT = process.env.PORT || 3009

@@ -6,7 +6,7 @@ export class Response {
   public meta: any
 
   constructor(data: any, meta = {}) {
-    this.data = _.isObjectLike(data) ? data : _.noop()
+    this.data = _.isObjectLike(data) ? data : {}
     this.meta = meta
   }
 }
@@ -14,13 +14,15 @@ export class Response {
 export class SuccessResponse {
   public status: string
 
+  public apiVersion: string
+
   public data: any
 
   public message: string
 
   public meta: any
 
-  constructor(data: any, meta = {}, endpointId: string, message?: string) {
+  constructor(data: any, meta = {}, apiVersion: string, endpointId: string, message?: string) {
     if (!_.isObjectLike(data)) {
       throw new Error('data must be in array or object')
     }
@@ -32,7 +34,8 @@ export class SuccessResponse {
     const module = endpointId.split('-')[0]
     const endpoint = endpointId.substr(module.length + 1)
     this.status = '200'
-    this.data = data
+    this.apiVersion = apiVersion
+    this.data = _.isObjectLike(data) ? data : {}
     this.meta = meta
     this.message = message || `success ${module} ${_.camelCase(endpoint)}`
   }

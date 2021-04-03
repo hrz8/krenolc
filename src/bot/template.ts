@@ -48,11 +48,17 @@ export default class BotTemplate {
 
   public loadModule({ moduleId }: { moduleId: string }): void {
     const module: Readonly<ModuleType> = Modules[moduleId]()
-    const { endpoint } = module
+    const { endpoints } = module
     _
-      .keys(endpoint)
-      .forEach((key) => {
-        this.endpoint.set(`${moduleId}-${_.kebabCase(key)}`, endpoint[key])
+      .forEach(endpoints, (endpoint) => {
+        const { version, actions } = endpoint
+        _
+          .keys(actions)
+          .forEach((objKey) => {
+            const action = actions[objKey]
+            const mapKey = `v${version || 1}-${moduleId}-${_.kebabCase(objKey)}`
+            this.endpoint.set(mapKey, action)
+          })
       })
   }
 }

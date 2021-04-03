@@ -13,7 +13,7 @@ export interface MiddlewareHandler {
   (
     ctx: Context,
     next: NextFunction
-  ): Promise<any> | any
+  ): Promise<void> | void
 }
 
 export interface EndpointAction {
@@ -23,6 +23,11 @@ export interface EndpointAction {
   handler: EndpointActionHandler
 }
 
-export interface Endpoint {
+export interface EndpointActionCollection {
   [endpointId: string]: EndpointAction
+}
+
+export interface Endpoint {
+  version?: number,
+  actions: EndpointActionCollection
 }

@@ -5,6 +5,7 @@ import { Context, HTTPMethod } from '~/src/types/action'
 import { Response } from '~/src/utils/response'
 
 const endpoints: Endpoint = {
+  version: 2,
   actions: {
     getAll: {
       method: HTTPMethod.GET,
@@ -18,7 +19,7 @@ const endpoints: Endpoint = {
           next()
         },
         (ctx: Context, next: NextFunction) => {
-          console.log('before')
+          console.log('before on v2')
           next()
         }
       ],
@@ -32,7 +33,7 @@ const endpoints: Endpoint = {
           next()
         },
         (ctx: Context, next: NextFunction) => {
-          console.log('after')
+          console.log('after on v2')
           next()
         }
       ],
