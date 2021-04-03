@@ -7,26 +7,29 @@ import {
   Context, EndpointAction, MiddlewareHandler
 } from '../types/modules'
 import log from '../utils/logger'
+import { SuccessResponse, Response as UtilsResponse } from '../utils/response'
 
 const apiRouter = express.Router()
 
 const runMiddlewares = async (
   middlewares: MiddlewareHandler[],
   ctx: Context,
-  action: EndpointAction,
-  next: NextFunction
-) => {
-  let nextHandler: NextFunction = next
+  action: EndpointAction
+): Promise<void> => {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  let nextHandler: NextFunction = (): void => {}
   for (let i = middlewares.length - 1; i >= 0; i--) {
     const handler = middlewares[i]
-    const currHandler = handler.bind(null, ctx, action, nextHandler)
+    const currHandler = handler.bind(
+      null, ctx, action, nextHandler
+    )
     nextHandler = currHandler
   }
   const firstHandler: NextFunction = nextHandler
   await firstHandler()
 }
 
-const apiHandler = async (req: Request, res: Response, next: NextFunction) => {
+const apiHandler = async (req: Request, res: Response) => {
   const ctx: Context = {
     params: req
   }
@@ -41,20 +44,30 @@ const apiHandler = async (req: Request, res: Response, next: NextFunction) => {
       })
     return
   }
-  const { handler, before: beforeMiddlewares } = endpointAction
-  if (beforeMiddlewares?.length) {
-    await runMiddlewares(beforeMiddlewares, ctx, endpointAction, next)
-  }
+  const { handler, before } = endpointAction
+  await runMiddlewares(before, ctx, endpointAction)
   const handlerBounded = handler.bind(null, ctx)
-  const { response, status } = await handlerBounded()
-  res
-    .status(status)
-    .send(response)
+  try {
+    const { data, meta } = await handlerBounded() as UtilsResponse
+    res
+      .status(200)
+      .send(
+        new SuccessResponse(
+          data,
+          meta,
+          endpointId
+        )
+      )
+  } catch (err) {
+    res
+      .status(500)
+      .send(err)
+  }
 }
 
 apiRouter.use('/api/health-check', (req: Request, res: Response) => res.status(200)
   .send({
-    data: 'hello, world'
+    data: 'ok'
   }))
 apiRouter.use('/api/:endpointId', apiHandler)
 

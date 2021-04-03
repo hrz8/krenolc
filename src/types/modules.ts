@@ -1,4 +1,5 @@
 import { NextFunction, Request } from 'express'
+import { Response } from '../utils/response'
 
 export interface Context {
   params: Request
@@ -7,7 +8,7 @@ export interface Context {
 export interface EndpointHandler {
     (
       ctx: Context
-    ): Promise<any> | any
+    ): Promise<Response> | Response
 }
 
 export interface MiddlewareHandler {
@@ -19,7 +20,7 @@ export interface MiddlewareHandler {
 }
 
 export interface EndpointAction {
-  before?: MiddlewareHandler[],
+  before: MiddlewareHandler[] | [],
   handler: EndpointHandler
 }
 

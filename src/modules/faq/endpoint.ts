@@ -1,6 +1,7 @@
 import { NextFunction } from 'express'
 import faqRepository from '~/src/db/repository/faq.repository'
 import { Context, Endpoint } from '~/src/types/modules'
+import { Response } from '~/src/utils/response'
 
 const endpoints: Endpoint = {
   getAll: {
@@ -15,17 +16,13 @@ const endpoints: Endpoint = {
       },
       (ctx: Context, action: any, next: NextFunction) => {
         console.log('middleware')
+        next()
       }
     ],
     async handler(ctx: Context) {
       const faqs = await faqRepository()
         .getAllContent()
-      return {
-        status  : 200,
-        response: {
-          data: faqs
-        }
-      }
+      return new Response(faqs)
     }
   },
   getDefault: {
@@ -33,12 +30,7 @@ const endpoints: Endpoint = {
     async handler(ctx: Context) {
       const faq = await faqRepository()
         .getLatestContent()
-      return {
-        status  : 200,
-        response: {
-          data: faq
-        }
-      }
+      return new Response(faq)
     }
   }
 }

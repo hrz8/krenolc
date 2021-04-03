@@ -56,7 +56,8 @@
         "ExportDeclaration": {
           "minProperties": 1
         }
-    }],
+      }],
+      "max-classes-per-file": 0,
       "object-curly-spacing": 2,
       "object-shorthand": 2,
       "comma-dangle": [2, "never"],
