@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { NextFunction } from 'express'
+import Joi from 'joi'
 import { Response } from '../utils/response'
 import { Context, HTTPMethod } from './action'
 
@@ -16,15 +17,28 @@ export interface MiddlewareHandler {
   ): Promise<void> | void
 }
 
+export interface EndpointValidator {
+  (): Joi.ObjectSchema<{
+    query: Joi.ObjectSchema<any>,
+    body: Joi.ObjectSchema<any>,
+    headers: Joi.ObjectSchema<any>
+  }>
+}
+
 export interface EndpointAction {
   before?: MiddlewareHandler[],
   after?: MiddlewareHandler[]
   method?: HTTPMethod
+  validator?: EndpointValidator
   handler: EndpointActionHandler
 }
 
 export interface EndpointActionCollection {
   [endpointId: string]: EndpointAction
+}
+
+export interface EndpointValidatorCollection {
+  [validatorId: string]: EndpointValidator
 }
 
 export interface Endpoint {

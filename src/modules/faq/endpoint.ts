@@ -3,12 +3,14 @@ import faqRepository from '~/src/db/repository/faq.repository'
 import { EndpointAction, Endpoint } from '~/src/types/endpoint'
 import { Context, HTTPMethod } from '~/src/types/action'
 import { Response } from '~/src/utils/response'
+import validators from './validator'
 
 const endpoints: Endpoint = {
   actions: {
     getAll: {
-      method: HTTPMethod.GET,
-      before: [
+      method   : HTTPMethod.GET,
+      validator: validators.getAll,
+      before   : [
         (ctx: Context, next: NextFunction) => {
           console.log('this')
           next()
