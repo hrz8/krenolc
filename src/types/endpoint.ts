@@ -28,7 +28,7 @@ export interface EndpointValidator {
 export interface EndpointAction {
   before?: MiddlewareHandler[],
   after?: MiddlewareHandler[]
-  method?: HTTPMethod
+  method: HTTPMethod | HTTPMethod[]
   validator?: EndpointValidator
   handler: EndpointActionHandler
 }
@@ -42,6 +42,6 @@ export interface EndpointValidatorCollection {
 }
 
 export interface Endpoint {
-  version?: number,
+  version?: string,
   actions: EndpointActionCollection
 }

@@ -5,7 +5,7 @@ import { Context, HTTPMethod } from '~/src/types/action'
 import { Response } from '~/src/utils/response'
 
 const endpoints: Endpoint = {
-  version: 2,
+  version: '2.0.0',
   actions: {
     getAll: {
       method: HTTPMethod.GET,

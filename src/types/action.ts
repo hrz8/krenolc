@@ -17,6 +17,7 @@ export enum HTTPMethod {
 
 export interface Context {
   params: {
+    params: any,
     query: any,
     body: any,
     headers: any
@@ -24,5 +25,6 @@ export interface Context {
   baseUrl: string,
   action: EndpointAction,
   method: HTTPMethod,
-  request: Request
+  request: Request,
+  locals: Record<string, any>
 }

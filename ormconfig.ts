@@ -31,7 +31,7 @@ const ormconfig = () => {
       subscribersDir: `${__dirname}/src/db/subscribers`
     },
     // - other options
-    logging    : ENV === 'dev',
+    // logging    : ENV === 'dev',
     synchronize: true
   }
   return options

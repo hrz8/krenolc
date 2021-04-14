@@ -31,7 +31,7 @@
       "semi": [2, "never"],
       "eqeqeq": 2,
       "no-useless-catch": 1,
-      "no-unused-vars": 1,
+      "@typescript-eslint/no-unused-vars": 1,
       "no-plusplus": 0,
       "array-element-newline": 2,
       "array-bracket-newline": [2, {
