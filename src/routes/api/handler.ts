@@ -1,12 +1,13 @@
-import express, {
+import {
   NextFunction, Request, Response
 } from 'express'
 import _ from 'lodash'
-import { EndpointAction, MiddlewareHandler } from '../types/endpoint'
-import { Context } from '../types/action'
-import log from '../utils/logger'
-import defaultApiHandler from './handlers'
-import { SuccessResponse, Response as UtilsResponse } from '../utils/response'
+
+import { SuccessResponse, Response as UtilsResponse } from '@/utils/response'
+import log from '@/utils/logger'
+
+import { Context } from '@/types/action'
+import { EndpointAction, MiddlewareHandler } from '@/types/endpoint'
 
 const runMiddlewares = async (
   middlewares: MiddlewareHandler[],
@@ -24,7 +25,7 @@ const runMiddlewares = async (
   await firstHandler()
 }
 
-const apiHandler = async (req: Request, res: Response): Promise<void | undefined> => {
+export default async (req: Request, res: Response): Promise<void | undefined> => {
   const {
     action, version, endpointId, ctx
   } = res.locals as {
@@ -65,15 +66,4 @@ const apiHandler = async (req: Request, res: Response): Promise<void | undefined
       .status(500)
       .send(err)
   }
-}
-
-export default (path = '/api'): express.Router => {
-  const apiRouter = express.Router()
-  apiRouter.use(`${path}/health-check`, (req: Request, res: Response) => res.status(200)
-    .send({
-      data: 'ok'
-    }))
-  apiRouter.use(`${path}/:version/:endpointId`, ...defaultApiHandler, apiHandler)
-  apiRouter.use(`${path}/:endpointId`, ...defaultApiHandler, apiHandler)
-  return apiRouter
 }

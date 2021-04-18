@@ -1,5 +1,6 @@
 import { EntityRepository, getCustomRepository } from 'typeorm'
-import Bot, { Content as BotContent } from '../entities/bot.entity'
+
+import Bot, { Content as BotContent } from '@db/entities/bot.entity'
 import BaseRepository from './base'
 
 @EntityRepository(Bot)

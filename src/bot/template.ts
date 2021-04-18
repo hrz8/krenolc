@@ -1,11 +1,12 @@
 import _ from 'lodash'
 
-import log from '../utils/logger'
-import Modules, { ModuleType } from '../modules'
+import Modules from '@/modules'
+import botRepository from '@db/repository/bot.repository'
+import { Content as BotContent } from '@db/entities/bot.entity'
+import log from '@/utils/logger'
 
-import botRepository from '../db/repository/bot.repository'
-import { Content as BotContent } from '../db/entities/bot.entity'
-import { EndpointAction } from '../types/endpoint'
+import { EndpointAction } from '@/types/endpoint'
+import { ModuleType } from '@/types/module'
 
 export default class BotTemplate {
   public brain = ''

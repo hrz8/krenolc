@@ -1,8 +1,10 @@
 import { NextFunction } from 'express'
-import faqRepository from '~/src/db/repository/faq.repository'
-import { EndpointAction, Endpoint } from '~/src/types/endpoint'
-import { Context, HTTPMethod } from '~/src/types/action'
-import { Response } from '~/src/utils/response'
+
+import faqRepository from '@db/repository/faq.repository'
+import { Response } from '@/utils/response'
+
+import { EndpointAction, Endpoint } from '@/types/endpoint'
+import { Context, HTTPMethod } from '@/types/action'
 
 const endpoints: Endpoint = {
   version: '2.0.0',

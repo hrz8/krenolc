@@ -2,6 +2,7 @@ import {
   NextFunction, Request, Response
 } from 'express'
 import Joi from 'joi'
+
 import { Context } from './action'
 
 export interface IMiddleware {

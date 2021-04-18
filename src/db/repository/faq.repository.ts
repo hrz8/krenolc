@@ -1,5 +1,6 @@
 import { EntityRepository, getCustomRepository } from 'typeorm'
-import Faq, { Content as FaqContent } from '../entities/faq.entity'
+
+import Faq, { Content as FaqContent } from '@db/entities/faq.entity'
 import BaseRepository from './base'
 
 @EntityRepository(Faq)

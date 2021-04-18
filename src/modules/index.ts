@@ -1,9 +1,6 @@
-import { Endpoint } from '../types/endpoint'
-import faq from './faq'
+import { ModuleType } from '@/types/module'
 
-export type ModuleType = Readonly<{
-  endpoints: Endpoint[]
-}>
+import faq from './faq'
 
 const modules: {[moduleId: string]: () => ModuleType} = {
   faq

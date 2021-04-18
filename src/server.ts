@@ -6,11 +6,11 @@ import express from 'express'
 import 'tsconfig-paths/register'
 
 import BotFactory from '@/bot/factory'
-import connectDB from '@/db/connection'
-import log from './utils/logger'
-import setEnv from './utils/env'
+import connectDB from '@db/connection'
+import log from '@/utils/logger'
+import setEnv from '@/utils/env'
 
-import apiRouter from './routes/api'
+import apiRouter from '@/routes/api'
 
 const main = async () => {
   const app = express()

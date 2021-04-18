@@ -3,11 +3,11 @@ import {
 } from 'express'
 import Joi from 'joi'
 
-import BotFactory from '../bot/factory'
-import log from '../utils/logger'
+import BotFactory from '@/bot/factory'
+import log from '@/utils/logger'
 
-import { Context, HTTPMethod } from '../types/action'
-import { EndpointAction } from '../types/endpoint'
+import { Context, HTTPMethod } from '@/types/action'
+import { EndpointAction } from '@/types/endpoint'
 
 const paramsSchema = () => Joi.object({
   version: Joi

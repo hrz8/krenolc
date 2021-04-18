@@ -1,5 +1,6 @@
 import Joi from 'joi'
-import { EndpointValidatorCollection } from '~/src/types/endpoint'
+
+import { EndpointValidatorCollection } from '@/types/endpoint'
 
 const validators: EndpointValidatorCollection = {
   getAll: () => Joi.object({
