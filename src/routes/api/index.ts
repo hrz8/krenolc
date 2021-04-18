@@ -4,7 +4,8 @@ import defaultHandler from './handler'
 
 export default (path = '/api'): express.Router => {
   const apiRouter = express.Router()
-  apiRouter.use(`${path}/health-check`, (req: Request, res: Response) => res.status(200)
+  apiRouter.use(`${path}/health-check`, (req: Request, res: Response) => res
+    .status(200)
     .send({
       data: 'ok'
     }))

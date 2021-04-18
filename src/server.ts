@@ -2,6 +2,7 @@ import { createServer } from 'http'
 
 import 'reflect-metadata'
 import express from 'express'
+import errors from 'common-errors'
 
 import 'tsconfig-paths/register'
 

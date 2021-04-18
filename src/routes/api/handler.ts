@@ -3,7 +3,7 @@ import {
 } from 'express'
 import _ from 'lodash'
 
-import { SuccessResponse, Response as UtilsResponse } from '@/utils/response'
+import { SuccessResponse, Response as UtilsResponse } from '@/utils/responses/success'
 import log from '@/utils/logger'
 
 import { Context } from '@/types/action'

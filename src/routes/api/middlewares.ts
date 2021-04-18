@@ -2,12 +2,15 @@ import {
   NextFunction, Request, Response
 } from 'express'
 import Joi from 'joi'
+import _toNumber from 'lodash/toNumber'
 
 import BotFactory from '@/bot/factory'
 import log from '@/utils/logger'
 
 import { Context, HTTPMethod } from '@/types/action'
 import { EndpointAction } from '@/types/endpoint'
+
+import ApiRouteError from './error'
 
 const paramsSchema = () => Joi.object({
   version: Joi
@@ -49,12 +52,15 @@ const paramsHanlder = (
   const { value, error } = paramsSchema()
     .validate(req.params)
   if (error) {
-    log.error(`version value is not valid: ${value.version}`)
+    const errorMessage = `version value is not valid: ${value.version}`
+    const errorData = {
+      version: value.version
+    }
+    log.error(errorMessage)
+    const err = ApiRouteError.versionNotValid(errorData, errorMessage)
     res
-      .status(400)
-      .send({
-        error: error.message
-      })
+      .status(_toNumber(err.status || '500'))
+      .send(err)
     return
   }
   next()
@@ -72,11 +78,13 @@ const actionAvailabilityHandler = (
   const action: EndpointAction | undefined = endpoint.get(`${version}-${moduleId}-${endpointId}`)
   if (!action) {
     log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
+    const err = ApiRouteError.endpointNotFound({
+      method  : req.method,
+      endpoint: req.baseUrl
+    }, `${req.method} ${req.baseUrl} not found`)
     res
-      .status(404)
-      .send({
-        error: `${req.method} ${req.baseUrl} not found`
-      })
+      .status(_toNumber(err.status || '500'))
+      .send(err)
     return
   }
   res.locals.action = action
@@ -99,10 +107,13 @@ const httpMethodHandler = (
   // validate HTTP method
   if (method && req.method !== method) {
     log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
-    res.status(404)
-      .send({
-        error: `${req.method} ${req.baseUrl} not found`
-      })
+    const err = ApiRouteError.endpointNotFound({
+      method  : req.method,
+      endpoint: req.baseUrl
+    }, `${req.method} ${req.baseUrl} not found`)
+    res
+      .status(_toNumber(err.status || '500'))
+      .send(err)
     return
   }
   next()
@@ -124,10 +135,11 @@ const validatorHandler = (
     const validateCtxParams = validator()
       .validate(ctx.params)
     if (validateCtxParams?.error) {
-      res.status(400)
-        .send({
-          error: validateCtxParams.error.message
-        })
+      const errorMessage = validateCtxParams.error.message || 'request parameter not valid'
+      const err = ApiRouteError.parameterNotValid(ctx.params, errorMessage)
+      res
+        .status(_toNumber(err.status || '500'))
+        .send(err)
       return
     }
   }

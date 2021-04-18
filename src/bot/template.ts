@@ -32,32 +32,40 @@ export default class BotTemplate {
             .filter((moduleId): boolean => modules[moduleId]?.enabled)
             .forEach((moduleId): void => {
               this.modules.set(moduleId, modules[moduleId])
-              this.loadModule({
-                moduleId
-              })
+              this
+                .loadModule({
+                  moduleId
+                })
+                .catch((err) => {
+                  log.error('Failed to load modules')
+                  log.error(err.message)
+                })
             })
         }
+        log.info('Bot load process completed')
       })
       .catch((err) => {
         log.error('Failed to fetch content of bot from repository')
         log.error(err.message)
       })
-      .finally(() => {
-        log.info('Bot load process completed')
-      })
   }
 
-  public loadModule({ moduleId }: { moduleId: string }): void {
+  public async loadModule({ moduleId }: { moduleId: string }): Promise<void> {
     const module: Readonly<ModuleType> = Modules[moduleId]()
     const { endpoints } = module
     _
       .forEach(endpoints, (endpoint) => {
-        const { version, actions } = endpoint
+        const { version: ver, actions } = endpoint
+        const version = ver || '1'
+        const versionRgx = new RegExp('^v\\d+(\\.*\\d+)*$')
         _
           .keys(actions)
           .forEach((objKey) => {
             const action = actions[objKey]
-            const mapKey = `v${version || 1}-${moduleId}-${_.kebabCase(objKey)}`
+            if (!versionRgx.test(`v${version}`)) {
+              throw new Error(`version value (${version}) of endpoint (${moduleId}-${objKey}) is not valid`)
+            }
+            const mapKey = `v${version}-${moduleId}-${_.kebabCase(objKey)}`
             this.endpoint.set(mapKey, action)
           })
       })

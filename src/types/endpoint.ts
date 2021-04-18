@@ -1,7 +1,7 @@
 import { NextFunction } from 'express'
 import Joi from 'joi'
 
-import { Response } from '@/utils/response'
+import { Response } from '@/utils/responses/success'
 
 import { Context, HTTPMethod } from './action'
 

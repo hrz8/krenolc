@@ -118,6 +118,13 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/common-errors@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@types/common-errors/-/common-errors-1.0.1.tgz#5a22d59bd7ed8a917489b781520b64bd054f46c5"
+  integrity sha512-NVTB6DEoOBlQ8QC7fCCgFn1GLHn0IB8q2BjSilH1Fy4h5XfLc1nz9e8ae8TJ+sYpUDn2TRq4f+VRHK/AnPOzoA==
+  dependencies:
+    "@types/express" "*"
+
 "@types/connect@*":
   version "3.4.34"
   resolved "https://registry.yarnpkg.com/@types/connect/-/connect-3.4.34.tgz#170a40223a6d666006d93ca128af2beb1d9b1901"
@@ -141,7 +148,7 @@
     "@types/qs" "*"
     "@types/range-parser" "*"
 
-"@types/express@^4.17.11":
+"@types/express@*", "@types/express@^4.17.11":
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.11.tgz#debe3caa6f8e5fcda96b47bd54e2f40c4ee59545"
   integrity sha512-no+R6rW60JEc59977wIxreQVsIEOAYwgCqldrA/vkpCnbD7MqTefO97lmoBe4WE0F156bC4uLSP1XHDOySnChg==
@@ -700,6 +707,11 @@ color-name@~1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
+
+common-errors@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/common-errors/-/common-errors-1.2.0.tgz#5e3903f66fe58d691c1fc1ff881ec692e4a69442"
+  integrity sha512-HtLF1V6LRACyueMEs+MLwf++1Q7cJLC0FFVStFErYZXXCNuTyVwXp67MTn7Mf7+lAaA5HfUe4cREPTwo0LAXkg==
 
 concat-map@0.0.1:
   version "0.0.1"
