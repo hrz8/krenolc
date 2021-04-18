@@ -8,7 +8,7 @@ export default (path = '/api'): express.Router => {
     .send({
       data: 'ok'
     }))
-  apiRouter.use(`${path}/:version/:endpointId`, ...middlewareHandlers, defaultHandler)
-  apiRouter.use(`${path}/:endpointId`, ...middlewareHandlers, defaultHandler)
+  apiRouter.use(`${path}/:version/:moduleId/:endpointId`, ...middlewareHandlers, defaultHandler)
+  apiRouter.use(`${path}/:moduleId/:endpointId`, ...middlewareHandlers, defaultHandler)
   return apiRouter
 }

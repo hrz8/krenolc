@@ -52,7 +52,7 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
         new SuccessResponse(
           data,
           meta,
-          version.substring(1),
+          version,
           endpointId
         )
       )

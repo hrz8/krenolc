@@ -14,6 +14,9 @@ const paramsSchema = () => Joi.object({
     .string()
     .pattern(new RegExp('^v\\d+(\\.*\\d+)*$'))
     .optional(),
+  moduleId: Joi
+    .string()
+    .required(),
   endpointId: Joi
     .string()
     .required()
@@ -62,13 +65,13 @@ const actionAvailabilityHandler = (
   res: Response,
   next: NextFunction
 ): void | undefined => {
-  const { endpointId } = req.params
+  const { moduleId, endpointId } = req.params
   const version: string = req.params.version || 'v1'
   const { endpoint } = BotFactory.getDefaultBot()
 
-  const action: EndpointAction | undefined = endpoint.get(`${version}-${endpointId}`)
+  const action: EndpointAction | undefined = endpoint.get(`${version}-${moduleId}-${endpointId}`)
   if (!action) {
-    log.error(`endpointId not found: ${version}-${endpointId}`)
+    log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
     res
       .status(404)
       .send({
@@ -78,6 +81,7 @@ const actionAvailabilityHandler = (
   }
   res.locals.action = action
   res.locals.version = version
+  res.locals.moduleId = moduleId
   res.locals.endpointId = endpointId
   next()
 }
@@ -88,13 +92,13 @@ const httpMethodHandler = (
   next: NextFunction
 ): void | undefined => {
   const {
-    action, version, endpointId
+    action, version, moduleId, endpointId
   } = res.locals
   const { method } = action as EndpointAction
 
   // validate HTTP method
   if (method && req.method !== method) {
-    log.error(`endpointId not found: ${version}-${endpointId}`)
+    log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
     res.status(404)
       .send({
         error: `${req.method} ${req.baseUrl} not found`
