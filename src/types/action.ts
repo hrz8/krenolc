@@ -17,7 +17,7 @@ export enum HTTPMethod {
   TRACE = 'TRACE'
 }
 
-export interface Context {
+export interface IContext {
   params: {
     params: any,
     query: any,
@@ -32,5 +32,5 @@ export interface Context {
   action: EndpointAction,
   method: HTTPMethod,
   request: Request,
-  locals: Record<string, any>
+  meta: Record<string, any>
 }

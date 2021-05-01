@@ -1,10 +1,11 @@
 import _toString from 'lodash/toString'
 import _isObjectLike from 'lodash/isObjectLike'
 import _snakeCase from 'lodash/snakeCase'
+import { getEnv } from '../env'
 
 export class ErrorCode {
   static get namespace(): string {
-    const brain = (process.env.BRAIN || 'KRY')
+    const brain = getEnv<string>('BRAIN', 'KRY')
       .replace(/[^0-9a-z]/gi, '')
     return brain.toUpperCase()
   }

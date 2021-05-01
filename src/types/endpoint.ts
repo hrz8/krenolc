@@ -3,17 +3,17 @@ import Joi from 'joi'
 
 import { Response } from '@/utils/responses/success'
 
-import { Context, HTTPMethod } from './action'
+import { IContext, HTTPMethod } from './action'
 
 export interface EndpointActionHandler {
   (
-    ctx: Context
+    ctx: IContext
   ): Promise<Response> | Response
 }
 
 export interface MiddlewareHandler {
   (
-    ctx: Context,
+    ctx: IContext,
     next: NextFunction
   ): Promise<void> | void
 }

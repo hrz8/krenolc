@@ -2,6 +2,7 @@ import cacheManager from 'cache-manager'
 import redis from 'cache-manager-redis'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
+import { getEnv } from '../env'
 
 dayjs.extend(duration)
 const ONE_DAY_SEC = dayjs.duration(1, 'day')
@@ -15,15 +16,16 @@ export default class CacheFactory {
   private static redisCache: RedisCacheManager
 
   public static async init(): Promise<void> {
-    const {
-      REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, REDIS_DB
-    } = process.env
+    const host = getEnv<string>('REDIS_HOST', 'localhost')
+    const port = getEnv<number>('REDIS_PORT', 6379)
+    const authPass = getEnv<string>('REDIS_PASSWORD', '')
+    const db = getEnv<number>('REDIS_DB', 0)
     const config: cacheManager.StoreConfig & cacheManager.CacheOptions = {
       store    : redis,
-      host     : REDIS_HOST || 'localhost',
-      port     : REDIS_PORT || 6379,
-      auth_pass: REDIS_PASSWORD || '',
-      db       : REDIS_DB || 0,
+      host,
+      port,
+      auth_pass: authPass,
+      db,
       ttl      : ONE_DAY_SEC
     }
     this.redisCache = cacheManager.caching(config) as RedisCacheManager

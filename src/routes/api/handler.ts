@@ -6,14 +6,14 @@ import _noop from 'lodash/noop'
 import { SuccessResponse, Response as UtilsResponse } from '@/utils/responses/success'
 import log from '@/utils/logger'
 
-import { Context } from '@/types/action'
+import { IContext } from '@/types/action'
 import { EndpointAction, MiddlewareHandler } from '@/types/endpoint'
 
 import { apiErrorDefault } from './error'
 
 const runMiddlewares = async (
   middlewares: MiddlewareHandler[],
-  ctx: Context
+  ctx: IContext
 ): Promise<void> => {
   let nextHandler: NextFunction = _noop
   for (let i = middlewares.length - 1; i >= 0; i--) {
@@ -35,7 +35,7 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
     version: string,
     moduleId: string,
     endpointId: string,
-    ctx: Context
+    ctx: IContext
   }
   const {
     method, handler, before, after

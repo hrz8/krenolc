@@ -3,13 +3,13 @@ import {
 } from 'express'
 import Joi from 'joi'
 
-import { Context } from './action'
+import { IContext } from './action'
 
 export interface IMiddleware {
-  middleware(ctx: Context, req: Request, res: Response, next: NextFunction) : any
+  middleware(ctx: IContext, req: Request, res: Response, next: NextFunction) : any
 }
 
 export default interface IValidatorMiddleware extends IMiddleware {
-  validate(ctx: Context, schema: Joi.AnySchema): boolean | Error
+  validate(ctx: IContext, schema: Joi.AnySchema): boolean | Error
   validator(args?: any): Joi.AnySchema
 }

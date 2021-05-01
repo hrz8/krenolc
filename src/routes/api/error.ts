@@ -2,6 +2,7 @@ import { Response } from 'express'
 import _isError from 'lodash/isError'
 import _toNumber from 'lodash/toNumber'
 
+import { getEnv } from '@/utils/env'
 import { ErrorCode, ErrorResponse } from '@/utils/responses/error'
 
 export class ApiError extends ErrorCode {
@@ -44,11 +45,12 @@ export const apiErrorDefault = (res: Response, version: string, err: any): void 
   } : {
     message: 'Server Error'
   }
+  const brain = getEnv<string>('BRAIN', 'KRY')
   const errorResponse = isErrorObj ? new ErrorResponse(
     errorData,
     500,
     'Relax! It\'s not your fault. We\'re sorry about this, but something wrong happen with our server 😢',
-    `${(process.env.BRAIN || 'KRY')}-KRENOLC_API_ERROR-500`,
+    `${brain}-KRENOLC_API_ERROR-500`,
     version
   ) : {
     ...err,

@@ -4,17 +4,14 @@ import {
 import Joi from 'joi'
 import _toNumber from 'lodash/toNumber'
 
-import CacheFactory, { RedisCacheManager } from '@/utils/cache/factory'
 import BotFactory from '@/utils/bot/factory'
-import BotTemplate from '@/utils/bot/template'
 import log from '@/utils/logger'
 
-import { Context, HTTPMethod } from '@/types/action'
+import { IContext } from '@/types/action'
 import { EndpointAction } from '@/types/endpoint'
 
 import { ApiError } from './error'
-
-type ContextPayload = { bot: BotTemplate, action: EndpointAction }
+import Context from '~/src/utils/context'
 
 const paramsSchema = () => Joi.object({
   version: Joi
@@ -29,147 +26,128 @@ const paramsSchema = () => Joi.object({
     .required()
 })
 
-const buildContext = (req: Request, { bot, action }: ContextPayload): Context => {
-  const {
-    params, query, body, method, baseUrl, headers, ...rest
-  } = req
-  return {
-    params: {
-      params,
-      query,
-      body,
-      headers
-    },
-    utils: {
-      bot,
-      cacher: CacheFactory.getCache()
-    },
-    baseUrl,
-    action,
-    method : method as HTTPMethod,
-    request: rest as Request,
-    locals : {}
-  }
-}
-
-const paramsHanlder = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void | undefined => {
-  const { value, error } = paramsSchema()
-    .validate(req.params)
-  if (error) {
-    const errorMessage = `version value is not valid: ${value.version}`
-    const errorData = {
-      version: value.version
-    }
-    log.error(errorMessage)
-    const err = ApiError.versionNotValid(errorData, errorMessage)
-    res
-      .status(_toNumber(err.status || '500'))
-      .send(err)
-    return
-  }
-  next()
-}
-
-const actionAvailabilityHandler = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void | undefined => {
-  const { moduleId, endpointId } = req.params
-  const version: string = req.params.version || 'v1'
-  const bot = BotFactory.getDefaultBot()
-  const { endpoint } = bot
-
-  const action: EndpointAction | undefined = endpoint.get(`${version}-${moduleId}-${endpointId}`)
-  if (!action) {
-    log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
-    const err = ApiError.endpointNotFound({
-      method  : req.method,
-      endpoint: req.baseUrl,
-      version
-    }, `${req.method} ${req.baseUrl} not found`)
-    res
-      .status(_toNumber(err.status || '500'))
-      .send(err)
-    return
-  }
-  res.locals.bot = bot
-  res.locals.action = action
-  res.locals.version = version
-  res.locals.moduleId = moduleId
-  res.locals.endpointId = endpointId
-  next()
-}
-
-const httpMethodHandler = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void | undefined => {
-  const {
-    action, version, moduleId, endpointId
-  } = res.locals
-  const { method } = action as EndpointAction
-
-  // validate HTTP method
-  if (method && req.method !== method) {
-    log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
-    const err = ApiError.endpointNotFound({
-      method  : req.method,
-      endpoint: req.baseUrl,
-      version
-    }, `${req.method} ${req.baseUrl} not found`)
-    res
-      .status(_toNumber(err.status || '500'))
-      .send(err)
-    return
-  }
-  next()
-}
-
-const validatorHandler = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void | undefined => {
-  const {
-    bot, action, version
-  } = res.locals
-  const { validator } = action as EndpointAction
-
-  // build ctx
-  const ctx: Context = buildContext(req, {
-    bot,
-    action
-  })
-
-  // validate ctx params
-  if (validator) {
-    const validateCtxParams = validator()
-      .validate(ctx.params)
-    if (validateCtxParams?.error) {
-      const errorMessage = validateCtxParams.error.message || 'request parameter not valid'
-      const err = ApiError.parameterNotValid({
-        params: ctx.params,
-        version
-      }, errorMessage)
+export default [
+  (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void | undefined => {
+    const { value, error } = paramsSchema()
+      .validate(req.params)
+    if (error) {
+      const errorMessage = `version value is not valid: ${value.version}`
+      const errorData = {
+        version: value.version
+      }
+      log.error(errorMessage)
+      const err = ApiError.versionNotValid(errorData, errorMessage)
       res
         .status(_toNumber(err.status || '500'))
         .send(err)
       return
     }
-  }
-  res.locals.ctx = ctx
-  next()
-}
+    next()
+  },
+  (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void | undefined => {
+    const { moduleId, endpointId } = req.params
+    const version: string = req.params.version || 'v1'
+    const bot = BotFactory.getDefaultBot()
+    const { endpoint } = bot
 
-export default [
-  paramsHanlder,
-  actionAvailabilityHandler,
-  httpMethodHandler,
-  validatorHandler
+    const action: EndpointAction | undefined = endpoint.get(`${version}-${moduleId}-${endpointId}`)
+    if (!action) {
+      log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
+      const err = ApiError.endpointNotFound({
+        method  : req.method,
+        endpoint: req.baseUrl,
+        version
+      }, `${req.method} ${req.baseUrl} not found`)
+      res
+        .status(_toNumber(err.status || '500'))
+        .send(err)
+      return
+    }
+    res.locals.bot = bot
+    res.locals.action = action
+    res.locals.version = version
+    res.locals.moduleId = moduleId
+    res.locals.endpointId = endpointId
+    next()
+  },
+  (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void | undefined => {
+    const {
+      action, version, moduleId, endpointId
+    } = res.locals
+    const { method } = action as EndpointAction
+
+    // validate HTTP method
+    if (method && req.method !== method) {
+      log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
+      const err = ApiError.endpointNotFound({
+        method  : req.method,
+        endpoint: req.baseUrl,
+        version
+      }, `${req.method} ${req.baseUrl} not found`)
+      res
+        .status(_toNumber(err.status || '500'))
+        .send(err)
+      return
+    }
+    next()
+  },
+  (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void | undefined => {
+    const {
+      bot, action, version
+    } = res.locals
+    const { validator } = action as EndpointAction
+
+    const {
+      params, query, body, headers
+    } = req
+    const actionParams = {
+      params,
+      query,
+      body,
+      headers
+    }
+
+    // validate ctx params
+    if (validator) {
+      const validateCtxParams = validator()
+        .validate(actionParams)
+      if (validateCtxParams?.error) {
+        const errorMessage = validateCtxParams.error.message || 'request parameter not valid'
+        const err = ApiError.parameterNotValid({
+          params: actionParams,
+          version
+        }, errorMessage)
+        res
+          .status(_toNumber(err.status || '500'))
+          .send(err)
+        return
+      }
+    }
+
+    // build ctx
+    const ctx: IContext = new Context({
+      req,
+      bot,
+      action
+    })
+
+    res.locals.ctx = ctx
+    next()
+  }
 ]
