@@ -5,8 +5,10 @@ import express from 'express'
 
 import 'tsconfig-paths/register'
 
-import BotFactory from '@/bot/factory'
 import connectDB from '@db/connection'
+
+import BotFactory from '@/utils/bot/factory'
+import CacheFactory from '@/utils/cache/factory'
 import log from '@/utils/logger'
 import setEnv from '@/utils/env'
 
@@ -21,6 +23,7 @@ const main = async () => {
     .catch((err) => log.error(err.message))
 
   await BotFactory.init()
+  await CacheFactory.init()
 
   // express body parser
   app.use(express.json())

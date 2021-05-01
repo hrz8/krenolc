@@ -3,7 +3,7 @@ import _isObjectLike from 'lodash/isObjectLike'
 import _snakeCase from 'lodash/snakeCase'
 
 export class ErrorCode {
-  static get brain(): string {
+  static get namespace(): string {
     const brain = (process.env.BRAIN || 'KRY')
       .replace(/[^0-9a-z]/gi, '')
     return brain.toUpperCase()
@@ -15,7 +15,7 @@ export class ErrorCode {
   }
 
   static get prefix(): string {
-    return `${this.brain}-${(this.codedName)}`
+    return `${this.namespace}-${(this.codedName)}`
   }
 }
 

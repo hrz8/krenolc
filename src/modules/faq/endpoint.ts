@@ -8,6 +8,7 @@ import { Context, HTTPMethod } from '@/types/action'
 
 import validators from './validator'
 import FaqModuleError from './error'
+import CacheFactory from '~/src/utils/cache/factory'
 
 const endpoints: Endpoint = {
   actions: {
@@ -68,6 +69,16 @@ const endpoints: Endpoint = {
       method: HTTPMethod.GET,
       async handler(ctx: Context): Promise<any> {
         throw Error('ERRR OR')
+      }
+    },
+    tryCache: {
+      method: HTTPMethod.GET,
+      async handler(ctx: Context): Promise<any> {
+        const cache = CacheFactory.getCache()
+        const data = await cache.get('foo')
+        return new Response({
+          data
+        })
       }
     }
   }

@@ -1,5 +1,5 @@
 import { ConnectionOptions } from 'typeorm'
-import setEnv from './src/utils/env'
+import setEnv from '@/utils/env'
 
 const ormconfig = () => {
   // - get active environtment
@@ -7,7 +7,7 @@ const ormconfig = () => {
 
   // - slicing environtment vars
   const {
-    NODE_ENV: ENV, DB_URL, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME
+    NODE_ENV: ENV, DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME
   } = process.env
 
   // - set connection options
@@ -15,7 +15,7 @@ const ormconfig = () => {
     // - dbms
     type       : 'mysql',
     // - connection
-    host       : DB_URL || 'localhost',
+    host       : DB_HOST || 'localhost',
     port       : Number(DB_PORT) || 3006,
     username   : DB_USER || 'root',
     password   : DB_PASSWORD || '',

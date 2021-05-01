@@ -4,7 +4,7 @@ import {
 import Joi from 'joi'
 import _toNumber from 'lodash/toNumber'
 
-import BotFactory from '@/bot/factory'
+import BotFactory from '@/utils/bot/factory'
 import log from '@/utils/logger'
 
 import { Context, HTTPMethod } from '@/types/action'

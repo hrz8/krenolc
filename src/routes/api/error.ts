@@ -10,7 +10,7 @@ export class ApiError extends ErrorCode {
       data,
       400,
       message,
-      `${this.brain}-KRENOLC_${this.codedName}-001`
+      `${this.namespace}-KRENOLC_${this.codedName}-001`
     )
   }
 
@@ -20,7 +20,7 @@ export class ApiError extends ErrorCode {
       data,
       404,
       message,
-      `${this.brain}-KRENOLC_${this.codedName}-002`,
+      `${this.namespace}-KRENOLC_${this.codedName}-002`,
       version
     )
   }
@@ -31,7 +31,7 @@ export class ApiError extends ErrorCode {
       params,
       400,
       message,
-      `${this.brain}-KRENOLC_${this.codedName}-003`,
+      `${this.namespace}-KRENOLC_${this.codedName}-003`,
       version
     )
   }
