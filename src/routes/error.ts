@@ -10,7 +10,8 @@ const errorHandler = (
   const { baseUrl } = req
   const err = new ErrorResponse(
     {
-      url: baseUrl
+      method: req.method,
+      url   : baseUrl
     },
     404,
     'The requested URL was not found on our server 💀',

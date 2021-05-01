@@ -1,16 +1,6 @@
-import errors, { HttpStatusError } from 'common-errors'
 import _toString from 'lodash/toString'
 import _isObjectLike from 'lodash/isObjectLike'
 import _snakeCase from 'lodash/snakeCase'
-
-const KrenolcError = errors.helpers.generateClass('KrenolcError', {
-  extends: HttpStatusError as any,
-  args   : [
-    'status',
-    'apiVersion',
-    'error'
-  ]
-})
 
 export class ErrorCode {
   static get brain(): string {
@@ -48,13 +38,5 @@ export class ErrorResponse {
       message: message || 'Internal Server Error',
       data   : _isObjectLike(data) ? data : {}
     }
-  }
-
-  public throw(): Error {
-    throw new KrenolcError(
-      this.status,
-      this.apiVersion,
-      this.error
-    )
   }
 }

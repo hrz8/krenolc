@@ -65,6 +65,6 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
   } catch (err) {
     log.error(`error while running action: ${method}: ${version}-${moduleId}-${endpointId}`)
     log.error(err)
-    apiErrorDefault(res, err)
+    apiErrorDefault(res, version, err)
   }
 }

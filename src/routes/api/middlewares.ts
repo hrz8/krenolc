@@ -80,7 +80,8 @@ const actionAvailabilityHandler = (
     log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
     const err = ApiError.endpointNotFound({
       method  : req.method,
-      endpoint: req.baseUrl
+      endpoint: req.baseUrl,
+      version
     }, `${req.method} ${req.baseUrl} not found`)
     res
       .status(_toNumber(err.status || '500'))
@@ -109,7 +110,8 @@ const httpMethodHandler = (
     log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
     const err = ApiError.endpointNotFound({
       method  : req.method,
-      endpoint: req.baseUrl
+      endpoint: req.baseUrl,
+      version
     }, `${req.method} ${req.baseUrl} not found`)
     res
       .status(_toNumber(err.status || '500'))
@@ -124,7 +126,7 @@ const validatorHandler = (
   res: Response,
   next: NextFunction
 ): void | undefined => {
-  const { action } = res.locals
+  const { action, version } = res.locals
   const { validator } = action as EndpointAction
 
   // build ctx
@@ -136,7 +138,10 @@ const validatorHandler = (
       .validate(ctx.params)
     if (validateCtxParams?.error) {
       const errorMessage = validateCtxParams.error.message || 'request parameter not valid'
-      const err = ApiError.parameterNotValid(ctx.params, errorMessage)
+      const err = ApiError.parameterNotValid({
+        params: ctx.params,
+        version
+      }, errorMessage)
       res
         .status(_toNumber(err.status || '500'))
         .send(err)

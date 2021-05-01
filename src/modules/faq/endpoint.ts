@@ -63,6 +63,12 @@ const endpoints: Endpoint = {
           data: 'foobar'
         }, 'error message')
       }
+    },
+    tryErrorJs: {
+      method: HTTPMethod.GET,
+      async handler(ctx: Context): Promise<any> {
+        throw Error('ERRR OR')
+      }
     }
   }
 }
