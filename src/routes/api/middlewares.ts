@@ -4,13 +4,17 @@ import {
 import Joi from 'joi'
 import _toNumber from 'lodash/toNumber'
 
+import CacheFactory, { RedisCacheManager } from '@/utils/cache/factory'
 import BotFactory from '@/utils/bot/factory'
+import BotTemplate from '@/utils/bot/template'
 import log from '@/utils/logger'
 
 import { Context, HTTPMethod } from '@/types/action'
 import { EndpointAction } from '@/types/endpoint'
 
 import { ApiError } from './error'
+
+type ContextPayload = { bot: BotTemplate, action: EndpointAction }
 
 const paramsSchema = () => Joi.object({
   version: Joi
@@ -25,7 +29,7 @@ const paramsSchema = () => Joi.object({
     .required()
 })
 
-const buildContext = (req: Request, action: EndpointAction): Context => {
+const buildContext = (req: Request, { bot, action }: ContextPayload): Context => {
   const {
     params, query, body, method, baseUrl, headers, ...rest
   } = req
@@ -35,6 +39,10 @@ const buildContext = (req: Request, action: EndpointAction): Context => {
       query,
       body,
       headers
+    },
+    utils: {
+      bot,
+      cacher: CacheFactory.getCache()
     },
     baseUrl,
     action,
@@ -73,7 +81,8 @@ const actionAvailabilityHandler = (
 ): void | undefined => {
   const { moduleId, endpointId } = req.params
   const version: string = req.params.version || 'v1'
-  const { endpoint } = BotFactory.getDefaultBot()
+  const bot = BotFactory.getDefaultBot()
+  const { endpoint } = bot
 
   const action: EndpointAction | undefined = endpoint.get(`${version}-${moduleId}-${endpointId}`)
   if (!action) {
@@ -88,6 +97,7 @@ const actionAvailabilityHandler = (
       .send(err)
     return
   }
+  res.locals.bot = bot
   res.locals.action = action
   res.locals.version = version
   res.locals.moduleId = moduleId
@@ -126,11 +136,16 @@ const validatorHandler = (
   res: Response,
   next: NextFunction
 ): void | undefined => {
-  const { action, version } = res.locals
+  const {
+    bot, action, version
+  } = res.locals
   const { validator } = action as EndpointAction
 
   // build ctx
-  const ctx: Context = buildContext(req, action)
+  const ctx: Context = buildContext(req, {
+    bot,
+    action
+  })
 
   // validate ctx params
   if (validator) {

@@ -49,16 +49,15 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
 
     // run endpoint handler
     const { data, meta } = await handlerBounded() as UtilsResponse
+    const successResponse = new SuccessResponse(
+      data,
+      meta,
+      version,
+      endpointId
+    )
     res
       .status(200)
-      .send(
-        new SuccessResponse(
-          data,
-          meta,
-          version,
-          endpointId
-        )
-      )
+      .send(successResponse)
 
     // run after middlewares
     await runMiddlewares(after || [], ctx)

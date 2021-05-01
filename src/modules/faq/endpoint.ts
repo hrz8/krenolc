@@ -74,8 +74,7 @@ const endpoints: Endpoint = {
     tryCache: {
       method: HTTPMethod.GET,
       async handler(ctx: Context): Promise<any> {
-        const cache = CacheFactory.getCache()
-        const data = await cache.get('foo')
+        const data = await ctx.utils.cacher.get('foo')
         return new Response({
           data
         })

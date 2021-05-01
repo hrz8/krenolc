@@ -7,7 +7,7 @@ dayjs.extend(duration)
 const ONE_DAY_SEC = dayjs.duration(1, 'day')
   .asSeconds()
 
-interface RedisCacheManager extends cacheManager.Cache {
+export interface RedisCacheManager extends cacheManager.Cache {
   keys(...args: any[]): Promise<any>
 }
 

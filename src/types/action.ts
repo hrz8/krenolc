@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 import { Request } from 'express'
+import BotTemplate from '../utils/bot/template'
+import { RedisCacheManager } from '../utils/cache/factory'
 import { EndpointAction } from './endpoint'
 
 export enum HTTPMethod {
@@ -21,6 +23,10 @@ export interface Context {
     query: any,
     body: any,
     headers: any
+  },
+  utils: {
+    bot:BotTemplate,
+    cacher: RedisCacheManager
   },
   baseUrl: string,
   action: EndpointAction,
