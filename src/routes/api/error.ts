@@ -1,4 +1,4 @@
-import { ErrorCode, ErrorResponse } from '~/src/utils/responses/error'
+import { ErrorCode, ErrorResponse } from '@/utils/responses/error'
 
 export default class ApiRouteError extends ErrorCode {
   static versionNotValid(data: any, message: string): ErrorResponse {

@@ -1,7 +1,7 @@
 import {
   NextFunction, Request, Response
 } from 'express'
-import _ from 'lodash'
+import _noop from 'lodash/noop'
 
 import { SuccessResponse, Response as UtilsResponse } from '@/utils/responses/success'
 import log from '@/utils/logger'
@@ -13,7 +13,7 @@ const runMiddlewares = async (
   middlewares: MiddlewareHandler[],
   ctx: Context
 ): Promise<void> => {
-  let nextHandler: NextFunction = _.noop
+  let nextHandler: NextFunction = _noop
   for (let i = middlewares.length - 1; i >= 0; i--) {
     const handler = middlewares[i]
     const currHandler = handler.bind(

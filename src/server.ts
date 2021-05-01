@@ -12,6 +12,7 @@ import log from '@/utils/logger'
 import setEnv from '@/utils/env'
 
 import apiRouter from '@/routes/api'
+import errorRouter from '@/routes/error'
 
 const main = async () => {
   const app = express()
@@ -31,6 +32,7 @@ const main = async () => {
 
   // - app routes
   app.use(apiRouter())
+  app.use(errorRouter())
 
   // - http server
   const PORT = process.env.PORT || 3009
