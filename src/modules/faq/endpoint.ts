@@ -7,6 +7,7 @@ import { EndpointAction, Endpoint } from '@/types/endpoint'
 import { Context, HTTPMethod } from '@/types/action'
 
 import validators from './validator'
+import FaqModuleError from './error'
 
 const endpoints: Endpoint = {
   actions: {
@@ -54,7 +55,15 @@ const endpoints: Endpoint = {
           .getLatestContent()
         return new Response(faq)
       }
-    } as EndpointAction
+    } as EndpointAction,
+    tryError: {
+      method: HTTPMethod.GET,
+      async handler(ctx: Context): Promise<any> {
+        throw FaqModuleError.tryError({
+          data: 'foobar'
+        }, 'error message')
+      }
+    }
   }
 }
 

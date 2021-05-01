@@ -1,5 +1,7 @@
 import errors, { HttpStatusError } from 'common-errors'
-import _ from 'lodash'
+import _toString from 'lodash/toString'
+import _isObjectLike from 'lodash/isObjectLike'
+import _snakeCase from 'lodash/snakeCase'
 
 const KrenolcError = errors.helpers.generateClass('KrenolcError', {
   extends: HttpStatusError as any,
@@ -11,11 +13,19 @@ const KrenolcError = errors.helpers.generateClass('KrenolcError', {
 })
 
 export class ErrorCode {
-  static get prefix(): string {
-    const namespace = (process.env.BRAIN || 'KRY')
+  static get brain(): string {
+    const brain = (process.env.BRAIN || 'KRY')
       .replace(/[^0-9a-z]/gi, '')
-    return `${namespace}-${this.name}`
+    return brain.toUpperCase()
+  }
+
+  static get codedName(): string {
+    return `${_snakeCase(this.name)}`
       .toUpperCase()
+  }
+
+  static get prefix(): string {
+    return `${this.brain}-${(this.codedName)}`
   }
 }
 
@@ -31,12 +41,12 @@ export class ErrorResponse {
   }
 
   constructor(data = {}, status: number, message: string, errorCode: string, apiVersion?: string) {
-    this.status = _.toString(status) || '500'
+    this.status = _toString(status) || '500'
     this.apiVersion = apiVersion || 'unknown'
     this.error = {
       code   : errorCode,
       message: message || 'Internal Server Error',
-      data   : _.isObjectLike(data) ? data : {}
+      data   : _isObjectLike(data) ? data : {}
     }
   }
 

@@ -9,6 +9,8 @@ import log from '@/utils/logger'
 import { Context } from '@/types/action'
 import { EndpointAction, MiddlewareHandler } from '@/types/endpoint'
 
+import { apiErrorDefault } from './error'
+
 const runMiddlewares = async (
   middlewares: MiddlewareHandler[],
   ctx: Context
@@ -27,10 +29,11 @@ const runMiddlewares = async (
 
 export default async (req: Request, res: Response): Promise<void | undefined> => {
   const {
-    action, version, endpointId, ctx
+    action, version, moduleId, endpointId, ctx
   } = res.locals as {
     action: EndpointAction,
     version: string,
+    moduleId: string,
     endpointId: string,
     ctx: Context
   }
@@ -60,10 +63,8 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
     // run after middlewares
     await runMiddlewares(after || [], ctx)
   } catch (err) {
-    log.error(`error while running action: ${method}-${version}-${endpointId}`)
+    log.error(`error while running action: ${method}: ${version}-${moduleId}-${endpointId}`)
     log.error(err)
-    res
-      .status(500)
-      .send(err)
+    apiErrorDefault(res, err)
   }
 }

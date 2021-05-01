@@ -1,12 +1,16 @@
+import { Response } from 'express'
+import _isError from 'lodash/isError'
+import _toNumber from 'lodash/toNumber'
+
 import { ErrorCode, ErrorResponse } from '@/utils/responses/error'
 
-export default class ApiRouteError extends ErrorCode {
+export class ApiError extends ErrorCode {
   static versionNotValid(data: any, message: string): ErrorResponse {
     return new ErrorResponse(
       data,
       400,
       message,
-      `${this.prefix}-001`
+      `${this.brain}-KRENOLC_${this.codedName}-001`
     )
   }
 
@@ -15,7 +19,7 @@ export default class ApiRouteError extends ErrorCode {
       data,
       404,
       message,
-      `${this.prefix}-002`
+      `${this.brain}-KRENOLC_${this.codedName}-001`
     )
   }
 
@@ -24,7 +28,25 @@ export default class ApiRouteError extends ErrorCode {
       data,
       400,
       message,
-      `${this.prefix}-003`
+      `${this.brain}-KRENOLC_${this.codedName}-001`
     )
   }
+}
+
+export const apiErrorDefault = (res: Response, err: any): void => {
+  const isErrorObj = _isError(err)
+  const errorData = process.env.NODE_ENV === 'dev' ? {
+    message: err?.message || 'Server Error'
+  } : {
+    message: 'Server Error'
+  }
+  const errorResponse = isErrorObj ? new ErrorResponse(
+    errorData,
+    500,
+    'Relax! It\'s not your fault. We\'re sorry about this, but something wrong happen with our server 😢',
+    `${(process.env.BRAIN || 'KRY')}-KRENOLC_API_ERROR-500`
+  ) : err
+  res
+    .status(_toNumber(err.status || '500'))
+    .send(errorResponse)
 }

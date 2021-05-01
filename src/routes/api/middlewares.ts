@@ -10,7 +10,7 @@ import log from '@/utils/logger'
 import { Context, HTTPMethod } from '@/types/action'
 import { EndpointAction } from '@/types/endpoint'
 
-import ApiRouteError from './error'
+import { ApiError } from './error'
 
 const paramsSchema = () => Joi.object({
   version: Joi
@@ -57,7 +57,7 @@ const paramsHanlder = (
       version: value.version
     }
     log.error(errorMessage)
-    const err = ApiRouteError.versionNotValid(errorData, errorMessage)
+    const err = ApiError.versionNotValid(errorData, errorMessage)
     res
       .status(_toNumber(err.status || '500'))
       .send(err)
@@ -78,7 +78,7 @@ const actionAvailabilityHandler = (
   const action: EndpointAction | undefined = endpoint.get(`${version}-${moduleId}-${endpointId}`)
   if (!action) {
     log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
-    const err = ApiRouteError.endpointNotFound({
+    const err = ApiError.endpointNotFound({
       method  : req.method,
       endpoint: req.baseUrl
     }, `${req.method} ${req.baseUrl} not found`)
@@ -107,7 +107,7 @@ const httpMethodHandler = (
   // validate HTTP method
   if (method && req.method !== method) {
     log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
-    const err = ApiRouteError.endpointNotFound({
+    const err = ApiError.endpointNotFound({
       method  : req.method,
       endpoint: req.baseUrl
     }, `${req.method} ${req.baseUrl} not found`)
@@ -136,7 +136,7 @@ const validatorHandler = (
       .validate(ctx.params)
     if (validateCtxParams?.error) {
       const errorMessage = validateCtxParams.error.message || 'request parameter not valid'
-      const err = ApiRouteError.parameterNotValid(ctx.params, errorMessage)
+      const err = ApiError.parameterNotValid(ctx.params, errorMessage)
       res
         .status(_toNumber(err.status || '500'))
         .send(err)
