@@ -5,7 +5,7 @@ import { Response } from '@/utils/responses/success'
 
 import { Endpoint } from '@/types/endpoint'
 import { IContext, HTTPMethod } from '@/types/action'
-import { ONE_DAY_MS } from '@/libs/constant'
+import { ONE_DAY_SEC } from '@/libs/constant'
 
 import validators from './validator'
 import FaqModuleError from './error'
@@ -17,7 +17,7 @@ const endpoints: Endpoint = {
       validator: validators.getAll,
       cache    : {
         enabled: true,
-        ttl    : ONE_DAY_MS
+        ttl    : ONE_DAY_SEC
       },
       before: [
         (ctx: IContext, next: NextFunction): void => {
