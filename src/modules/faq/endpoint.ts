@@ -20,29 +20,29 @@ const endpoints: Endpoint = {
         ttl    : ONE_DAY_MS
       },
       before: [
-        (ctx: IContext, next: NextFunction) => {
+        (ctx: IContext, next: NextFunction): void => {
           console.log('this')
           next()
         },
-        (ctx: IContext, next: NextFunction) => {
+        (ctx: IContext, next: NextFunction): void => {
           console.log('is')
           next()
         },
-        (ctx: IContext, next: NextFunction) => {
+        (ctx: IContext, next: NextFunction): void => {
           console.log('before')
           next()
         }
       ],
       after: [
-        (ctx: IContext, next: NextFunction) => {
+        (ctx: IContext, next: NextFunction): void => {
           console.log('this')
           next()
         },
-        (ctx: IContext, next: NextFunction) => {
+        (ctx: IContext, next: NextFunction): void => {
           console.log('is')
           next()
         },
-        (ctx: IContext, next: NextFunction) => {
+        (ctx: IContext, next: NextFunction): void => {
           console.log('after')
           next()
         }
@@ -55,6 +55,7 @@ const endpoints: Endpoint = {
     },
     getDefault: {
       method: HTTPMethod.GET,
+      cache : true,
       async handler(ctx: IContext): Promise<Response> {
         const faq = await faqRepository()
           .getLatestContent()

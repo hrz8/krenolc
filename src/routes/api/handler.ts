@@ -2,9 +2,11 @@ import {
   NextFunction, Request, Response
 } from 'express'
 import _noop from 'lodash/noop'
+import _get from 'lodash/get'
 
 import { SuccessResponse, Response as UtilsResponse } from '@/utils/responses/success'
 import log from '@/utils/logger'
+import { ONE_DAY_SEC } from '@/libs/constant'
 
 import { IContext } from '@/types/action'
 import { EndpointAction, MiddlewareHandler } from '@/types/endpoint'
@@ -38,8 +40,13 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
     ctx: IContext
   }
   const {
-    method, handler, before, after
+    method, handler, before, after, cache
   } = action
+
+  // cache checking
+  const cacheKey = `${method}-${version}-${moduleId}-${endpointId}`
+  const cacheEnabled = cache === true || (cache && cache.enabled)
+  const cacheData = cacheEnabled ? await ctx.utils.cacher.get(cacheKey) : null
 
   // prep handler function
   const handlerBounded = handler.bind(null, ctx)
@@ -48,7 +55,22 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
     await runMiddlewares(before || [], ctx)
 
     // run endpoint handler
-    const { data, meta } = await handlerBounded() as UtilsResponse
+    const { data, meta } = (
+      cacheEnabled && cacheData
+        ? cacheData
+        : await handlerBounded()
+    ) as UtilsResponse
+
+    // set to cache if cache enable and data is not there yet
+    if (cacheEnabled && !cacheData) {
+      await ctx.utils.cacher.set(cacheKey, {
+        data,
+        meta
+      }, {
+        ttl: _get(cache, 'ttl') || ONE_DAY_SEC
+      })
+    }
+
     const successResponse = new SuccessResponse(
       data,
       meta,
