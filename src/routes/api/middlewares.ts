@@ -3,6 +3,7 @@ import {
 } from 'express'
 import Joi from 'joi'
 import _toNumber from 'lodash/toNumber'
+import _keys from 'lodash/keys'
 
 import BotFactory from '@/utils/bot/factory'
 import log from '@/utils/logger'
@@ -13,10 +14,12 @@ import { EndpointAction } from '@/types/endpoint'
 import { ApiError } from './error'
 import Context from '~/src/utils/context'
 
+const versionRegex = new RegExp('^v\\d+(\\.*\\d+)*$')
+
 const paramsSchema = () => Joi.object({
   version: Joi
     .string()
-    .pattern(new RegExp('^v\\d+(\\.*\\d+)*$'))
+    .pattern(versionRegex)
     .optional(),
   moduleId: Joi
     .string()
@@ -32,11 +35,18 @@ export default [
     res: Response,
     next: NextFunction
   ): void | undefined => {
+    const reqParams = req.params
+    const isThereVersion = Boolean(_keys(reqParams)
+      .reduce((accum, curr) => accum + (versionRegex.test(reqParams[curr]) ? 1 : 0), 0))
     const { value, error } = paramsSchema()
-      .validate(req.params)
-    if (error) {
-      const errorMessage = `version value is not valid: ${value.version}`
-      const errorData = {
+      .validate(reqParams)
+    const versionButLess = isThereVersion && !(_keys(reqParams).length === 3)
+    if (error || versionButLess) {
+      const errorMessage = versionButLess ? 'version path is not valid' : `version value is not valid: ${value.version}`
+      const errorData = versionButLess ? {
+        version: value.moduleId,
+        path   : value.endpointId
+      } : {
         version: value.version
       }
       log.error(errorMessage)
@@ -62,9 +72,13 @@ export default [
     if (!action) {
       log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
       const err = ApiError.endpointNotFound({
-        method  : req.method,
-        endpoint: req.baseUrl,
-        version
+        data: {
+          method  : req.method,
+          endpoint: req.baseUrl
+        },
+        version,
+        moduleId,
+        endpointId
       }, `${req.method} ${req.baseUrl} not found`)
       res
         .status(_toNumber(err.status || '500'))
@@ -92,9 +106,13 @@ export default [
     if (method && req.method !== method) {
       log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
       const err = ApiError.endpointNotFound({
-        method  : req.method,
-        endpoint: req.baseUrl,
-        version
+        data: {
+          method  : req.method,
+          endpoint: req.baseUrl
+        },
+        version,
+        moduleId,
+        endpointId
       }, `${req.method} ${req.baseUrl} not found`)
       res
         .status(_toNumber(err.status || '500'))
@@ -109,7 +127,7 @@ export default [
     next: NextFunction
   ): void | undefined => {
     const {
-      bot, action, version
+      bot, action, version, moduleId, endpointId
     } = res.locals
     const { validator } = action as EndpointAction
 
@@ -131,7 +149,9 @@ export default [
         const errorMessage = validateCtxParams.error.message || 'request parameter not valid'
         const err = ApiError.parameterNotValid({
           params: actionParams,
-          version
+          version,
+          moduleId,
+          endpointId
         }, errorMessage)
         res
           .status(_toNumber(err.status || '500'))

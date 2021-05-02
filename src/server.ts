@@ -16,6 +16,9 @@ import apiRouter from '@/routes/api'
 import errorRouter from '@/routes/error'
 
 const main = async () => {
+  EnvFactory.init()
+  await CacheFactory.init()
+
   const app = express()
 
   await connectDB()
@@ -23,7 +26,6 @@ const main = async () => {
     .catch((err) => log.error(err.message))
 
   await BotFactory.init()
-  await CacheFactory.init()
 
   // express body parser
   app.use(express.json())
@@ -46,6 +48,5 @@ const main = async () => {
 }
 
 (async function () {
-  EnvFactory.init()
   await main()
 }())

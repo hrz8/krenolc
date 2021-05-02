@@ -9,4 +9,16 @@ export default class FaqModuleError extends ErrorCode {
       `${this.prefix}-001`
     )
   }
+
+  static tryErrorWithReponseMsg(data: any, message: string): ErrorResponse {
+    return new ErrorResponse(
+      data,
+      400,
+      message,
+      `${this.prefix}-002`,
+      {
+        reponseMessage: 'replaced!'
+      }
+    )
+  }
 }

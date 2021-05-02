@@ -52,8 +52,11 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
     const successResponse = new SuccessResponse(
       data,
       meta,
-      version,
-      endpointId
+      {
+        apiVersion: version,
+        module    : moduleId,
+        endpoint  : endpointId
+      }
     )
     res
       .status(200)
@@ -64,6 +67,6 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
   } catch (err) {
     log.error(`error while running action: ${method}: ${version}-${moduleId}-${endpointId}`)
     log.error(err)
-    apiErrorDefault(res, version, err)
+    apiErrorDefault(res, version, moduleId, endpointId, err)
   }
 }

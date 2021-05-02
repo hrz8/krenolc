@@ -1,6 +1,12 @@
 import _isObjectLike from 'lodash/isObjectLike'
 import _camelCase from 'lodash/camelCase'
-import _isString from 'lodash/isString'
+
+type SuccessPayload = {
+  responseMessage?: string
+  apiVersion: string,
+  module: string,
+  endpoint: string
+}
 
 export class Response {
   public data: any
@@ -24,21 +30,24 @@ export class SuccessResponse {
 
   public meta: any
 
-  constructor(data: any, meta = {}, apiVersion: string, endpointId: string, message?: string) {
+  constructor(
+    data: any,
+    meta = {},
+    {
+      responseMessage = '',
+      apiVersion,
+      module,
+      endpoint
+    }: SuccessPayload = {} as SuccessPayload
+  ) {
     if (!_isObjectLike(data)) {
       throw new Error('data must be in array or object')
     }
 
-    if (message && !_isString(message)) {
-      throw new Error('message must be a string')
-    }
-
-    const module = endpointId.split('-')[0]
-    const endpoint = endpointId.substr(module.length + 1)
     this.status = '200'
     this.apiVersion = apiVersion
     this.data = _isObjectLike(data) ? data : {}
     this.meta = meta
-    this.message = message || `success ${module} ${_camelCase(endpoint)}`
+    this.message = responseMessage || `success ${module} ${_camelCase(endpoint)}`
   }
 }

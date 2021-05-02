@@ -1,7 +1,15 @@
 import _toString from 'lodash/toString'
 import _isObjectLike from 'lodash/isObjectLike'
 import _snakeCase from 'lodash/snakeCase'
+import _camelCase from 'lodash/camelCase'
 import EnvFactory from '../env'
+
+type ErrorPayload = {
+  reponseMessage?: string
+  apiVersion?: string,
+  module?: string,
+  endpoint?: string
+}
 
 export class ErrorCode {
   static get namespace(): string {
@@ -31,13 +39,27 @@ export class ErrorResponse {
     data: any
   }
 
-  constructor(data = {}, status: number, message: string, errorCode: string, apiVersion?: string) {
+  public message: string
+
+  constructor(
+    data = {},
+    status: number,
+    errMessage: string,
+    errorCode: string,
+    {
+      reponseMessage = '',
+      apiVersion,
+      module,
+      endpoint
+    }: ErrorPayload = {} as ErrorPayload
+  ) {
     this.status = _toString(status) || '500'
     this.apiVersion = apiVersion || 'unknown'
     this.error = {
       code   : errorCode,
-      message: message || 'Internal Server Error',
+      message: errMessage || 'Internal Server Error',
       data   : _isObjectLike(data) ? data : {}
     }
+    this.message = reponseMessage || (module && endpoint ? `fail ${module} ${_camelCase(endpoint)}` : errMessage)
   }
 }

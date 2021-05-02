@@ -7,38 +7,60 @@ import { ErrorCode, ErrorResponse } from '@/utils/responses/error'
 
 export class ApiError extends ErrorCode {
   static versionNotValid(data: any, message: string): ErrorResponse {
+    const { version } = data
     return new ErrorResponse(
       data,
       400,
       message,
-      `${this.namespace}-KRENOLC_${this.codedName}-001`
+      `${this.namespace}-KRENOLC_${this.codedName}-001`,
+      {
+        apiVersion: version
+      }
     )
   }
 
   static endpointNotFound(_data: any, message: string): ErrorResponse {
-    const { version, ...data } = _data
+    const {
+      data, version, moduleId: module, endpointId: endpoint
+    } = _data
     return new ErrorResponse(
       data,
       404,
       message,
       `${this.namespace}-KRENOLC_${this.codedName}-002`,
-      version
+      {
+        apiVersion: version,
+        module,
+        endpoint
+      }
     )
   }
 
   static parameterNotValid(data: any, message: string): ErrorResponse {
-    const { version, params } = data
+    const {
+      version, params, moduleId: module, endpointId: endpoint
+    } = data
     return new ErrorResponse(
       params,
       400,
       message,
       `${this.namespace}-KRENOLC_${this.codedName}-003`,
-      version
+      {
+        apiVersion: version,
+        module,
+        endpoint
+      }
     )
   }
 }
 
-export const apiErrorDefault = (res: Response, version: string, err: any): void => {
+export const apiErrorDefault = (
+  res: Response,
+  version: string,
+  moduleId: string,
+  endpointId: string,
+  err: any
+): void => {
   const isErrorObj = _isError(err)
   const errorData = EnvFactory.get<string>('NODE_ENV', 'dev') === 'dev' ? {
     message: err?.message || 'Server Error'
@@ -51,7 +73,11 @@ export const apiErrorDefault = (res: Response, version: string, err: any): void 
     500,
     'Relax! It\'s not your fault. We\'re sorry about this, but something wrong happen with our server 😢',
     `${brain}-KRENOLC_API_ERROR-500`,
-    version
+    {
+      apiVersion: version,
+      module    : moduleId,
+      endpoint  : endpointId
+    }
   ) : {
     ...err,
     apiVersion: version
