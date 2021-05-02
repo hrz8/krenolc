@@ -35,6 +35,7 @@ export class ErrorResponse {
 
   public error: {
     code: string,
+    name: string | undefined,
     message: string,
     data: any
   }
@@ -42,7 +43,9 @@ export class ErrorResponse {
   public message: string
 
   constructor(
-    data = {},
+    { name, ...data }: { name?: string, [key: string]: any } = {
+      name: undefined
+    },
     status: number,
     errMessage: string,
     errorCode: string,
@@ -57,6 +60,7 @@ export class ErrorResponse {
     this.apiVersion = apiVersion || 'unknown'
     this.error = {
       code   : errorCode,
+      name,
       message: errMessage || 'Internal Server Error',
       data   : _isObjectLike(data) ? data : {}
     }

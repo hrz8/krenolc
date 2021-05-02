@@ -18,12 +18,15 @@ export interface MiddlewareHandler {
   ): Promise<void> | void
 }
 
+export type EndpointValidatorSchema = {
+  params: Joi.ObjectSchema,
+  query: Joi.ObjectSchema,
+  body: Joi.ObjectSchema,
+  headers: Joi.ObjectSchema
+}
+
 export interface EndpointValidator {
-  (): Joi.ObjectSchema<{
-    query: Joi.ObjectSchema<any>,
-    body: Joi.ObjectSchema<any>,
-    headers: Joi.ObjectSchema<any>
-  }>
+  (): Joi.ObjectSchema
 }
 
 export interface EndpointAction {
@@ -36,10 +39,6 @@ export interface EndpointAction {
 
 export interface EndpointActionCollection {
   [endpointId: string]: EndpointAction
-}
-
-export interface EndpointValidatorCollection {
-  [validatorId: string]: EndpointValidator
 }
 
 export interface Endpoint {

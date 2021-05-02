@@ -1,14 +1,19 @@
 import Joi from 'joi'
+import { EndpointValidatorSchema } from '~/src/types/endpoint'
 
-import { EndpointValidatorCollection } from '@/types/endpoint'
-
-const validators: EndpointValidatorCollection = {
-  getAll: () => Joi.object({
-    params : Joi.object(),
-    query  : Joi.object(),
-    body   : Joi.object(),
-    headers: Joi.object()
-  })
+const validators = {
+  getAll(): Joi.ObjectSchema {
+    return Joi.object<EndpointValidatorSchema>({
+      params: Joi.object(),
+      query : Joi.object(),
+      body  : Joi.object()
+        .keys({
+          kamu: Joi.string()
+            .required()
+        }),
+      headers: Joi.object()
+    })
+  }
 }
 
 export default validators
