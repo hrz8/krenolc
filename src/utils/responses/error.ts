@@ -2,6 +2,9 @@ import _toString from 'lodash/toString'
 import _isObjectLike from 'lodash/isObjectLike'
 import _snakeCase from 'lodash/snakeCase'
 import _camelCase from 'lodash/camelCase'
+
+import { BRAIN_DEFAULT } from '@/libs/constant'
+
 import EnvFactory from '../env'
 
 type ErrorPayload = {
@@ -13,7 +16,7 @@ type ErrorPayload = {
 
 export class ErrorCode {
   static get namespace(): string {
-    const brain = EnvFactory.get<string>('BRAIN', 'KRY')
+    const brain = EnvFactory.get<string>('BRAIN', BRAIN_DEFAULT)
       .replace(/[^0-9a-z]/gi, '')
     return brain.toUpperCase()
   }

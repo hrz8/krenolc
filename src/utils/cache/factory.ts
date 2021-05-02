@@ -1,12 +1,8 @@
 import cacheManager from 'cache-manager'
 import redis from 'cache-manager-redis'
-import dayjs from 'dayjs'
-import duration from 'dayjs/plugin/duration'
-import EnvFactory from '../env'
 
-dayjs.extend(duration)
-const ONE_DAY_SEC = dayjs.duration(1, 'day')
-  .asSeconds()
+import { ONE_DAY_SEC } from '@/libs/constant'
+import EnvFactory from '../env'
 
 export interface RedisCacheManager extends cacheManager.Cache {
   keys(...args: any[]): Promise<any>

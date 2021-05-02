@@ -4,6 +4,7 @@ import _toNumber from 'lodash/toNumber'
 
 import EnvFactory from '@/utils/env'
 import { ErrorCode, ErrorResponse } from '@/utils/responses/error'
+import { BRAIN_DEFAULT } from '@/libs/constant'
 
 export class ApiError extends ErrorCode {
   static versionNotValid(data: any, message: string): ErrorResponse {
@@ -67,7 +68,7 @@ export const apiErrorDefault = (
   } : {
     message: 'Server Error'
   }
-  const brain = EnvFactory.get<string>('BRAIN', 'KRY')
+  const brain = EnvFactory.get<string>('BRAIN', BRAIN_DEFAULT)
   const errorResponse = isErrorObj ? new ErrorResponse(
     errorData,
     500,

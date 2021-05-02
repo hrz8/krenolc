@@ -33,6 +33,10 @@ export interface EndpointAction {
   before?: MiddlewareHandler[],
   after?: MiddlewareHandler[]
   method: HTTPMethod | HTTPMethod[]
+  cache?: {
+    enabled: boolean,
+    ttl: number
+  } | boolean,
   validator?: EndpointValidator
   handler: EndpointActionHandler
 }

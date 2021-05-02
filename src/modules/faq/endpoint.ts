@@ -3,8 +3,9 @@ import { NextFunction } from 'express'
 import faqRepository from '@db/repository/faq.repository'
 import { Response } from '@/utils/responses/success'
 
-import { EndpointAction, Endpoint } from '@/types/endpoint'
+import { Endpoint } from '@/types/endpoint'
 import { IContext, HTTPMethod } from '@/types/action'
+import { ONE_DAY_MS } from '@/libs/constant'
 
 import validators from './validator'
 import FaqModuleError from './error'
@@ -14,7 +15,11 @@ const endpoints: Endpoint = {
     getAll: {
       method   : HTTPMethod.GET,
       validator: validators.getAll,
-      before   : [
+      cache    : {
+        enabled: true,
+        ttl    : ONE_DAY_MS
+      },
+      before: [
         (ctx: IContext, next: NextFunction) => {
           console.log('this')
           next()
@@ -47,7 +52,7 @@ const endpoints: Endpoint = {
           .getAllContent()
         return new Response(faqs)
       }
-    } as EndpointAction,
+    },
     getDefault: {
       method: HTTPMethod.GET,
       async handler(ctx: IContext): Promise<Response> {
@@ -55,7 +60,7 @@ const endpoints: Endpoint = {
           .getLatestContent()
         return new Response(faq)
       }
-    } as EndpointAction,
+    },
     tryError: {
       method: HTTPMethod.GET,
       async handler(ctx: IContext): Promise<any> {
