@@ -1,20 +1,20 @@
 import { ConnectionOptions } from 'typeorm'
-import { getEnv, initEnv } from '@/utils/env'
+import EnvFactory from '@/utils/env'
 
 const ormconfig = () => {
   // - get active environtment
-  initEnv()
+  EnvFactory.init()
 
   // - set connection options
   const options: ConnectionOptions = {
     // - dbms
     type       : 'mysql',
     // - connection
-    host       : getEnv<string>('DB_HOST', 'localhost'),
-    port       : getEnv<number>('DB_PORT', 3006),
-    username   : getEnv<string>('DB_USER', 'root'),
-    password   : getEnv<string>('DB_PASSWORD', ''),
-    database   : getEnv<string>('DB_NAME', 'krenolc'),
+    host       : EnvFactory.get<string>('DB_HOST', 'localhost'),
+    port       : EnvFactory.get<number>('DB_PORT', 3006),
+    username   : EnvFactory.get<string>('DB_USER', 'root'),
+    password   : EnvFactory.get<string>('DB_PASSWORD', ''),
+    database   : EnvFactory.get<string>('DB_NAME', 'krenolc'),
     // - file-ing
     entities   : [`${__dirname}/src/db/entities/*.js`],
     migrations : [`${__dirname}/src/db/migrations/*.js`],
@@ -26,7 +26,7 @@ const ormconfig = () => {
       subscribersDir: `${__dirname}/src/db/subscribers`
     },
     // - other options
-    logging    : getEnv<string>('NODE_ENV', 'dev') === 'dev',
+    logging    : EnvFactory.get<string>('NODE_ENV', 'dev') === 'dev',
     synchronize: true
   }
   return options

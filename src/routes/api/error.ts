@@ -2,7 +2,7 @@ import { Response } from 'express'
 import _isError from 'lodash/isError'
 import _toNumber from 'lodash/toNumber'
 
-import { getEnv } from '@/utils/env'
+import EnvFactory from '@/utils/env'
 import { ErrorCode, ErrorResponse } from '@/utils/responses/error'
 
 export class ApiError extends ErrorCode {
@@ -40,12 +40,12 @@ export class ApiError extends ErrorCode {
 
 export const apiErrorDefault = (res: Response, version: string, err: any): void => {
   const isErrorObj = _isError(err)
-  const errorData = process.env.NODE_ENV === 'dev' ? {
+  const errorData = EnvFactory.get<string>('NODE_ENV', 'dev') === 'dev' ? {
     message: err?.message || 'Server Error'
   } : {
     message: 'Server Error'
   }
-  const brain = getEnv<string>('BRAIN', 'KRY')
+  const brain = EnvFactory.get<string>('BRAIN', 'KRY')
   const errorResponse = isErrorObj ? new ErrorResponse(
     errorData,
     500,

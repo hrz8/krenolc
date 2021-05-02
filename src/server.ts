@@ -10,7 +10,7 @@ import connectDB from '@db/connection'
 import BotFactory from '@/utils/bot/factory'
 import CacheFactory from '@/utils/cache/factory'
 import log from '@/utils/logger'
-import { getEnv, initEnv } from '@/utils/env'
+import EnvFactory from '@/utils/env'
 
 import apiRouter from '@/routes/api'
 import errorRouter from '@/routes/error'
@@ -37,7 +37,7 @@ const main = async () => {
   app.use(errorRouter())
 
   // - http server
-  const PORT = getEnv<number>('PORT', 3009)
+  const PORT = EnvFactory.get<number>('PORT', 3009)
   const server = createServer(app)
   server.listen(
     PORT,
@@ -46,6 +46,6 @@ const main = async () => {
 }
 
 (async function () {
-  initEnv()
+  EnvFactory.init()
   await main()
 }())
