@@ -1,32 +1,36 @@
 {
-  "inputs": [
-    {
-      "id": "envFile",
-      "type": "pickString",
-      "description": "What environment do you want to run?",
-      "default": "dev",
-      "options": [
-        "dev",
-        "prod"
-      ]
-    }
-  ],
-  "configurations": [
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Nodemon Debugger",
-      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
-      "program": "${workspaceFolder}/src/server.ts",
-      "restart": true,
-      "args": ["--experimental-modules"],
-      "preLaunchTask": "tsc: watch - tsconfig.json",
-      "outFiles": ["${workspaceFolder}/**/*.js"],
-      "envFile": "${workspaceFolder}/.env/${input:envFile}",
-      "env": {
-        "NODE_ENV": "${input:envFile}"
-      },
-      "console": "integratedTerminal",
-    }
-  ]
+    "inputs": [
+        {
+            "id": "envFile",
+            "type": "pickString",
+            "description": "What environment do you want to run?",
+            "default": "dev",
+            "options": [
+                "dev",
+                "prod"
+            ]
+        }
+    ],
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Nodemon Debugger",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
+            "program": "${workspaceFolder}/src/server.ts",
+            "restart": true,
+            "args": [
+                "--experimental-modules"
+            ],
+            "preLaunchTask": "tsc: watch - tsconfig.json",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ],
+            "envFile": "${workspaceFolder}/.env/${input:envFile}",
+            "env": {
+                "NODE_ENV": "${input:envFile}"
+            },
+            "console": "integratedTerminal"
+        }
+    ]
 }

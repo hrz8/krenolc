@@ -1,37 +1,37 @@
 import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn
+    BaseEntity,
+    Column,
+    CreateDateColumn,
+    DeleteDateColumn,
+    Entity,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
 } from 'typeorm'
 
 export interface Content {
-  dataset: Array<any>
+    dataset: Array<any>
 }
 
 export interface FaqInsertPayload {
-  content: Content
+    content: Content
 }
 
 @Entity()
 export default class Faq extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string
+    @PrimaryGeneratedColumn('uuid')
+    id!: string
 
-  @Column('simple-json')
-  content!: Content
+    @Column('simple-json')
+    content!: Content
 
-  @CreateDateColumn()
-  createdAt!: Date
+    @CreateDateColumn()
+    createdAt!: Date
 
-  @UpdateDateColumn()
-  updatedAt!: Date
+    @UpdateDateColumn()
+    updatedAt!: Date
 
-  @DeleteDateColumn({
-    nullable: true
-  })
-  deletedAt?: Date
+    @DeleteDateColumn({
+        nullable: true
+    })
+    deletedAt?: Date
 }

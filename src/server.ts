@@ -16,37 +16,37 @@ import apiRouter from '@/routes/api'
 import errorRouter from '@/routes/error'
 
 const main = async () => {
-  EnvFactory.init()
-  await CacheFactory.init()
+    EnvFactory.init()
+    await CacheFactory.init()
 
-  const app = express()
+    const app = express()
 
-  await connectDB()
-    .then(() => log.info('Database connected successfully'))
-    .catch((err) => log.error(err.message))
+    await connectDB()
+        .then(() => log.info('Database connected successfully'))
+        .catch((err) => log.error(err.message))
 
-  await BotFactory.init()
+    await BotFactory.init()
 
-  // express body parser
-  app.use(express.json())
-  app.use(express.urlencoded({
-    limit   : '50mb',
-    extended: true
-  }))
+    // express body parser
+    app.use(express.json())
+    app.use(express.urlencoded({
+        limit   : '50mb',
+        extended: true
+    }))
 
-  // - app routes
-  app.use(apiRouter())
-  app.use(errorRouter())
+    // - app routes
+    app.use(apiRouter())
+    app.use(errorRouter())
 
-  // - http server
-  const PORT = EnvFactory.get<number>('PORT', 3009)
-  const server = createServer(app)
-  server.listen(
-    PORT,
-    () => log.info(`Server running on port ${PORT}`)
-  )
+    // - http server
+    const PORT = EnvFactory.get<number>('PORT', 3009)
+    const server = createServer(app)
+    server.listen(
+        PORT,
+        () => log.info(`Server running on port ${PORT}`)
+    )
 }
 
 (async function () {
-  await main()
+    await main()
 }())

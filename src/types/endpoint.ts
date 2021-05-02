@@ -6,46 +6,46 @@ import { Response } from '@/utils/responses/success'
 import { IContext, HTTPMethod } from './action'
 
 export interface EndpointActionHandler {
-  (
-    ctx: IContext
-  ): Promise<Response> | Response
+    (
+        ctx: IContext
+    ): Promise<Response> | Response
 }
 
 export interface MiddlewareHandler {
-  (
-    ctx: IContext,
-    next: NextFunction
-  ): Promise<void> | void
+    (
+        ctx: IContext,
+        next: NextFunction
+    ): Promise<void> | void
 }
 
 export type EndpointValidatorSchema = {
-  params: Joi.ObjectSchema,
-  query: Joi.ObjectSchema,
-  body: Joi.ObjectSchema,
-  headers: Joi.ObjectSchema
+    params: Joi.ObjectSchema,
+    query: Joi.ObjectSchema,
+    body: Joi.ObjectSchema,
+    headers: Joi.ObjectSchema
 }
 
 export interface EndpointValidator {
-  (): Joi.ObjectSchema
+    (): Joi.ObjectSchema
 }
 
 export interface EndpointAction {
-  before?: MiddlewareHandler[],
-  after?: MiddlewareHandler[]
-  method: HTTPMethod | HTTPMethod[]
-  cache?: {
-    enabled: boolean,
-    ttl: number
-  } | boolean,
-  validator?: EndpointValidator
-  handler: EndpointActionHandler
+    before?: MiddlewareHandler[],
+    after?: MiddlewareHandler[]
+    method: HTTPMethod | HTTPMethod[]
+    cache?: {
+        enabled: boolean,
+        ttl: number
+    } | boolean,
+    validator?: EndpointValidator
+    handler: EndpointActionHandler
 }
 
 export interface EndpointActionCollection {
-  [endpointId: string]: EndpointAction
+    [endpointId: string]: EndpointAction
 }
 
 export interface Endpoint {
-  version?: string,
-  actions: EndpointActionCollection
+    version?: string,
+    actions: EndpointActionCollection
 }

@@ -1,22 +1,22 @@
 import { BotInsertPayload } from '../entities/bot.entity'
 
 const data: BotInsertPayload[] = [
-  {
-    content: {
-      modules: {
-        faq: {
-          enabled: true
+    {
+        content: {
+            modules: {
+                faq: {
+                    enabled: true
+                }
+            },
+            content: {
+                conversation_start: {
+                    content: {
+                        text: 'Welcome to the bot!'
+                    }
+                }
+            }
         }
-      },
-      content: {
-        conversation_start: {
-          content: {
-            text: 'Welcome to the bot!'
-          }
-        }
-      }
     }
-  }
 ]
 
 export default data

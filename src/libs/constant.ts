@@ -8,6 +8,6 @@ export const BRAIN_DEFAULT = 'KRN'
 
 // time
 export const ONE_DAY_SEC = dayjs.duration(1, 'day')
-  .asSeconds()
+    .asSeconds()
 export const ONE_DAY_MS = dayjs.duration(1, 'day')
-  .asMilliseconds()
+    .asMilliseconds()
