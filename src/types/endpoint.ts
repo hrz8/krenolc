@@ -30,6 +30,7 @@ export interface EndpointValidator {
 }
 
 export interface EndpointAction {
+    authentication?: boolean,
     before?: MiddlewareHandler[],
     after?: MiddlewareHandler[]
     method: HTTPMethod | HTTPMethod[]

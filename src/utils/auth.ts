@@ -4,7 +4,7 @@ import EnvFactory from './env'
 
 const AUTH0_DOMAIN = EnvFactory.get<string>('AUTH0_DOMAIN', 'app.auth0.com')
 
-export default jwt({
+export const checkJwt = jwt({
     secret: expressJwtSecret({
         cache                : true,
         rateLimit            : true,
@@ -15,3 +15,5 @@ export default jwt({
     issuer    : `https://${AUTH0_DOMAIN}/`,
     algorithms: ['RS256']
 })
+
+export default [checkJwt]

@@ -43,18 +43,18 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
         method, handler, before, after, cache
     } = action
 
-    // cache checking
-    const cacheKey = `${method}-${version}-${moduleId}-${endpointId}`
-    const cacheEnabled = cache === true || (cache && cache.enabled)
-    const cacheData = cacheEnabled ? await ctx.utils.cacher.get(cacheKey) : null
-
     // prep handler function
     const handlerBounded = handler.bind(null, ctx)
     try {
         // run before middleware
         await runMiddlewares(before || [], ctx)
 
-        // run endpoint handler
+        // cache checking
+        const cacheKey = `${method}-${version}-${moduleId}-${endpointId}`
+        const cacheEnabled = cache === true || (cache && cache.enabled)
+        const cacheData = cacheEnabled ? await ctx.utils.cacher.get(cacheKey) : null
+
+        // run endpoint handler and get response
         const { data, meta } = (
             cacheEnabled && cacheData
                 ? cacheData

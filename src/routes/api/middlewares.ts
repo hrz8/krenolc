@@ -69,6 +69,8 @@ export default [
         const { endpoint } = bot
 
         const action: EndpointAction | undefined = endpoint.get(`${version}-${moduleId}-${endpointId}`)
+
+        // endpoint not found
         if (!action) {
             log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
             const err = ApiError.endpointNotFound({
@@ -85,6 +87,13 @@ export default [
                 .send(err)
             return
         }
+
+        // endpoint found
+
+        // checking authentication
+        const { authentication } = action
+        const isNeedAuthentication = !!authentication
+
         res.locals.bot = bot
         res.locals.action = action
         res.locals.version = version
