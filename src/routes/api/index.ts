@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 import { getManager } from 'typeorm'
 
-import middlewareHandlers from './middlewares'
+import defautlMiddlewares from './middlewares/default'
 import defaultHandler from './handler'
 
 export default (path = '/api'): express.Router => {
@@ -15,7 +15,7 @@ export default (path = '/api'): express.Router => {
                 data: 'ok'
             })
     })
-    apiRouter.use(`${path}/:version/:moduleId/:endpointId`, ...middlewareHandlers, defaultHandler)
-    apiRouter.use(`${path}/:moduleId/:endpointId`, ...middlewareHandlers, defaultHandler)
+    apiRouter.use(`${path}/:version/:moduleId/:endpointId`, ...defautlMiddlewares, defaultHandler)
+    apiRouter.use(`${path}/:moduleId/:endpointId`, ...defautlMiddlewares, defaultHandler)
     return apiRouter
 }

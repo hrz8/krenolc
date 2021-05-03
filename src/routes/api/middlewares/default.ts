@@ -8,11 +8,9 @@ import _keys from 'lodash/keys'
 import BotFactory from '@/utils/bot/factory'
 import log from '@/utils/logger'
 
-import { IContext } from '@/types/action'
 import { EndpointAction } from '@/types/endpoint'
 
-import { ApiError } from './error'
-import Context from '~/src/utils/context'
+import { ApiError } from '../error'
 
 const versionRegex = new RegExp('^v\\d+(\\.*\\d+)*$')
 
@@ -88,12 +86,6 @@ export default [
             return
         }
 
-        // endpoint found
-
-        // checking authentication
-        const { authentication } = action
-        const isNeedAuthentication = !!authentication
-
         res.locals.bot = bot
         res.locals.action = action
         res.locals.version = version
@@ -108,8 +100,13 @@ export default [
     ): void | undefined => {
         const {
             action, version, moduleId, endpointId
-        } = res.locals
-        const { method } = action as EndpointAction
+        } = res.locals as {
+            action: EndpointAction,
+            version: string,
+            moduleId: string,
+            endpointId: string,
+        }
+        const { method } = action
 
         // validate HTTP method
         if (method && req.method !== method) {
@@ -123,60 +120,8 @@ export default [
                 moduleId,
                 endpointId
             }, `${req.method} ${req.baseUrl} not found`)
-            res
-                .status(_toNumber(err.status || '500'))
-                .send(err)
-            return
+            throw err
         }
-        next()
-    },
-    (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): void | undefined => {
-        const {
-            bot, action, version, moduleId, endpointId
-        } = res.locals
-        const { validator } = action as EndpointAction
-
-        const {
-            params, query, body, headers
-        } = req
-        const actionParams = {
-            params,
-            query,
-            body,
-            headers
-        }
-
-        // validate ctx params
-        if (validator) {
-            const validateCtxParams = validator()
-                .validate(actionParams)
-            if (validateCtxParams?.error) {
-                const errorMessage = validateCtxParams.error.message || 'request parameter not valid'
-                const err = ApiError.parameterNotValid({
-                    params: actionParams,
-                    version,
-                    moduleId,
-                    endpointId
-                }, errorMessage)
-                res
-                    .status(_toNumber(err.status || '500'))
-                    .send(err)
-                return
-            }
-        }
-
-        // build ctx
-        const ctx: IContext = new Context({
-            req,
-            bot,
-            action
-        })
-
-        res.locals.ctx = ctx
         next()
     }
 ]

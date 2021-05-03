@@ -6,6 +6,9 @@ import EnvFactory from '@/utils/env'
 import { ErrorCode, ErrorResponse } from '@/utils/responses/error'
 import { BRAIN_DEFAULT } from '@/libs/constant'
 
+type DataPayload = {
+    version: string, moduleId: string, endpointId: string
+}
 export class ApiError extends ErrorCode {
     static versionNotValid(data: any, message: string): ErrorResponse {
         const { version } = data
@@ -37,7 +40,26 @@ export class ApiError extends ErrorCode {
         )
     }
 
-    static parameterNotValid(data: any, message: string): ErrorResponse {
+    static tokenNotValid(data: DataPayload & { token: string }, message: string): ErrorResponse {
+        const {
+            token, version, moduleId: module, endpointId: endpoint
+        } = data
+        return new ErrorResponse(
+            {
+                token
+            },
+            401,
+            message,
+            `${this.namespace}-KRENOLC_${this.codedName}-003`,
+            {
+                apiVersion: version,
+                module,
+                endpoint
+            }
+        )
+    }
+
+    static parameterNotValid(data: DataPayload & { params: any }, message: string): ErrorResponse {
         const {
             version, params, moduleId: module, endpointId: endpoint
         } = data
@@ -45,7 +67,7 @@ export class ApiError extends ErrorCode {
             params,
             400,
             message,
-            `${this.namespace}-KRENOLC_${this.codedName}-003`,
+            `${this.namespace}-KRENOLC_${this.codedName}-004`,
             {
                 apiVersion: version,
                 module,

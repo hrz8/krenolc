@@ -3,8 +3,9 @@ import {
 } from 'express'
 import _noop from 'lodash/noop'
 import _get from 'lodash/get'
-import jwt from 'jsonwebtoken'
 
+import BotTemplate from '@/utils/bot/template'
+import Context from '@/utils/context'
 import { SuccessResponse, Response as UtilsResponse } from '@/utils/responses/success'
 import log from '@/utils/logger'
 import { ONE_DAY_SEC } from '@/libs/constant'
@@ -13,6 +14,8 @@ import { IContext } from '@/types/action'
 import { EndpointAction, MiddlewareHandler } from '@/types/endpoint'
 
 import { apiErrorDefault } from './error'
+import jwt from './middlewares/jwt'
+import params from './middlewares/params'
 
 const runMiddlewares = async (
     middlewares: MiddlewareHandler[],
@@ -32,27 +35,31 @@ const runMiddlewares = async (
 
 export default async (req: Request, res: Response): Promise<void | undefined> => {
     const {
-        action, version, moduleId, endpointId, ctx
+        bot, action, version, moduleId, endpointId
     } = res.locals as {
+        bot: BotTemplate,
         action: EndpointAction,
         version: string,
         moduleId: string,
         endpointId: string,
-        ctx: IContext
     }
     const {
-        authentication, method, handler, before, after, cache
+        method, handler, before, after, cache
     } = action
 
-    if (authentication) {
-        const { authorization } = req.headers
-        const token = authorization?.slice(7)
-        const decoded = token && jwt.decode(token)
-    }
-
-    // prep handler function
-    const handlerBounded = handler.bind(null, ctx)
     try {
+        await jwt(req, res, params.bind(null, req, res, _noop))
+
+        // build ctx
+        const ctx: IContext = new Context({
+            req,
+            bot,
+            action
+        })
+
+        // prep handler function
+        const handlerBounded = handler.bind(null, ctx)
+
         // run before middleware
         await runMiddlewares(before || [], ctx)
 
