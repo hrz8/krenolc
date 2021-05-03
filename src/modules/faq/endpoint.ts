@@ -13,9 +13,10 @@ import FaqModuleError from './error'
 const endpoints: Endpoint = {
     actions: {
         getAll: {
-            method   : HTTPMethod.GET,
-            validator: validators.getAll,
-            cache    : {
+            authentication: true,
+            method        : HTTPMethod.GET,
+            validator     : validators.getAll,
+            cache         : {
                 enabled: true,
                 ttl    : ONE_DAY_SEC
             },

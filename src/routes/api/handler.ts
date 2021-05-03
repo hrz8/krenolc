@@ -3,6 +3,7 @@ import {
 } from 'express'
 import _noop from 'lodash/noop'
 import _get from 'lodash/get'
+import jwt from 'jsonwebtoken'
 
 import { SuccessResponse, Response as UtilsResponse } from '@/utils/responses/success'
 import log from '@/utils/logger'
@@ -40,8 +41,14 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
         ctx: IContext
     }
     const {
-        method, handler, before, after, cache
+        authentication, method, handler, before, after, cache
     } = action
+
+    if (authentication) {
+        const { authorization } = req.headers
+        const token = authorization?.slice(7)
+        const decoded = token && jwt.decode(token)
+    }
 
     // prep handler function
     const handlerBounded = handler.bind(null, ctx)
