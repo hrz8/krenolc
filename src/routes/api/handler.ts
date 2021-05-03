@@ -48,7 +48,8 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
     } = action
 
     try {
-        await jwt(req, res, params.bind(null, req, res, _noop))
+        await jwt(req, res, _noop)
+        await params(req, res, _noop)
 
         // build ctx
         const ctx: IContext = new Context({
