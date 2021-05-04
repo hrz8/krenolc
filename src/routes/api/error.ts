@@ -10,7 +10,7 @@ type DataPayload = {
     version: string, moduleId: string, endpointId: string
 }
 export class ApiError extends ErrorCode {
-    static versionNotValid(data: any, message: string): ErrorResponse {
+    static VersionNotValid(data: any, message: string): ErrorResponse {
         const { version } = data
         return new ErrorResponse(
             data,
@@ -23,7 +23,7 @@ export class ApiError extends ErrorCode {
         )
     }
 
-    static endpointNotFound(_data: any, message: string): ErrorResponse {
+    static EndpointNotFound(_data: any, message: string): ErrorResponse {
         const {
             data, version, moduleId: module, endpointId: endpoint
         } = _data
@@ -40,13 +40,13 @@ export class ApiError extends ErrorCode {
         )
     }
 
-    static tokenNotValid(data: DataPayload & { token: string }, message: string): ErrorResponse {
+    static TokenRequired(data: DataPayload, message: string): ErrorResponse {
         const {
-            token, version, moduleId: module, endpointId: endpoint
+            version, moduleId: module, endpointId: endpoint
         } = data
         return new ErrorResponse(
             {
-                token
+                name: `${this.name}_${ApiError.TokenRequired.name}`
             },
             401,
             message,
@@ -59,15 +59,38 @@ export class ApiError extends ErrorCode {
         )
     }
 
-    static parameterNotValid(data: DataPayload & { params: any }, message: string): ErrorResponse {
+    static TokenNotValid(data: DataPayload & { token: string }, message: string): ErrorResponse {
+        const {
+            token, version, moduleId: module, endpointId: endpoint
+        } = data
+        return new ErrorResponse(
+            {
+                name: `${this.name}_${ApiError.TokenNotValid.name}`,
+                token
+            },
+            401,
+            message,
+            `${this.namespace}-KRENOLC_${this.codedName}-004`,
+            {
+                apiVersion: version,
+                module,
+                endpoint
+            }
+        )
+    }
+
+    static ParameterNotValid(data: DataPayload & { params: any }, message: string): ErrorResponse {
         const {
             version, params, moduleId: module, endpointId: endpoint
         } = data
         return new ErrorResponse(
-            params,
+            {
+                name: `${this.name}_${ApiError.ParameterNotValid.name}`,
+                ...params
+            },
             400,
             message,
-            `${this.namespace}-KRENOLC_${this.codedName}-004`,
+            `${this.namespace}-KRENOLC_${this.codedName}-005`,
             {
                 apiVersion: version,
                 module,

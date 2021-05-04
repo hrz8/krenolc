@@ -48,7 +48,7 @@ export default [
                 version: value.version
             }
             log.error(errorMessage)
-            const err = ApiError.versionNotValid(errorData, errorMessage)
+            const err = ApiError.VersionNotValid(errorData, errorMessage)
             res
                 .status(_toNumber(err.status || '500'))
                 .send(err)
@@ -71,7 +71,7 @@ export default [
         // endpoint not found
         if (!action) {
             log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
-            const err = ApiError.endpointNotFound({
+            const err = ApiError.EndpointNotFound({
                 data: {
                     method  : req.method,
                     endpoint: req.baseUrl
@@ -111,7 +111,7 @@ export default [
         // validate HTTP method
         if (method && req.method !== method) {
             log.error(`endpointId not found: ${version}-${moduleId}-${endpointId}`)
-            const err = ApiError.endpointNotFound({
+            const err = ApiError.EndpointNotFound({
                 data: {
                     method  : req.method,
                     endpoint: req.baseUrl

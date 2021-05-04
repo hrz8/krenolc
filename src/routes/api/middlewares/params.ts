@@ -33,7 +33,7 @@ export default (
             .validate(actionParams)
         if (validateCtxParams?.error) {
             const errorMessage = validateCtxParams.error.message || 'request parameter not valid'
-            const err = ApiError.parameterNotValid({
+            const err = ApiError.ParameterNotValid({
                 params: actionParams,
                 version,
                 moduleId,

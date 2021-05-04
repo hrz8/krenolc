@@ -66,7 +66,7 @@ const endpoints: Endpoint = {
         tryError: {
             method: HTTPMethod.GET,
             async handler(ctx: IContext): Promise<any> {
-                throw FaqModuleError.tryError({
+                throw FaqModuleError.TryError({
                     data: 'foobar'
                 }, 'error message')
             }
