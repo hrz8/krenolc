@@ -1,0 +1,12 @@
+{
+    "folders": [
+      {
+        "name": "pizza",
+        "path": "pizza"
+      },
+      {
+        "name": "dessert",
+        "path": "dessert"
+      },
+    ],
+}

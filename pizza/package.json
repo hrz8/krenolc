@@ -1,7 +1,7 @@
 {
-    "name": "krenolc",
+    "name": "krenolc-pizza",
     "version": "1.0.0",
-    "description": "just for learning keyreply",
+    "description": "just for learning",
     "main": "server.js",
     "bin": "server.js",
     "repository": "github.com/hrz8/krenolc",
