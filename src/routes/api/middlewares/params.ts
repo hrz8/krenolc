@@ -1,7 +1,7 @@
 import {
     NextFunction, Request, Response
 } from 'express'
-import _toNumber from 'lodash/toNumber'
+import _omit from 'lodash/omit'
 
 import { EndpointAction } from '@/types/endpoint'
 
@@ -18,8 +18,10 @@ export default (
     const { validator } = action as EndpointAction
 
     const {
-        params, query, body, headers
+        params, query, body, headers: fullHeaders
     } = req
+
+    const headers = _omit(fullHeaders, 'authorization')
     const actionParams = {
         params,
         query,
@@ -39,10 +41,7 @@ export default (
                 moduleId,
                 endpointId
             }, errorMessage)
-            res
-                .status(_toNumber(err.status || '500'))
-                .send(err)
-            return
+            throw err
         }
     }
     next()

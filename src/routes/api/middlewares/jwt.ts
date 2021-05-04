@@ -9,6 +9,17 @@ import { EndpointAction } from '@/types/endpoint'
 import jwksRsa from 'jwks-rsa'
 import { ApiError } from '../error'
 
+const verify = (token: string, secret: string): Promise<any> => new Promise((resolve, reject) => {
+    jwt.verify(token, secret, {
+        algorithms: ['RS256']
+    }, (err, decoded) => {
+        if (err) {
+            reject(err)
+        }
+        resolve(decoded)
+    })
+})
+
 export default async function (
     req: Request,
     res: Response,
@@ -53,9 +64,7 @@ export default async function (
         })
         const key = await client.getSigningKey(header?.kid)
         const secret = key.getPublicKey()
-        jwt.verify(token, secret, {
-            algorithms: ['RS256']
-        })
+        await verify(token, secret)
     } catch (error) {
         const tokenErr = ApiError.TokenNotValid({
             token,
