@@ -4,6 +4,7 @@ import {
 import jwt from 'jsonwebtoken'
 
 import EnvFactory from '@/utils/env'
+import log from '@/utils/logger'
 import { EndpointAction } from '@/types/endpoint'
 
 import jwksRsa from 'jwks-rsa'
@@ -65,7 +66,9 @@ export default async function (
         const key = await client.getSigningKey(header?.kid)
         const secret = key.getPublicKey()
         await verify(token, secret)
-    } catch (error) {
+    } catch (err) {
+        log.error('access token not valid')
+        log.error(err.message)
         const tokenErr = ApiError.TokenNotValid({
             token,
             version,

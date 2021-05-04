@@ -38,7 +38,7 @@ export default class BotTemplate {
                                     moduleId
                                 })
                                 .catch((err) => {
-                                    log.error('Failed to load modules')
+                                    log.error('failed to load modules')
                                     log.error(err.message)
                                 })
                         })
@@ -46,7 +46,7 @@ export default class BotTemplate {
                 log.info('Bot load process completed')
             })
             .catch((err) => {
-                log.error('Failed to fetch content of bot from repository')
+                log.error('failed to fetch content of bot from repository')
                 log.error(err.message)
             })
     }
