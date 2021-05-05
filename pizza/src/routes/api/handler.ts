@@ -14,8 +14,6 @@ import { IContext } from '@/types/action'
 import { EndpointAction, MiddlewareHandler } from '@/types/endpoint'
 
 import { apiErrorDefault } from './error'
-import jwt from './middlewares/jwt'
-import params from './middlewares/params'
 
 const runMiddlewares = async (
     middlewares: MiddlewareHandler[],
@@ -48,9 +46,6 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
     } = action
 
     try {
-        await jwt(req, res, _noop)
-        await params(req, res, _noop)
-
         // build ctx
         const ctx: IContext = new Context({
             req,

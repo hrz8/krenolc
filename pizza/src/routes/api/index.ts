@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 import { getManager } from 'typeorm'
 
-import defautlMiddlewares from './middlewares/default'
+import defautlMiddlewares from './middlewares'
 import defaultHandler from './handler'
 
 export default (path = '/api'): express.Router => {
