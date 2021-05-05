@@ -30,7 +30,7 @@ module.exports = {
       processor: 'svelte3/svelte3'
     }
   ],
-  ignorePatterns: ['node_modules', '.eslintrc.js'],
+  ignorePatterns: ['node_modules', '.eslintrc.js', 'rollup.config.ts'],
   rules: {
     'no-console': 'error',
     'no-unused-vars': 'warn',
