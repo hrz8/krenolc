@@ -1,6 +1,10 @@
 {
-  "name": "dessert",
-  "version": "0.0.0",
+  "name": "krenolc-dessert",
+  "version": "1.0.0",
+  "description": "just for learning",
+  "repository": "github.com/hrz8/krenolc",
+  "author": "hirzi",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
