@@ -1,10 +1,8 @@
 import App from './App.svelte'
 
+const el = document.getElementById('app')
 const app = new App({
-  target: document.body,
-  props: {
-    name: 'Krenolc dessert'
-  }
+  target: el || document.body
 })
 
 export default app
