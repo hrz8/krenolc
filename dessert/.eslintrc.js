@@ -32,8 +32,8 @@ module.exports = {
   ],
   ignorePatterns: ['node_modules', '.eslintrc.js', 'rollup.config.ts'],
   rules: {
-    'no-console': 'error',
-    'no-unused-vars': 'warn',
+    'no-console': 1,
+    'no-unused-vars': 1,
     'eqeqeq': 2,
     'semi': [2, 'never'],
     'no-useless-catch': 1
