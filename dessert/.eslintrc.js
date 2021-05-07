@@ -33,7 +33,7 @@ module.exports = {
   ignorePatterns: [
     'node_modules',
     '.eslintrc.js',
-    'vite.config.js',
+    '*.config.js',
     'svelte.config.cjs'
   ],
   rules: {

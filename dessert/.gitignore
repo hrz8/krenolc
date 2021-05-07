@@ -4,5 +4,5 @@
 *.js
 *.js.map
 !*.eslintrc.js
-!*vite.config.js
+!*.config.js
 !*svelte.config.cjs
