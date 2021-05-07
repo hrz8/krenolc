@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
   "compilerOptions": {
+    "types": ["svelte", "node"],
     "moduleResolution": "node",
     "target": "esnext",
     "module": "esnext",

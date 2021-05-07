@@ -34,13 +34,16 @@ module.exports = {
     'node_modules',
     '.eslintrc.js',
     '*.config.js',
-    'svelte.config.cjs'
+    'svelte.config.cjs',
+    '*.d.ts'
   ],
   rules: {
     'no-console': 1,
     'no-unused-vars': 1,
     'eqeqeq': 2,
     'semi': [2, 'never'],
-    'no-useless-catch': 1
+    'no-useless-catch': 1,
+    'camelcase': 1,
+    'quotes': [2, "single"]
   }
 }
