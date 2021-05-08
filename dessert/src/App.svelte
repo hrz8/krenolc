@@ -22,9 +22,9 @@ import AuthFactory from './services/auth'
 </script>
 
 <Tailwind />
-<button on:click="{token}">
+<button class="px-4 py-1 text-white bg-yellow-500 rounded-full font-semibold hover:bg-yellow-700" on:click="{token}">
   token
 </button>
-<button on:click="{logout}">
+<button class="px-4 py-1 text-white bg-yellow-500 rounded-full font-semibold hover:bg-yellow-700" on:click="{logout}">
   logout
 </button>
