@@ -2,6 +2,8 @@
   import { onMount } from 'svelte'
   import Router from 'svelte-spa-router'
 
+  import { darkMode as darkModeStore } from './stores/util'
+
   import Tailwind from './lib/Tailwind.svelte'
   import routes from './routes'
 
@@ -23,7 +25,7 @@
 
 <Tailwind />
 
-<div class="dark md:flex flex-col md:flex-row md:min-h-screen w-full">
+<div class="{$darkModeStore ? 'dark' : '' } md:flex flex-col md:flex-row md:min-h-screen w-full">
   <Sidebar />
 
   <div class="flex-auto">
