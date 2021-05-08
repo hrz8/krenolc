@@ -23,7 +23,11 @@
 
 <Tailwind />
 
-<Navbar />
-<Sidebar />
+<div class="dark md:flex flex-col md:flex-row md:min-h-screen w-full">
+  <Sidebar />
 
-<Router {routes} />
+  <div class="flex-auto">
+    <Navbar />
+    <Router {routes} />
+  </div>
+</div>
