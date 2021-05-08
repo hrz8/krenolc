@@ -2,7 +2,9 @@ import createAuth0Client, {
   Auth0Client,
   Auth0ClientOptions
 } from '@auth0/auth0-spa-js'
-import { userStore } from '../stores/auth'
+import {
+  user as userStore, accessToken as tokenStore
+} from '../stores/auth'
 
 export type AuthUserStore = {
   email: string;
@@ -29,13 +31,13 @@ export default class AuthFactory {
     if (hasBeenRedirected) {
       await this.client.handleRedirectCallback()
       window.history.replaceState({}, document.title, window.location.pathname)
-      this.token = await this.client.getTokenSilently(options)
     }
 
     // user already authiticated, store user data into store
     const isAuthenticated = await this.client.isAuthenticated()
     if (isAuthenticated) {
       await this.setUser()
+      await this.setToken()
       return
     }
 
@@ -44,15 +46,18 @@ export default class AuthFactory {
   }
 
   private static async setUser(): Promise<void> {
-    this.user = (await this.client.getUser() as AuthUserStore) || null
+    const user = await this.client.getUser() as AuthUserStore
+    this.user = user || null
     userStore.set(this.user as AuthUserStore)
   }
 
+  private static async setToken(): Promise<void> {
+    const token = await this.client.getTokenSilently()
+    this.token = token
+    tokenStore.set(this.token)
+  }
+
   private static async login(): Promise<void> {
-    if (!(Object.keys(this.client).length)) {
-      userStore.set({} as AuthUserStore)
-      return
-    }
     await this.client.loginWithRedirect()
   }
 
