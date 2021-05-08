@@ -7,5 +7,9 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [({ addBase, theme }) => {
+    addBase({
+      'button:focus': { outline: 0 },
+    })
+  }],
 }
