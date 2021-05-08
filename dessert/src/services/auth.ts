@@ -3,7 +3,9 @@ import createAuth0Client, {
   Auth0ClientOptions
 } from '@auth0/auth0-spa-js'
 import {
-  user as userStore, accessToken as tokenStore
+  user as userStore,
+  accessToken as tokenStore,
+  isAuthenticated as isAuthenticatedStore
 } from '../stores/auth'
 
 export type AuthUserStore = {
@@ -35,6 +37,8 @@ export default class AuthFactory {
 
     // user already authiticated, store user data into store
     const isAuthenticated = await this.client.isAuthenticated()
+    isAuthenticatedStore.set(isAuthenticated)
+    isAuthenticated
     if (isAuthenticated) {
       await this.setUser()
       await this.setToken()

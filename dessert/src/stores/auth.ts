@@ -3,3 +3,4 @@ import { writable } from 'svelte/store'
 
 export const user = writable({} as AuthUserStore)
 export const accessToken = writable('')
+export const isAuthenticated = writable(false)

@@ -3,6 +3,7 @@
   import Router from 'svelte-spa-router'
 
   import { darkMode as darkModeStore } from './stores/util'
+  import { isAuthenticated as isAuthenticatedStore } from './stores/auth'
 
   import Tailwind from './lib/Tailwind.svelte'
   import routes from './routes'
@@ -25,11 +26,17 @@
 
 <Tailwind />
 
-<div class="{$darkModeStore ? 'dark' : '' } md:flex flex-col md:flex-row md:min-h-screen w-full">
-  <Sidebar />
-
-  <div class="flex-auto">
-    <Navbar />
-    <Router {routes} />
+{#if !$isAuthenticatedStore}
+  <div>
+    Loading...
   </div>
-</div>
+{:else}
+  <div class="{$darkModeStore ? 'dark' : '' } md:flex flex-col md:flex-row md:min-h-screen w-full">
+    <Sidebar />
+
+    <div class="flex-auto">
+      <Navbar />
+      <Router {routes} />
+    </div>
+  </div>
+{/if}
