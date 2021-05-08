@@ -3,7 +3,7 @@
 </script>
 
 <div>
-  sidebar
+  NOT FOUND
 </div>
 
 <style>

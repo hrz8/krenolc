@@ -3,7 +3,7 @@
 </script>
 
 <div>
-  sidebar
+  ACCESS MANAGEMENT
 </div>
 
 <style>
