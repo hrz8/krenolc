@@ -1,18 +1,30 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import Tailwind from './lib/Tailwind.svelte'
-  import Auth from './services/auth'
+import AuthFactory from './services/auth'
+  
   import { userStore } from './stores/auth'
 
   onMount(async() => {
-
-    const auth = new Auth
-    await auth.init()
-    await auth.login()
-
-    console.log(userStore)
+    userStore.subscribe((userData) => {
+      console.log(userData)
+    })
   })
+
+  function logout() {
+    AuthFactory.logout()
+  }
+
+  function token() {
+    const token = AuthFactory.token
+    console.log(token)
+  }
 </script>
 
 <Tailwind />
-
+<button on:click="{token}">
+  token
+</button>
+<button on:click="{logout}">
+  logout
+</button>
