@@ -2,7 +2,10 @@
   import { darkMode as darkModeStore } from '../stores/util'
 
   function toggleDarkMode() {
-    darkModeStore.update(v => !v)
+    darkModeStore.update(v => {
+      localStorage.setItem('darkMode', Number(!v))
+      return Number(!v)
+    })
   }
 </script>
 
