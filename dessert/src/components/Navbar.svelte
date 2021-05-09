@@ -10,7 +10,7 @@
 <header class="text-gray-600 body-font">
   <div class="container mx-auto flex flex-row p-5 justify-end">
   
-    <button on:click={toggleDarkMode}>
+    <button class="focus:outline-none" on:click={toggleDarkMode}>
       {#if $darkModeStore}
         <svg class="w-8 h-8 md:w-10 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path

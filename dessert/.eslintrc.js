@@ -33,9 +33,7 @@ module.exports = {
   ignorePatterns: [
     'node_modules',
     '.eslintrc.js',
-    '*.config.js',
-    'svelte.config.cjs',
-    '*.d.ts'
+    '*.config.js'
   ],
   rules: {
     'no-console': 1,

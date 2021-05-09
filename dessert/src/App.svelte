@@ -5,7 +5,6 @@
   import { darkMode as darkModeStore } from './stores/util'
   import { isAuthenticated as isAuthenticatedStore } from './stores/auth'
 
-  import Tailwind from './lib/Tailwind.svelte'
   import routes from './routes'
 
   import Navbar from './components/Navbar.svelte'
@@ -23,8 +22,6 @@
     await AuthFactory.init(authOptions)
   })
 </script>
-
-<Tailwind />
 
 {#if !$isAuthenticatedStore}
   <div>

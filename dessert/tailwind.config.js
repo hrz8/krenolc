@@ -1,15 +1,9 @@
+const plugin = require('windicss/plugin')
+
 module.exports = {
-  purge: ['./index.html', './src/**/*.{svelte,js,ts}'],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {}
   },
-  variants: {
-    extend: {},
-  },
-  plugins: [({ addBase, theme }) => {
-    addBase({
-      'button:focus': { outline: 0 },
-    })
-  }],
+  plugins: [],
 }
