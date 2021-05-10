@@ -1,5 +1,5 @@
 <script lang="ts">
-  import AuthFactory from '../../services/auth'
+  import AuthFactory from '@services/auth'
 
   function logout() {
     AuthFactory.logout()

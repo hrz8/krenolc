@@ -1,5 +1,5 @@
 <script>
-  import { darkMode as darkModeStore } from '../stores/util'
+  import { darkMode as darkModeStore } from '@stores/util'
 
   function toggleDarkMode() {
     darkModeStore.update(v => {

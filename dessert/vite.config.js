@@ -1,3 +1,4 @@
+import path from 'path'
 import { defineConfig } from 'vite'
 import svelte from '@sveltejs/vite-plugin-svelte'
 import { sveltePreprocess } from 'svelte-preprocess/dist/autoProcess';
@@ -10,4 +11,12 @@ export default defineConfig({
       preprocess: sveltePreprocess()
     }),
   ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, '/src'),
+      '@stores': path.resolve(__dirname, '/src/stores'),
+      '@services': path.resolve(__dirname, '/src/services'),
+      '@components': path.resolve(__dirname, '/src/components')
+    }
+  }
 });
