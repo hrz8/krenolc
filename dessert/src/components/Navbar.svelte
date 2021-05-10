@@ -12,12 +12,11 @@
 </script>
 
 
-<header class="text-gray-600 body-font">
+<header class="text-gray-600 body-font dark:bg-gray-800">
   <div class="container mx-auto flex flex-row p-5 justify-end">
-  
     <button class="focus:outline-none" on:click={toggleDarkMode}>
       {#if $darkModeStore}
-        <Moonicon className={'w-8 h-8 md:w-10 md:h-10'} />
+        <Moonicon className={'w-8 h-8 md:w-10 md:h-10 dark:text-white'} />
       {:else}
         <Sunicon className={'w-8 h-8 md:w-10 md:h-10'} />
       {/if}
