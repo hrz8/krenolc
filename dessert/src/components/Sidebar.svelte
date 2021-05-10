@@ -1,4 +1,6 @@
 <script>
+  import Homeicon from '@/icons/Homeicon.svelte'
+  import Usericon from '@/icons/Usericon.svelte'
   import { link } from 'svelte-spa-router'
   import active from 'svelte-spa-router/active'
 
@@ -11,7 +13,7 @@
 
 <div class="flex flex-col w-full md:w-64 text-gray-700 bg-white dark:text-gray-200 dark:bg-gray-800 flex-shrink-0">
   <div class="flex-shrink-0 px-8 py-4 flex flex-row items-center justify-between">
-    <a use:link href="/" class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark:text-white focus:outline-none focus:shadow-outline">
+    <a use:link href="/" class="text-lg font-semibold tracking-widest uppercase rounded-lg focus:outline-none dark:btn-sidebar-title">
       Krenolc
     </a>
     <button class="md:hidden rounded-lg focus:outline-none focus:shadow-outline" on:click="{toggleOpen}">
@@ -30,9 +32,7 @@
       className        : 'bg-gray-200 dark:bg-gray-700',
       inactiveClassName: 'bg-transparent dark:bg-transparent'
     }} class="flex items-center px-4 py-2 mt-2 text-sm font-semibold rounded-lg focus:outline-none dark:btn-sidebar">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-flex" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
+      <Homeicon className={'h-6 w-6 inline-flex'} />
       <span class="ml-2">Home</span>
     </a>
     <a use:link href="/access-management" use:active={{
@@ -40,15 +40,16 @@
       className        : 'bg-gray-200 dark:bg-gray-700',
       inactiveClassName: 'bg-transparent dark:bg-transparent'
     }} class="flex items-center px-4 py-2 mt-2 text-sm font-semibold rounded-lg focus:outline-none dark:btn-sidebar">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-      </svg>
+      <Usericon class={'h-6 w-6 inline-flex'} />
       <span class="ml-2">Access Management</span>
     </a>
   </nav>
 </div>
 
 <style>
+  .btn-sidebar-title {
+    @apply text-gray-900 dark:text-white;
+  }
   .btn-sidebar {
     @apply dark:text-gray-200 text-gray-700;
     @apply dark:hover:text-white hover:text-gray-900;
