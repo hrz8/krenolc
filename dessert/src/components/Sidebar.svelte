@@ -1,6 +1,6 @@
 <script>
   import Homeicon from '@/icons/Homeicon.svelte'
-  import Usericon from '@/icons/Usericon.svelte'
+  import Usersicon from '@/icons/Usersicon.svelte'
   import { link } from 'svelte-spa-router'
   import active from 'svelte-spa-router/active'
 
@@ -40,7 +40,7 @@
       className        : 'bg-gray-200 dark:bg-gray-700',
       inactiveClassName: 'bg-transparent dark:bg-transparent'
     }} class="flex items-center px-4 py-2 mt-2 text-sm font-semibold rounded-lg focus:outline-none dark:btn-sidebar">
-      <Usericon class={'h-6 w-6 inline-flex'} />
+      <Usersicon className={'h-6 w-6 inline-flex'} />
       <span class="ml-2">Access Management</span>
     </a>
   </nav>

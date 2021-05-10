@@ -11,7 +11,6 @@
   }
 </script>
 
-
 <header class="text-gray-600 body-font dark:bg-gray-800">
   <div class="container mx-auto flex flex-row p-5 justify-end">
     <button class="focus:outline-none" on:click={toggleDarkMode}>
