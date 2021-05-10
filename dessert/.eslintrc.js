@@ -114,6 +114,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 0,
     'quotes': [2, 'single'],
     'max-len': ['error', { 'code': 80 }],
-    'no-trailing-spaces': 2
+    'no-trailing-spaces': 2,
+    'curly': [2, 'multi']
   }
 }

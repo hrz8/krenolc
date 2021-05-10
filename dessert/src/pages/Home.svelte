@@ -13,9 +13,7 @@
   let token = ''
 
   onMount(async() => {
-    if (!window.location.href.endsWith('#/')) {
-      replace('#/')
-    }
+    if (!window.location.href.endsWith('#/')) replace('#/')
     userStore.subscribe((data) => {
       user = data
     })
