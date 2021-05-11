@@ -15,6 +15,13 @@ const data: BotInsertPayload[] = [
                         text: 'Welcome to preview bot!'
                     }
                 }
+            },
+            trigger: {
+                conversation_start: {
+                    pattern: '\u002F^hi$\u002Fi',
+                    event  : 'goto',
+                    data   : 'conversation_start'
+                }
             }
         }
     },
@@ -31,6 +38,13 @@ const data: BotInsertPayload[] = [
                     content: {
                         text: 'Welcome to your custom bot!'
                     }
+                }
+            },
+            trigger: {
+                conversation_start: {
+                    pattern: '\u002F^hi$\u002Fi',
+                    event  : 'goto',
+                    data   : 'conversation_start'
                 }
             }
         }

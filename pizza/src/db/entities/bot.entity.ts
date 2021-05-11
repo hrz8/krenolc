@@ -23,6 +23,15 @@ export interface Content {
                 quickReplies?: Array<any>
             }
         }
+    },
+    trigger: {
+        [contentId: string]: {
+            pattern: string,
+            event: string,
+            data?: Record<any, string> | string,
+            context?: string,
+            priority?: number
+        }
     }
 }
 
