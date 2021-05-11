@@ -1,5 +1,5 @@
 import { ConnectionOptions } from 'typeorm'
-import EnvFactory from '@/utils/env'
+import EnvFactory from './src/utils/env'
 
 const ormconfig = () => {
     // - get active environtment
@@ -8,11 +8,11 @@ const ormconfig = () => {
     // - set connection options
     const options: ConnectionOptions = {
         // - dbms
-        type       : 'mysql',
+        type       : 'postgres',
         // - connection
         host       : EnvFactory.get<string>('DB_HOST', 'localhost'),
-        port       : EnvFactory.get<number>('DB_PORT', 3006),
-        username   : EnvFactory.get<string>('DB_USER', 'root'),
+        port       : EnvFactory.get<number>('DB_PORT', 5432),
+        username   : EnvFactory.get<string>('DB_USER', 'postgres'),
         password   : EnvFactory.get<string>('DB_PASSWORD', ''),
         database   : EnvFactory.get<string>('DB_NAME', 'krenolc'),
         // - file-ing
