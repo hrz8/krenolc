@@ -45,7 +45,9 @@ export default class Bot extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string
 
-    @Column()
+    @Column({
+        unique: true
+    })
     brain!: string;
 
     @Column('simple-json')
