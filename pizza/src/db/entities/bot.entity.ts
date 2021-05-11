@@ -37,7 +37,7 @@ export interface BotMeta {
 
 export interface BotInsertPayload {
     brain: string;
-    content?: BotMeta,
+    meta?: BotMeta,
 }
 
 @Entity()

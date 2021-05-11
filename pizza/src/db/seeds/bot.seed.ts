@@ -2,8 +2,8 @@ import { BotInsertPayload } from '../entities/bot.entity'
 
 const data: BotInsertPayload[] = [
     {
-        brain  : 'preview',
-        content: {
+        brain: 'preview',
+        meta : {
             modules: {
                 faq: {
                     enabled: true
@@ -26,8 +26,8 @@ const data: BotInsertPayload[] = [
         }
     },
     {
-        brain  : 'krn',
-        content: {
+        brain: 'krn',
+        meta : {
             modules: {
                 faq: {
                     enabled: true
