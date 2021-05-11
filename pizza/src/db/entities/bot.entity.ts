@@ -8,7 +8,7 @@ import {
     UpdateDateColumn
 } from 'typeorm'
 
-export interface Content {
+export interface BotMeta {
     modules: {
         [moduleId: string]: {
             enabled: boolean,
@@ -37,7 +37,7 @@ export interface Content {
 
 export interface BotInsertPayload {
     brain: string;
-    content?: Content,
+    content?: BotMeta,
 }
 
 @Entity()
@@ -51,7 +51,7 @@ export default class Bot extends BaseEntity {
     brain!: string;
 
     @Column('simple-json')
-    content!: Content
+    meta!: BotMeta
 
     @CreateDateColumn()
     createdAt!: Date
