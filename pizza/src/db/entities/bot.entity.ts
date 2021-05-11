@@ -27,13 +27,17 @@ export interface Content {
 }
 
 export interface BotInsertPayload {
-    content: Content
+    brain: string;
+    content?: Content,
 }
 
 @Entity()
 export default class Bot extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string
+
+    @Column()
+    brain!: string;
 
     @Column('simple-json')
     content!: Content
