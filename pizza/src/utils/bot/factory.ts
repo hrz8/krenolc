@@ -1,15 +1,15 @@
 import BotTemplate from './template'
 
 export default class BotFactory {
-    private static bots: BotTemplate[] = [];
+    private static bots: Map<string, BotTemplate> = new Map<string, BotTemplate>();
 
     public static async init(): Promise<void> {
         // create system bot
         const botTemplate = new BotTemplate()
-        this.bots.push(botTemplate)
+        this.bots.set('system', botTemplate)
     }
 
-    public static getDefaultBot(): BotTemplate {
-        return this.bots[0]
+    public static getSystemBot(): BotTemplate {
+        return this.bots.get('system') || new BotTemplate()
     }
 }

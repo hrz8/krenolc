@@ -78,8 +78,9 @@ export default [
     ): void | undefined => {
         const { moduleId, endpointId } = req.params
         const version: string = req.params.version || 'v1'
-        const bot = BotFactory.getDefaultBot()
-        const { endpoint } = bot
+        const systemDefaultBot = BotFactory.getSystemBot()
+
+        const { endpoint } = systemDefaultBot
 
         const action: EndpointAction | undefined = endpoint.get(`${version}-${moduleId}-${endpointId}`)
 
@@ -101,7 +102,7 @@ export default [
             return
         }
 
-        res.locals.bot = bot
+        res.locals.bot = systemDefaultBot
         res.locals.action = action
         res.locals.version = version
         res.locals.moduleId = moduleId
