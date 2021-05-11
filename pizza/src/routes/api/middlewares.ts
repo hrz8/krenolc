@@ -156,11 +156,12 @@ export default [
             endpointId: string,
         }
 
-        if (!authentication) {
+        if (authentication === false) {
             next()
             return
         }
 
+        // default is checking authentication
         const { authorization } = req.headers
         const token = authorization?.slice(7)
 
