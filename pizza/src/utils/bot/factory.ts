@@ -12,4 +12,13 @@ export default class BotFactory {
     public static getSystemBot(): BotTemplate {
         return this.bots.get('system') || new BotTemplate()
     }
+
+    public static getByBrain(brain: string): BotTemplate {
+        let bot = this.bots.get(brain)
+        if (!bot) {
+            bot = new BotTemplate(brain)
+            this.bots.set(brain, bot)
+        }
+        return bot
+    }
 }
