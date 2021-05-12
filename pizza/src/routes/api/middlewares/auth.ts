@@ -14,7 +14,7 @@ import log from '@/utils/logger'
 
 import { EndpointAction } from '@/types/endpoint'
 
-import { ApiError } from './error'
+import { ApiError } from '../error'
 
 const verify = (token: string, secret: string): Promise<any> => new Promise((resolve, reject) => {
     jwt.verify(token, secret, {
