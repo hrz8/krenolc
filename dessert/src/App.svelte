@@ -14,10 +14,11 @@
 
   onMount(async () => {
     const authOptions: Auth0ClientOptions = {
-      domain      : 'dev-q3imkb6d.us.auth0.com',
-      client_id   : 'avCrjqvcJSwD4ydZlfyzz3vqA8qHMZRq',
-      audience    : 'https://dev-q3imkb6d.us.auth0.com/api/v2/',
-      redirect_uri: window.location.href
+      domain          : 'dev-q3imkb6d.us.auth0.com',
+      client_id       : 'avCrjqvcJSwD4ydZlfyzz3vqA8qHMZRq',
+      audience        : 'https://dev-q3imkb6d.us.auth0.com/api/v2/',
+      useRefreshTokens: true,
+      redirect_uri    : window.location.href
     }
     await AuthFactory.init(authOptions)
   })

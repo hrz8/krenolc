@@ -1,23 +1,23 @@
 import { EntityRepository, getCustomRepository } from 'typeorm'
 
-import Bot, { BotMeta } from '@db/entities/bot.entity'
+import Bot, { BotMetaData } from '@db/entities/bot.entity'
 import BaseRepository from './base'
 
 @EntityRepository(Bot)
 export class BotRepository extends BaseRepository<Bot> {
-    public async getLatestContent(): Promise<BotMeta> {
+    public async getLatestContent(): Promise<BotMetaData> {
         const bot = await this.findLatest()
-        return bot?.meta
+        return bot?.metadata
     }
 
-    public async getMetaByBrain(brain: string): Promise<BotMeta> {
+    public async getMetaByBrain(brain: string): Promise<BotMetaData> {
         const bot = await this.findOne({
             where: {
                 brain
             }
         })
-        const botMeta = bot?.meta
-        return botMeta || {} as BotMeta
+        const botMeta = bot?.metadata
+        return botMeta || {} as BotMetaData
     }
 }
 

@@ -8,6 +8,8 @@ import _toNumber from 'lodash/toNumber'
 import _keys from 'lodash/keys'
 import _omit from 'lodash/omit'
 
+import userRepository from '@db/repository/user.repository'
+
 import BotFactory from '@/utils/bot/factory'
 import EnvFactory from '@/utils/env'
 import log from '@/utils/logger'
@@ -180,9 +182,9 @@ export default [
 
         try {
             const AUTH0_DOMAIN = EnvFactory.get<string>('AUTH0_DOMAIN', 'domain.auth0.com')
-            const { header, payload: decoded } = jwt.decode(token, {
+            const { header } = jwt.decode(token, {
                 complete: true
-            }) as { header: { kid: string}, payload: any }
+            }) as { header: { kid: string, alg: string, typ: string } }
             const client = jwksRsa({
                 cache          : true,
                 cacheMaxEntries: 5,
@@ -191,7 +193,20 @@ export default [
             })
             const key = await client.getSigningKey(header?.kid)
             const secret = key.getPublicKey()
-            await verify(token, secret)
+            const decoded = await verify(token, secret)
+
+            // get user from db
+            const userMetaData = await userRepository()
+                .findOne({
+                    select: ['metadata'],
+                    where : {
+                        email: decoded['http://login.hirzi.site/email']
+                    }
+                })
+            const { bots } = userMetaData?.metadata || {
+                bots: []
+            }
+            console.log(bots)
         } catch (err) {
             log.error('access token not valid')
             log.error(err.message)

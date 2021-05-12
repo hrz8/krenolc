@@ -4,7 +4,7 @@ import _kebabCase from 'lodash/kebabCase'
 
 import Modules from '@/modules'
 import botRepository from '@db/repository/bot.repository'
-import { BotMeta } from '@db/entities/bot.entity'
+import { BotMetaData } from '@db/entities/bot.entity'
 import log from '@/utils/logger'
 
 import { EndpointAction } from '@/types/endpoint'
@@ -28,7 +28,7 @@ export default class BotTemplate {
             log.info(`Loading ${brain} bot`)
             return botRepository()
                 .getMetaByBrain(brain)
-                .then(({ modules }: BotMeta): void => {
+                .then(({ modules }: BotMetaData): void => {
                     if (modules) {
                         _keys(modules)
                             .filter((moduleId): boolean => modules[moduleId]?.enabled)

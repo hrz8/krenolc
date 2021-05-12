@@ -14,6 +14,12 @@ export interface UserMetaData {
     bots: string[]
 }
 
+export interface UserInsertPayload {
+    email: string;
+    name: string;
+    metadata?: UserMetaData,
+}
+
 @Entity()
 export default class User extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
@@ -27,7 +33,9 @@ export default class User extends BaseEntity {
     @Column()
     name!: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     lastLogin!: Date;
 
     @Column('simple-json')
