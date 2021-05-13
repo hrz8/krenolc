@@ -40,6 +40,23 @@ export class ApiError extends ErrorCode {
         )
     }
 
+    static EndpointNotInBot(_data: any, message: string): ErrorResponse {
+        const {
+            data, version, moduleId: module, endpointId: endpoint
+        } = _data
+        return new ErrorResponse(
+            data,
+            401,
+            message,
+            `${this.namespace}-KRENOLC_${this.codedName}-003`,
+            {
+                apiVersion: version,
+                module,
+                endpoint
+            }
+        )
+    }
+
     static TokenRequired(data: DataPayload, message: string): ErrorResponse {
         const {
             version, moduleId: module, endpointId: endpoint
@@ -50,7 +67,7 @@ export class ApiError extends ErrorCode {
             },
             401,
             message,
-            `${this.namespace}-KRENOLC_${this.codedName}-003`,
+            `${this.namespace}-KRENOLC_${this.codedName}-004`,
             {
                 apiVersion: version,
                 module,
@@ -70,7 +87,7 @@ export class ApiError extends ErrorCode {
             },
             401,
             message,
-            `${this.namespace}-KRENOLC_${this.codedName}-004`,
+            `${this.namespace}-KRENOLC_${this.codedName}-005`,
             {
                 apiVersion: version,
                 module,
@@ -90,7 +107,7 @@ export class ApiError extends ErrorCode {
             },
             400,
             message,
-            `${this.namespace}-KRENOLC_${this.codedName}-005`,
+            `${this.namespace}-KRENOLC_${this.codedName}-006`,
             {
                 apiVersion: version,
                 module,

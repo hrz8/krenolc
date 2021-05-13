@@ -68,7 +68,7 @@ export const checkEndpoint = (
 
     const { endpoint } = systemDefaultBot
 
-    const action: EndpointAction | undefined = endpoint.get(`${version}-${moduleId}-${endpointId}`)
+    const action = endpoint.get(`${version}-${moduleId}-${endpointId}`) as EndpointAction
 
     // endpoint not found
     if (!action) {

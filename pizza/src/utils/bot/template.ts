@@ -17,14 +17,16 @@ export default class BotTemplate {
 
     public endpoint = new Map<string, EndpointAction>();
 
-    public constructor(brain?: string) {
+    public constructor(brain = 'system', manualLoad = false) {
         this.brain = brain
-        this.load(brain)
-            .catch(() => log.error('Failed to load bot'))
+        if (!manualLoad) {
+            this.load(brain)
+                .catch(() => log.error('Failed to load bot'))
+        }
     }
 
-    public load(brain?: string): Promise<void> {
-        if (brain) {
+    public load(brain: string): Promise<void> {
+        if (brain !== 'system') {
             log.info(`Loading ${brain} bot`)
             return botRepository()
                 .getMetaByBrain(brain)

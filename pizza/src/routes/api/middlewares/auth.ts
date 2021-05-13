@@ -16,6 +16,7 @@ import log from '@/utils/logger'
 import { EndpointAction } from '@/types/endpoint'
 
 import { ApiError } from '../error'
+import BotFactory from '~/src/utils/bot/factory'
 
 const verify = (token: string, secret: string): Promise<any> => new Promise((resolve, reject) => {
     jwt.verify(token, secret, {
@@ -82,7 +83,7 @@ export const checkJwt = async (
         // get user from db
         const cacher = CacheFactory.getCache()
         const cacheKey = `user:email.${userEmail}`
-        const userCached = await cacher.get(`user:email.${userEmail}`)
+        const userCached = await cacher.get(cacheKey)
         const user = (userCached || await userRepository()
             .findOne({
                 where: {
@@ -107,6 +108,52 @@ export const checkJwt = async (
             .send(tokenErr)
         return
     }
+
+    next()
+}
+
+export const checkBotModule = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void | undefined> => {
+    const {
+        user, version, moduleId, endpointId
+    } = res.locals as {
+        user: User,
+        version: string,
+        moduleId: string,
+        endpointId: string
+    }
+    const { bots } = user.metadata
+
+    bots.forEach(async (brain) => {
+        const bot = BotFactory.getByBrain(brain)
+
+        if (!bot) {
+            await BotFactory.loadByBrain(brain)
+        }
+
+        const { endpoint } = bot
+        const action = endpoint.get(`${version}-${moduleId}-${endpointId}`) as EndpointAction
+
+        // endpoint not available in account's bot
+        if (!action) {
+            log.error(`endpointId not avaialble in account's bot: ${version}-${moduleId}-${endpointId}`)
+            const err = ApiError.EndpointNotInBot({
+                data: {
+                    method  : req.method,
+                    endpoint: req.baseUrl
+                },
+                version,
+                moduleId,
+                endpointId
+            }, `${req.method} ${req.baseUrl} not found`)
+            res
+                .status(_toNumber(err.status))
+                .send(err)
+        }
+    })
 
     next()
 }
