@@ -4,7 +4,7 @@ import {
 import jwt, { JsonWebTokenError } from 'jsonwebtoken'
 import jwksRsa from 'jwks-rsa'
 import _toNumber from 'lodash/toNumber'
-import _chain from 'lodash/chain'
+import _ from 'lodash'
 
 import User from '@db/entities/user.entity'
 import userRepository from '@db/repository/user.repository'
@@ -127,17 +127,13 @@ export const checkBotModule = async (
     }
     const { bots } = user.metadata
 
-    bots.forEach(async (brain) => {
+    bots.some((brain) => {
         const bot = BotFactory.getByBrain(brain)
-
-        if (!bot) {
-            await BotFactory.loadByBrain(brain)
-        }
 
         const { endpoint } = bot
         const action = endpoint.get(`${version}-${moduleId}-${endpointId}`) as EndpointAction
 
-        // endpoint not available in account's bot
+        // endpoint not available for account's bot
         if (!action) {
             log.error(`endpointId not avaialble in account's bot: ${version}-${moduleId}-${endpointId}`)
             const err = ApiError.EndpointNotInBot({
@@ -148,11 +144,12 @@ export const checkBotModule = async (
                 version,
                 moduleId,
                 endpointId
-            }, `${req.method} ${req.baseUrl} not found`)
+            }, `${req.method} ${req.baseUrl} not available in your bot`)
             res
                 .status(_toNumber(err.status))
                 .send(err)
         }
+        return action
     })
 
     next()
@@ -186,7 +183,7 @@ export const checkPermission = async (
             console.log(role)
             return []
         })
-        if (!_chain([...(userPermissions || []), ...permissionsFromRoles])
+        if (!_.chain([...(userPermissions || []), ...permissionsFromRoles])
             .intersection(neededPermissions)
             .isEmpty()
             .value()) {
@@ -194,5 +191,6 @@ export const checkPermission = async (
         }
     } catch (error) {
         log.error('error')
+        throw error
     }
 }

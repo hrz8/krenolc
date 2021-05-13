@@ -17,61 +17,62 @@ export default class BotTemplate {
 
     public endpoint = new Map<string, EndpointAction>();
 
-    public constructor(brain = 'system', manualLoad = false) {
+    public constructor(brain = 'system') {
         this.brain = brain
-        if (!manualLoad) {
-            this.load(brain)
-                .catch(() => log.error('Failed to load bot'))
-        }
+        this.load(brain)
+            .catch(() => log.error('Failed to load bot'))
     }
 
-    public load(brain: string): Promise<void> {
+    public load(brain: string): Promise<BotTemplate> {
         if (brain !== 'system') {
             log.info(`Loading ${brain} bot`)
-            return botRepository()
-                .getMetaByBrain(brain)
-                .then(({ modules }: BotMetaData): void => {
-                    if (modules) {
-                        _keys(modules)
-                            .filter((moduleId): boolean => modules[moduleId]?.enabled)
-                            .forEach((moduleId): void => {
-                                this.modules.set(moduleId, modules[moduleId])
-                                this
-                                    .loadModule({
-                                        moduleId
+            return new Promise((res, rej) => {
+                botRepository()
+                    .getMetaByBrain(brain)
+                    .then(({ modules }: BotMetaData): void => {
+                        if (modules) {
+                            try {
+                                _keys(modules)
+                                    .filter((moduleId): boolean => modules[moduleId]?.enabled)
+                                    .forEach((moduleId): void => {
+                                        this.modules.set(moduleId, modules[moduleId])
+                                        this.loadModule(moduleId)
                                     })
-                                    .catch((err) => {
-                                        log.error('failed to load modules')
-                                        log.error(err.message)
-                                    })
-                            })
-                    }
-                    log.info('Bot load process completed')
-                })
-                .catch((err) => {
-                    log.error('failed to fetch content of bot from repository')
-                    log.error(err.message)
-                })
+                            } catch (err) {
+                                log.error('failed when load bot modules')
+                                log.error(err.message)
+                                rej(err)
+                            }
+                        }
+                        log.info(`${brain} Bot load process completed`)
+                        res(this)
+                    })
+                    .catch((err) => {
+                        log.error('failed to fetch bot metadata from db')
+                        log.error(err.message)
+                        rej(err)
+                    })
+            })
         }
         log.info('Loading system bot')
-        return new Promise(() => {
-            _keys(Modules)
-                .forEach((moduleId): void => {
-                    this.modules.set(moduleId, Modules[moduleId])
-                    this
-                        .loadModule({
-                            moduleId
-                        })
-                        .catch((err) => {
-                            log.error('failed to load modules')
-                            log.error(err.message)
-                        })
-                })
-            log.info('System Bot load process completed')
+        return new Promise((res, rej) => {
+            try {
+                _keys(Modules)
+                    .forEach((moduleId): void => {
+                        this.modules.set(moduleId, Modules[moduleId])
+                        this.loadModule(moduleId)
+                    })
+                log.info('System Bot load process completed')
+                res(this)
+            } catch (err) {
+                log.error('failed when load bot modules')
+                log.error(err.message)
+                rej(err)
+            }
         })
     }
 
-    public async loadModule({ moduleId }: { moduleId: string }): Promise<void> {
+    public loadModule(moduleId: string): void {
         const module: Readonly<ModuleType> = Modules[moduleId]()
         const { endpoints } = module
         _forEach(endpoints, (endpoint) => {
