@@ -60,7 +60,7 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
         await runMiddlewares(before || [], ctx)
 
         // cache checking
-        const cacheKey = `${method}-${version}-${moduleId}-${endpointId}`
+        const cacheKey = `${version}:${moduleId}.${endpointId}`
         const cacheEnabled = cache === true || (cache && cache.enabled)
         const cacheData = cacheEnabled ? await ctx.utils.cacher.get(cacheKey) : null
 

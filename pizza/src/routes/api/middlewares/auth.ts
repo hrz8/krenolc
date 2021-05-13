@@ -10,6 +10,7 @@ import User from '@db/entities/user.entity'
 import userRepository from '@db/repository/user.repository'
 
 import EnvFactory from '@/utils/env'
+import CacheFactory from '@/utils/cache/factory'
 import log from '@/utils/logger'
 
 import { EndpointAction } from '@/types/endpoint'
@@ -76,14 +77,21 @@ export const checkJwt = async (
         const key = await client.getSigningKey(header?.kid)
         const secret = key.getPublicKey()
         const decoded = await verify(token, secret)
+        const userEmail = decoded['http://login.hirzi.site/email']
 
         // get user from db
-        const user = await userRepository()
+        const cacher = CacheFactory.getCache()
+        const cacheKey = `user:email.${userEmail}`
+        const userCached = await cacher.get(`user:email.${userEmail}`)
+        const user = (userCached || await userRepository()
             .findOne({
                 where: {
-                    email: decoded['http://login.hirzi.site/email']
+                    email: userEmail
                 }
-            })
+            })) as User
+        if (!userCached) {
+            await cacher.set(cacheKey, user)
+        }
         res.locals.user = (user || null) as User
     } catch (err) {
         log.error('access token not valid')
