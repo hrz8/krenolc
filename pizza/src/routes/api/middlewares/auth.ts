@@ -11,12 +11,12 @@ import userRepository from '@db/repository/user.repository'
 
 import EnvFactory from '@/utils/env'
 import CacheFactory from '@/utils/cache/factory'
+import BotFactory from '@/utils/bot/factory'
 import log from '@/utils/logger'
 
 import { EndpointAction } from '@/types/endpoint'
 
 import { ApiError } from '../error'
-import BotFactory from '~/src/utils/bot/factory'
 
 const verify = (token: string, secret: string): Promise<any> => new Promise((resolve, reject) => {
     jwt.verify(token, secret, {

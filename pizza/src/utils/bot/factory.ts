@@ -1,4 +1,5 @@
-import botRepository from '~/src/db/repository/bot.repository'
+import botRepository from '@/db/repository/bot.repository'
+
 import BotTemplate from './template'
 
 export default class BotFactory {
@@ -21,7 +22,7 @@ export default class BotFactory {
     }
 
     public static getSystemBot(): BotTemplate {
-        return this.bots.get('system') || new BotTemplate()
+        return this.bots.get('system') as BotTemplate
     }
 
     public static getByBrain(brain: string): BotTemplate {
