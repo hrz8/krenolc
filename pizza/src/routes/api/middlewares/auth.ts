@@ -125,9 +125,9 @@ export const checkBotModule = async (
         moduleId: string,
         endpointId: string
     }
-    const { bots } = user.metadata
+    const { bots: botBrains } = user.metadata
 
-    bots.some((brain) => {
+    for (const brain of botBrains) {
         const bot = BotFactory.getByBrain(brain)
 
         const { endpoint } = bot
@@ -148,9 +148,13 @@ export const checkBotModule = async (
             res
                 .status(_toNumber(err.status))
                 .send(err)
+            return
         }
-        return action
-    })
+
+        if (action) {
+            break
+        }
+    }
 
     next()
 }
