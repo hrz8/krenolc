@@ -31,6 +31,7 @@ export interface EndpointValidator {
 
 export interface EndpointAction {
     authentication?: boolean,
+    cors?: boolean,
     permissions?: string[],
     before?: MiddlewareHandler[],
     after?: MiddlewareHandler[]

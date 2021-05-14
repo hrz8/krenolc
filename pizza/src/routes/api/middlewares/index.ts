@@ -1,3 +1,5 @@
+import { checkCors } from '@/middlewares/cors'
+
 import {
     checkBotModule, checkJwt, checkPermission
 } from './auth'
@@ -9,6 +11,7 @@ export default [
     checkVersion,
     checkEndpoint,
     checkMethod,
+    checkCors,
     checkJwt,
     checkBotModule,
     checkPermission,

@@ -42,6 +42,7 @@ export default class AuthFactory {
     if (isAuthenticated) {
       await this.setUser()
       await this.setToken()
+      await this.postLogin()
       return
     }
 
@@ -67,5 +68,23 @@ export default class AuthFactory {
 
   public static logout(): void {
     return this.client.logout()
+  }
+
+  public static async postLogin(): Promise<void> {
+    try {
+      const response = await fetch('http://localhost:3009/api/login', {
+        method : 'POST',
+        headers: {
+          'Accept'      : 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          user: this.user
+        })
+      })
+    } catch (err) {
+      console.log(err)
+    }
+
   }
 }

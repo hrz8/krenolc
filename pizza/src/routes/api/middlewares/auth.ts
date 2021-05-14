@@ -132,28 +132,25 @@ export const checkBotModule = async (
 
         const { endpoint } = bot
         const action = endpoint.get(`${version}-${moduleId}-${endpointId}`) as EndpointAction
-
-        // endpoint not available for account's bot
-        if (!action) {
-            log.error(`endpointId not avaialble in account's bot: ${version}-${moduleId}-${endpointId}`)
-            const err = ApiError.EndpointNotInBot({
-                data: {
-                    method  : req.method,
-                    endpoint: req.baseUrl
-                },
-                version,
-                moduleId,
-                endpointId
-            }, `${req.method} ${req.baseUrl} not available in your bot`)
-            res
-                .status(_toNumber(err.status))
-                .send(err)
-            return
-        }
-
         if (action) {
             break
         }
+
+        // endpoint not available for account's bot
+        log.error(`endpointId not avaialble in account's bot: ${version}-${moduleId}-${endpointId}`)
+        const err = ApiError.EndpointNotInBot({
+            data: {
+                method  : req.method,
+                endpoint: req.baseUrl
+            },
+            version,
+            moduleId,
+            endpointId
+        }, `${req.method} ${req.baseUrl} not available in your bot`)
+        res
+            .status(_toNumber(err.status))
+            .send(err)
+        return
     }
 
     next()
