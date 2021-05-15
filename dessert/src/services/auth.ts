@@ -2,6 +2,8 @@ import createAuth0Client, {
   Auth0Client,
   Auth0ClientOptions
 } from '@auth0/auth0-spa-js'
+
+import { loadingMsg as loadingMsgStore } from '../stores/util'
 import {
   user as userStore,
   accessToken as tokenStore,
@@ -50,8 +52,9 @@ export default class AuthFactory {
     }
 
     if (errorOccured) {
-      console.log((new URLSearchParams(window.location.search))
-        .get('error_description'))
+      const errMsg = (new URLSearchParams(window.location.search))
+        .get('error_description')
+      loadingMsgStore.set(errMsg || 'Unknown Error')
       window.history.replaceState(
         {}, document.title, `${window.location.pathname}#/`
       )

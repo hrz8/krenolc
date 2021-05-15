@@ -14,21 +14,27 @@ const loginHandler = async (
 ): Promise<void> => {
     const { user } = req.body
     const userId = uuid()
-    let userFromDb = await userRepository()
+    const userFromDb = await userRepository()
         .findOne({
             where: {
                 email: user.email
             }
         })
-    userFromDb = await userRepository()
+
+    // upsert user, with primary key if exist
+    await userRepository()
         .save({
             id       : userFromDb ? userFromDb.id : userId,
             email    : user.email,
             name     : user.name,
             lastLogin: new Date(),
-            metadata : {}
+            metadata : {
+                permissions: [],
+                roles      : ['user'],
+                bots       : []
+            }
         })
-    console.log(userFromDb)
+    // next: create new bot (?)
 }
 
 export default (path = '/api'): express.Router => {
@@ -42,7 +48,7 @@ export default (path = '/api'): express.Router => {
                 data: 'ok'
             })
     })
-    apiRouter.options('*', cors)
+    apiRouter.options(`${path}/*`, cors)
     apiRouter.post(`${path}/login`, cors, loginHandler)
     apiRouter.use(`${path}/:version/:moduleId/:endpointId`, ...defautlMiddlewares, defaultHandler)
     apiRouter.use(`${path}/:moduleId/:endpointId`, ...defautlMiddlewares, defaultHandler)

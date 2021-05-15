@@ -2,7 +2,9 @@
   import { onMount } from 'svelte'
   import Router from 'svelte-spa-router'
 
-  import { darkMode as darkModeStore } from './stores/util'
+  import {
+    darkMode as darkModeStore, loadingMsg as loadingMsgStore
+} from './stores/util'
   import { isAuthenticated as isAuthenticatedStore } from './stores/auth'
 
   import routes from './routes'
@@ -18,7 +20,7 @@
 
 {#if !$isAuthenticatedStore}
   <div>
-    Loading...
+    {loadingMsgStore}
   </div>
 {:else}
   <div class="{$darkModeStore ? 'dark' : '' } md:flex flex-col md:flex-row md:min-h-screen w-full">
