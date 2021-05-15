@@ -17,6 +17,7 @@ import log from '@/utils/logger'
 import { EndpointAction } from '@/types/endpoint'
 
 import { ApiError } from '../error'
+import Role from '~/src/db/entities/role.entity'
 
 const verify = (token: string, secret: string): Promise<any> => new Promise((resolve, reject) => {
     jwt.verify(token, secret, {
@@ -82,7 +83,7 @@ export const checkJwt = async (
 
         // get user from db
         const cacher = CacheFactory.getCache()
-        const cacheKey = `user:email.${userEmail}`
+        const cacheKey = `user.email:${userEmail}`
         const userCached = await cacher.get(cacheKey)
         const user = (userCached || await userRepository()
             .findOne({
@@ -177,13 +178,23 @@ export const checkPermission = async (
         return
     }
 
+    const cacher = CacheFactory.getCache()
+
     try {
         const neededPermissions = ['root', ...(actionPermissions || [])]
         const { metadata: { permissions: userPermissions, roles: userRoles } } = user
 
         // extracting permissions from role
-        const userPermissionsFromRoles = userRoles.map((role) => {
-            console.log(role)
+        const userPermissionsFromRoles = userRoles.map(async (role) => {
+            const cacheKey = `role.id:${role}`
+            const roleCached = await cacher.get(cacheKey)
+            const roleFromDb = (roleCached || await userRepository()
+                .findOne({
+                    where: {
+                        name: role
+                    }
+                })) as Role
+            console.log(roleFromDb?.permissions)
             return role
         })
         if (!_.chain([...(userPermissions || []), ...userPermissionsFromRoles])
