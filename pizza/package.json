@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@types/jsonwebtoken": "^8.5.1",
+        "@types/uuid": "^8.3.0",
         "cache-manager": "^3.4.3",
         "cache-manager-redis": "^0.6.0",
         "cors": "^2.8.5",
@@ -33,7 +34,8 @@
         "pino-pretty": "^4.7.1",
         "reflect-metadata": "^0.1.13",
         "type-graphql": "^1.1.1",
-        "typeorm": "^0.2.31"
+        "typeorm": "^0.2.31",
+        "uuid": "^8.3.2"
     },
     "devDependencies": {
         "@types/body-parser": "^1.19.0",

@@ -78,7 +78,7 @@ export const checkJwt = async (
         const key = await client.getSigningKey(header?.kid)
         const secret = key.getPublicKey()
         const decoded = await verify(token, secret)
-        const userEmail = decoded['http://login.hirzi.site/email']
+        const { email: userEmail } = decoded['http://login.hirzi.site/metadata']
 
         // get user from db
         const cacher = CacheFactory.getCache()

@@ -38,15 +38,29 @@ export default class AuthFactory {
       window.location.search.includes('code=') &&
       window.location.search.includes('state=')
 
+    const errorOccured =
+      window.location.search.includes('error=') &&
+      window.location.search.includes('error_description=')
+
     if (hasBeenRedirected) {
       await this.client.handleRedirectCallback()
-      window.history.replaceState({}, document.title, window.location.pathname)
+      window.history.replaceState(
+        {}, document.title, `${window.location.pathname}#/`
+      )
+    }
+
+    if (errorOccured) {
+      console.log((new URLSearchParams(window.location.search))
+        .get('error_description'))
+      window.history.replaceState(
+        {}, document.title, `${window.location.pathname}#/`
+      )
+      return
     }
 
     // user already authiticated, store user data into store
     const isAuthenticated = await this.client.isAuthenticated()
     isAuthenticatedStore.set(isAuthenticated)
-    isAuthenticated
     if (isAuthenticated) {
       await this.setUser()
       await this.setToken()

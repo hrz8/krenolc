@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express'
 import { getManager } from 'typeorm'
+import { v4 as uuid } from 'uuid'
 
 import userRepository from '@/db/repository/user.repository'
 import { cors } from '@/middlewares/cors'
@@ -12,21 +13,22 @@ const loginHandler = async (
     res: Response
 ): Promise<void> => {
     const { user } = req.body
-    let userFormDb = await userRepository()
+    const userId = uuid()
+    let userFromDb = await userRepository()
         .findOne({
             where: {
                 email: user.email
             }
         })
-    if (!userFormDb) {
-        userFormDb = await userRepository()
-            .save({
-                email   : user.email,
-                name    : user.name,
-                metadata: {}
-            })
-    }
-    console.log(userFormDb)
+    userFromDb = await userRepository()
+        .save({
+            id       : userFromDb ? userFromDb.id : userId,
+            email    : user.email,
+            name     : user.name,
+            lastLogin: new Date(),
+            metadata : {}
+        })
+    console.log(userFromDb)
 }
 
 export default (path = '/api'): express.Router => {
