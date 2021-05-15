@@ -1,6 +1,6 @@
 import { EntityRepository, getCustomRepository } from 'typeorm'
 
-import Permission from '../entities/permission.entity'
+import Permission from '@db/entities/permission.entity'
 import BaseRepository from './base'
 
 @EntityRepository(Permission)
