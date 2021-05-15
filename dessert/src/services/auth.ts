@@ -17,14 +17,22 @@ export type AuthUserStore = {
   updated_at: string;
 }
 
+const authOptions: Auth0ClientOptions = {
+  domain          : 'dev-q3imkb6d.us.auth0.com',
+  client_id       : 'avCrjqvcJSwD4ydZlfyzz3vqA8qHMZRq',
+  audience        : 'https://dev-q3imkb6d.us.auth0.com/api/v2/',
+  useRefreshTokens: true,
+  redirect_uri    : window.location.href
+}
+
 export default class AuthFactory {
   private static client: Auth0Client = {} as Auth0Client
   private static user: AuthUserStore | null= {} as AuthUserStore
   public static token = ''
 
-  public static async init(options: Auth0ClientOptions): Promise<void> {
+  public static async init(options?: Auth0ClientOptions): Promise<void> {
     // create new instance of auth0 client
-    this.client = await createAuth0Client(options)
+    this.client = await createAuth0Client(options || authOptions)
 
     const hasBeenRedirected =
       window.location.search.includes('code=') &&

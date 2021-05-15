@@ -9,18 +9,10 @@
 
   import Navbar from './components/Navbar.svelte'
   import Sidebar from './components/Sidebar.svelte'
-  import type { Auth0ClientOptions } from '@auth0/auth0-spa-js'
   import AuthFactory from './services/auth'
 
   onMount(async () => {
-    const authOptions: Auth0ClientOptions = {
-      domain          : 'dev-q3imkb6d.us.auth0.com',
-      client_id       : 'avCrjqvcJSwD4ydZlfyzz3vqA8qHMZRq',
-      audience        : 'https://dev-q3imkb6d.us.auth0.com/api/v2/',
-      useRefreshTokens: true,
-      redirect_uri    : window.location.href
-    }
-    await AuthFactory.init(authOptions)
+    await AuthFactory.init()
   })
 </script>
 
