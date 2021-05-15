@@ -180,11 +180,13 @@ export const checkPermission = async (
     try {
         const neededPermissions = ['root', ...(actionPermissions || [])]
         const { metadata: { permissions: userPermissions, roles: userRoles } } = user
-        const permissionsFromRoles = userRoles.map((role) => {
+
+        // extracting permissions from role
+        const userPermissionsFromRoles = userRoles.map((role) => {
             console.log(role)
-            return []
+            return role
         })
-        if (!_.chain([...(userPermissions || []), ...permissionsFromRoles])
+        if (!_.chain([...(userPermissions || []), ...userPermissionsFromRoles])
             .intersection(neededPermissions)
             .isEmpty()
             .value()) {
