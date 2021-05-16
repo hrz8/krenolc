@@ -8,6 +8,7 @@ import _ from 'lodash'
 
 import User from '@db/entities/user.entity'
 import userRepository from '@db/repository/user.repository'
+import roleRepository from '@db/repository/role.repository'
 
 import EnvFactory from '@/utils/env'
 import CacheFactory from '@/utils/cache/factory'
@@ -34,7 +35,7 @@ export const checkJwt = async (
     req: Request,
     res: Response,
     next: NextFunction
-): Promise<void | undefined> => {
+): Promise<void> => {
     const {
         action: { authentication }, version, moduleId, endpointId
     } = res.locals as {
@@ -85,13 +86,14 @@ export const checkJwt = async (
         const cacher = CacheFactory.getCache()
         const cacheKey = `user.email:${userEmail}`
         const userCached = await cacher.get(cacheKey)
-        const user = (userCached || await userRepository()
-            .findOne({
-                where: {
-                    email: userEmail
-                }
-            })) as User
+        let user = userCached as User
         if (!userCached) {
+            user = await userRepository()
+                .findOne({
+                    where: {
+                        email: userEmail
+                    }
+                }) as User
             await cacher.set(cacheKey, user)
         }
         res.locals.user = (user || null) as User
@@ -113,11 +115,11 @@ export const checkJwt = async (
     next()
 }
 
-export const checkBotModule = async (
+export const checkBotModule = (
     req: Request,
     res: Response,
     next: NextFunction
-): Promise<void | undefined> => {
+): void => {
     const {
         user, version, moduleId, endpointId
     } = res.locals as {
@@ -161,7 +163,7 @@ export const checkPermission = async (
     req: Request,
     res: Response,
     next: NextFunction
-): Promise<void | undefined> => {
+): Promise<void> => {
     const {
         action: { authentication, permissions: actionPermissions },
         version, moduleId, endpointId, user
@@ -185,16 +187,20 @@ export const checkPermission = async (
         const { metadata: { permissions: userPermissions, roles: userRoles } } = user
 
         // extracting permissions from role
-        const userPermissionsFromRoles = userRoles.map(async (role) => {
+        const userPermissionsFromRoles = await userRoles.map(async (role) => {
             const cacheKey = `role.id:${role}`
             const roleCached = await cacher.get(cacheKey)
-            const roleFromDb = (roleCached || await userRepository()
-                .findOne({
-                    where: {
-                        name: role
-                    }
-                })) as Role
-            console.log(roleFromDb?.permissions)
+            const roleData = roleCached as Role
+            // if (!roleCached && roleData) {
+            //     roleData = await roleRepository()
+            //         .findOne({
+            //             where: {
+            //                 name: role
+            //             },
+            //             relations: ['permissions']
+            //         }) as Role
+            //     await cacher.set(cacheKey, roleData)
+            // }
             return role
         })
         if (!_.chain([...(userPermissions || []), ...userPermissionsFromRoles])

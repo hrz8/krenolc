@@ -6,7 +6,7 @@ import userRepository from '@/db/repository/user.repository'
 import { cors } from '@/middlewares/cors'
 
 import defautlMiddlewares from './middlewares'
-import defaultHandler from './handler'
+import mainHandler from './handler'
 
 const loginHandler = async (
     req: Request,
@@ -50,7 +50,8 @@ export default (path = '/api'): express.Router => {
     })
     apiRouter.options(`${path}/*`, cors)
     apiRouter.post(`${path}/login`, cors, loginHandler)
-    apiRouter.use(`${path}/:version/:moduleId/:endpointId`, ...defautlMiddlewares, defaultHandler)
-    apiRouter.use(`${path}/:moduleId/:endpointId`, ...defautlMiddlewares, defaultHandler)
+
+    apiRouter.use(`${path}/:version/:moduleId/:endpointId`, ...defautlMiddlewares, mainHandler)
+    apiRouter.use(`${path}/:moduleId/:endpointId`, ...defautlMiddlewares, mainHandler)
     return apiRouter
 }

@@ -15,7 +15,7 @@ import { EndpointAction, MiddlewareHandler } from '@/types/endpoint'
 
 import { apiErrorDefault } from './error'
 
-const runMiddlewares = async (
+const runCustomMiddlewares = async (
     middlewares: MiddlewareHandler[],
     ctx: IContext
 ): Promise<void> => {
@@ -57,7 +57,7 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
         const handlerBounded = handler.bind(null, ctx)
 
         // run before middleware
-        await runMiddlewares(before || [], ctx)
+        await runCustomMiddlewares(before || [], ctx)
 
         // cache checking
         const cacheKey = `${version}:${moduleId}.${endpointId}`
@@ -95,7 +95,7 @@ export default async (req: Request, res: Response): Promise<void | undefined> =>
             .send(successResponse)
 
         // run after middlewares
-        await runMiddlewares(after || [], ctx)
+        await runCustomMiddlewares(after || [], ctx)
     } catch (err) {
         log.error(`error while running action: ${method}: ${version}-${moduleId}-${endpointId}`)
         log.error(err)

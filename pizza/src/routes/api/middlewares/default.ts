@@ -32,7 +32,7 @@ export const checkVersion = (
     req: Request,
     res: Response,
     next: NextFunction
-): void | undefined => {
+): void => {
     const reqParams = req.params
     const isThereVersion = Boolean(_keys(reqParams)
         .reduce((accum, curr) => accum + (versionRegex.test(reqParams[curr]) ? 1 : 0), 0))
@@ -61,7 +61,7 @@ export const checkEndpoint = (
     req: Request,
     res: Response,
     next: NextFunction
-): void | undefined => {
+): void => {
     const { moduleId, endpointId } = req.params
     const version: string = req.params.version || 'v1'
     const systemDefaultBot = BotFactory.getSystemBot()
@@ -100,7 +100,7 @@ export const checkMethod = (
     req: Request,
     res: Response,
     next: NextFunction
-): void | undefined => {
+): void => {
     const {
         action, version, moduleId, endpointId
     } = res.locals as {

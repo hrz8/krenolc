@@ -30,6 +30,7 @@ export const checkCors = (
     const { action } = res.locals as { action: EndpointAction }
     if (action.cors !== false) {
         cors(req, res, next)
+        return
     }
     next()
 }

@@ -20,7 +20,7 @@
 
 {#if !$isAuthenticatedStore}
   <div>
-    {loadingMsgStore}
+    {$loadingMsgStore}
   </div>
 {:else}
   <div class="{$darkModeStore ? 'dark' : '' } md:flex flex-col md:flex-row md:min-h-screen w-full">
