@@ -9,6 +9,7 @@ import {
   accessToken as tokenStore,
   isAuthenticated as isAuthenticatedStore
 } from '../stores/auth'
+import Rest, { HTTPMethod } from './rest'
 
 export type AuthUserStore = {
   email: string;
@@ -97,18 +98,10 @@ export default class AuthFactory {
 
   public static async postLogin(): Promise<void> {
     try {
-      const response = await fetch('http://localhost:3009/api/login', {
-        method : 'POST',
-        headers: {
-          'Accept'      : 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          user: this.user
-        })
+      const responseData = await Rest(HTTPMethod.POST, 'login', {
+        user: this.user
       })
-      const responseData = await response.json()
-      console.log('RESPONSE', responseData.message)
+      console.log('[POST LOGIN]', responseData.message)
     } catch (err) {
       console.log(err)
     }
