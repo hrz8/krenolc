@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid'
 
 import userRepository from '@/db/repository/user.repository'
 import { cors } from '@/middlewares/cors'
+import { SuccessResponse } from '@/utils/responses/success'
 
 import defautlMiddlewares from './middlewares'
 import mainHandler from './handler'
@@ -32,7 +33,22 @@ const loginHandler = async (
                 bots: ['preview']
             }
         })
-    // next: create new bot (?)
+    const responseMessage = userFromDb
+        ? `logged in as existing user with id: ${userFromDb.id}`
+        : `logged in as new user with id: ${userId}`
+    const successResponse = new SuccessResponse(
+        user,
+        {},
+        {
+            responseMessage,
+            apiVersion: 'unknown',
+            module    : 'unknown',
+            endpoint  : 'unknown'
+        }
+    )
+    res
+        .status(200)
+        .send(successResponse)
 }
 
 export default (path = '/api'): express.Router => {

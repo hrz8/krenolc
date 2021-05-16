@@ -24,14 +24,14 @@ export class SuccessResponse {
 
     public apiVersion: string
 
-    public data: any
+    public data: Record<string, any>
 
     public message: string
 
     public meta: any
 
     constructor(
-        data: any,
+        data: Record<string, any>,
         meta = {},
         {
             responseMessage = '',

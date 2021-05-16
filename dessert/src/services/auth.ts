@@ -107,6 +107,8 @@ export default class AuthFactory {
           user: this.user
         })
       })
+      const responseData = await response.json()
+      console.log('RESPONSE', responseData.message)
     } catch (err) {
       console.log(err)
     }
