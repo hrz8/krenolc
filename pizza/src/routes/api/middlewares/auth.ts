@@ -51,7 +51,7 @@ export const checkJwt = async (
 
     // default is checking authentication
     const { authorization } = req.headers
-    const token = authorization?.slice(7)
+    const token = authorization?.split('Bearer ')[1]
 
     if (!token) {
         const noTokenErr = ApiError.TokenRequired({
