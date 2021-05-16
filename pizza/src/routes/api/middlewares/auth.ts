@@ -92,7 +92,12 @@ export const checkJwt = async (
                 .findOne({
                     where: {
                         email: userEmail
-                    }
+                    },
+                    relations: [
+                        'roles',
+                        'permissions',
+                        'roles.permissions'
+                    ]
                 }) as User
             await cacher.set(cacheKey, user)
         }
@@ -159,11 +164,11 @@ export const checkBotModule = (
     next()
 }
 
-export const checkPermission = async (
+export const checkPermission = (
     req: Request,
     res: Response,
     next: NextFunction
-): Promise<void> => {
+): void => {
     const {
         action: { authentication, permissions: actionPermissions },
         version, moduleId, endpointId, user
@@ -175,42 +180,24 @@ export const checkPermission = async (
         user: User
     }
 
-    if (authentication === false) {
+    if (authentication === false || actionPermissions === undefined) {
         next()
         return
     }
 
-    const cacher = CacheFactory.getCache()
+    const neededPermissions = ['root', ...(actionPermissions)]
+    const userRoles = user.roles || []
+    const userPermissions = user.permissions || []
+    const userPermissionsFromRoles = userRoles.reduce((acc, curr) => {
+        const rolePermissions = curr.permissions?.map((p) => p.name)
+        return [...acc, ...(rolePermissions || [])]
+    }, [] as string[])
 
-    try {
-        const neededPermissions = ['root', ...(actionPermissions || [])]
-        const { metadata: { permissions: userPermissions, roles: userRoles } } = user
-
-        // extracting permissions from role
-        const userPermissionsFromRoles = await userRoles.map(async (role) => {
-            const cacheKey = `role.id:${role}`
-            const roleCached = await cacher.get(cacheKey)
-            const roleData = roleCached as Role
-            // if (!roleCached && roleData) {
-            //     roleData = await roleRepository()
-            //         .findOne({
-            //             where: {
-            //                 name: role
-            //             },
-            //             relations: ['permissions']
-            //         }) as Role
-            //     await cacher.set(cacheKey, roleData)
-            // }
-            return role
-        })
-        if (!_.chain([...(userPermissions || []), ...userPermissionsFromRoles])
-            .intersection(neededPermissions)
-            .isEmpty()
-            .value()) {
-            log.info('have no permission')
-        }
-    } catch (error) {
-        log.error('error')
-        throw error
+    const userPermissionsFinal = [...(userPermissions || []), ...userPermissionsFromRoles]
+    if (_.chain(userPermissionsFinal)
+        .intersection(neededPermissions)
+        .isEmpty()
+        .value()) {
+        log.info('have no permission')
     }
 }

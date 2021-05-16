@@ -29,9 +29,7 @@ const loginHandler = async (
             name     : user.name,
             lastLogin: new Date(),
             metadata : {
-                permissions: [],
-                roles      : ['user'],
-                bots       : []
+                bots: ['preview']
             }
         })
     // next: create new bot (?)
