@@ -189,11 +189,11 @@ export const checkPermission = (
     const userRoles = user.roles || []
     const userPermissions = user.permissions || []
     const userPermissionsFromRoles = userRoles.reduce((acc, curr) => {
-        const rolePermissions = curr.permissions?.map((p) => p.name)
-        return [...acc, ...(rolePermissions || [])]
+        const rolePermissions = curr.permissions?.map((p) => p.name) || []
+        return [...acc, ...rolePermissions]
     }, [] as string[])
 
-    const userPermissionsFinal = [...(userPermissions || []), ...userPermissionsFromRoles]
+    const userPermissionsFinal = [...userPermissions, ...userPermissionsFromRoles]
     if (_.chain(userPermissionsFinal)
         .intersection(neededPermissions)
         .isEmpty()
