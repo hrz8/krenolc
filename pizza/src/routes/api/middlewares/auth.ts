@@ -185,9 +185,9 @@ export const checkPermission = (
         return
     }
 
-    const neededPermissions = ['root', ...(actionPermissions)]
+    const requiredPermissions = ['root', ...(actionPermissions)]
     const userRoles = user.roles || []
-    const userPermissions = user.permissions || []
+    const userPermissions = user.permissions?.map((p) => p.name) || []
     const userPermissionsFromRoles = userRoles.reduce((acc, curr) => {
         const rolePermissions = curr.permissions?.map((p) => p.name) || []
         return [...acc, ...rolePermissions]
@@ -195,9 +195,24 @@ export const checkPermission = (
 
     const userPermissionsFinal = [...userPermissions, ...userPermissionsFromRoles]
     if (_.chain(userPermissionsFinal)
-        .intersection(neededPermissions)
+        .intersection(requiredPermissions)
         .isEmpty()
         .value()) {
-        log.info('have no permission')
+        log.error('user has no permission to access api')
+        const errorMessage = 'you have no permission to access this api'
+        const ownedPermissions = userPermissionsFinal
+        const err = ApiError.HasNoPermission({
+            requiredPermissions,
+            ownedPermissions,
+            version,
+            moduleId,
+            endpointId
+        }, errorMessage)
+        res
+            .status(_toNumber(err.status))
+            .send(err)
+        return
     }
+
+    next()
 }

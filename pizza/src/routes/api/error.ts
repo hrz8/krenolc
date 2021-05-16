@@ -115,6 +115,31 @@ export class ApiError extends ErrorCode {
             }
         )
     }
+
+    static HasNoPermission(
+        data: DataPayload & { requiredPermissions: string[], ownedPermissions: string[] },
+        message: string
+    ): ErrorResponse {
+        const {
+            requiredPermissions, ownedPermissions,
+            version, moduleId: module, endpointId: endpoint
+        } = data
+        return new ErrorResponse(
+            {
+                name: `${this.name}_${ApiError.HasNoPermission.name}`,
+                requiredPermissions,
+                ownedPermissions
+            },
+            403,
+            message,
+            `${this.namespace}-KRENOLC_${this.codedName}-007`,
+            {
+                apiVersion: version,
+                module,
+                endpoint
+            }
+        )
+    }
 }
 
 export const apiErrorDefault = (

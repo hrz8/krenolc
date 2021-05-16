@@ -14,6 +14,7 @@ const endpoints: Endpoint = {
     actions: {
         getAll: {
             authentication: true,
+            permissions   : ['getDefault@faq'],
             method        : HTTPMethod.GET,
             validator     : validators.getAll,
             cache         : {
