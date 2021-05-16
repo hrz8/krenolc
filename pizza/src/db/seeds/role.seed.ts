@@ -3,6 +3,7 @@ import { RoleInserPayload } from '../entities/role.entity'
 
 const data: RoleInserPayload[] = [
     {
+        id         : 'fe9a53c7-79b3-4053-82ac-b6a03881bac8',
         name       : 'superadmin',
         description: 'super admin with root access as super user',
         permissions: [
@@ -12,6 +13,7 @@ const data: RoleInserPayload[] = [
         ]
     },
     {
+        id         : 'd53a6e67-d3e6-49a7-88d5-58ba827712dd',
         name       : 'user',
         description: 'just a user ☹️',
         permissions: [

@@ -12,6 +12,7 @@ import {
 import Permission from './permission.entity'
 
 export interface RoleInserPayload {
+    id?: string,
     name: string,
     description: string,
     permissions: Permission[]

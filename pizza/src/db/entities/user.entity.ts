@@ -4,19 +4,23 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    JoinTable,
+    ManyToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm'
+import Role from './role.entity'
+import Permission from './permission.entity'
 
 export interface UserMetaData {
-    permissions: string[],
-    roles: string[],
     bots: string[]
 }
 
 export interface UserInsertPayload {
     email: string;
     name: string;
+    roles: Role[],
+    permissions?: Permission[],
     metadata?: UserMetaData,
 }
 
@@ -40,6 +44,14 @@ export default class User extends BaseEntity {
 
     @Column('simple-json')
     metadata!: UserMetaData
+
+    @ManyToMany(() => Role)
+    @JoinTable()
+    roles?: Role[];
+
+    @ManyToMany(() => Permission)
+    @JoinTable()
+    permissions?: Permission[];
 
     @CreateDateColumn()
     createdAt!: Date
