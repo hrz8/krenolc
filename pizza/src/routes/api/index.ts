@@ -48,6 +48,8 @@ const loginHandler = async (
 
 export default (path = '/api'): express.Router => {
     const apiRouter = express.Router()
+
+    // health check endpoint
     apiRouter.use(`${path}/health-check`, async (req: Request, res: Response) => {
         const manager = getManager()
         await manager.query('SELECT 1+1 AS result')
@@ -57,9 +59,14 @@ export default (path = '/api'): express.Router => {
                 data: 'ok'
             })
     })
+
+    // enabling cors
     apiRouter.options(`${path}/*`, cors)
+
+    // post login
     apiRouter.post(`${path}/login`, cors, loginHandler)
 
+    // modules endpoint
     apiRouter.use(`${path}/:version/:moduleId/:endpointId`, ...defautlMiddlewares, mainHandler)
     apiRouter.use(`${path}/:moduleId/:endpointId`, ...defautlMiddlewares, mainHandler)
     return apiRouter
