@@ -33,19 +33,14 @@ const loginHandler = async (
                 bots: ['preview']
             }
         })
+
+    // put response for post login
     const responseMessage = userFromDb
         ? `logged in as existing user with id: ${userFromDb.id}`
         : `logged in as new user with id: ${userId}`
-    const successResponse = new SuccessResponse(
-        user,
-        {},
-        {
-            responseMessage,
-            apiVersion: 'unknown',
-            module    : 'unknown',
-            endpoint  : 'unknown'
-        }
-    )
+    const successResponse = new SuccessResponse(user, {}, {
+        responseMessage
+    })
     res
         .status(200)
         .send(successResponse)

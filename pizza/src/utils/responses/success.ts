@@ -3,9 +3,9 @@ import _camelCase from 'lodash/camelCase'
 
 type SuccessPayload = {
     responseMessage?: string
-    apiVersion: string,
-    module: string,
-    endpoint: string
+    apiVersion?: string,
+    module?: string,
+    endpoint?: string
 }
 
 export class Response {
@@ -45,7 +45,7 @@ export class SuccessResponse {
         }
 
         this.status = '200'
-        this.apiVersion = apiVersion
+        this.apiVersion = apiVersion || 'unknown'
         this.data = _isObjectLike(data) ? data : {}
         this.meta = meta
         this.message = responseMessage || `success ${module} ${_camelCase(endpoint)}`
