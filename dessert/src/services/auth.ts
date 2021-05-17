@@ -98,7 +98,7 @@ export default class AuthFactory {
 
   public static async postLogin(): Promise<void> {
     try {
-      const responseData = await Rest(HTTPMethod.POST, 'login', {
+      const responseData = await Rest.fetch(HTTPMethod.POST, 'login', {
         user: this.user
       })
       console.log('[POST LOGIN]', responseData.message)
