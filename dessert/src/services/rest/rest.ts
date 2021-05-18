@@ -1,14 +1,5 @@
-export enum HTTPMethod {
-  CONNECT = 'CONNECT',
-  DELETE = 'DELETE',
-  GET = 'GET',
-  HEAD = 'HEAD',
-  OPTIONS = 'OPTIONS',
-  PATCH = 'PATCH',
-  POST = 'POST',
-  PUT = 'PUT',
-  TRACE = 'TRACE'
-}
+import endpoints from './endpoints'
+import type { HTTPMethod } from './methods'
 
 export default class Rest {
   private static baseUrl = 'http://localhost:3009/api/'
@@ -37,8 +28,13 @@ export default class Rest {
     return responseData
   }
 
-  public static async invoke(): Promise<any> {
+  public static async invoke(path: string): Promise<any> {
     // dummy still
-    await this.fetch
+    const [
+      module,
+      actionName
+    ] = path.split('.')
+    const endpoint = endpoints[module][actionName]
+    await this.fetch(endpoint.method, endpoint.url)
   }
 }

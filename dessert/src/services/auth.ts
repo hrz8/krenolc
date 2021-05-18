@@ -9,7 +9,8 @@ import {
   accessToken as tokenStore,
   isAuthenticated as isAuthenticatedStore
 } from '../stores/auth'
-import Rest, { HTTPMethod } from './rest'
+import Rest from './rest/rest'
+import { HTTPMethod } from './rest/methods'
 
 export type AuthUserStore = {
   email: string;
