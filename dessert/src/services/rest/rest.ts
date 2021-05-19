@@ -4,7 +4,7 @@ import type { HTTPMethod } from './methods'
 export default class Rest {
   private static baseUrl = 'http://localhost:3009/api/'
 
-  public static async fetch(
+  public static async hit(
     method: HTTPMethod,
     endpoint: string,
     payload?: Record<string, any>
@@ -35,6 +35,6 @@ export default class Rest {
       actionName
     ] = path.split('.')
     const endpoint = endpoints[module][actionName]
-    await this.fetch(endpoint.method, endpoint.url)
+    await this.hit(endpoint.method, endpoint.url)
   }
 }
