@@ -7,6 +7,9 @@ const data: BotInsertPayload[] = [
             modules: {
                 faq: {
                     enabled: true
+                },
+                accessControl: {
+                    enabled: true
                 }
             },
             content: {
