@@ -7,6 +7,10 @@
       {
         "name": "dessert",
         "path": "dessert"
+      },
+      {
+        "name": "pudding",
+        "path": "pudding"
       }
     ]
 }

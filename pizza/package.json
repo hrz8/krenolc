@@ -1,9 +1,9 @@
 {
     "name": "krenolc-pizza",
     "version": "1.0.0",
-    "description": "just for learning",
-    "main": "server.js",
-    "bin": "server.js",
+    "description": "bot module for krenolc",
+    "main": "src/server.js",
+    "bin": "src/server.js",
     "repository": "github.com/hrz8/krenolc",
     "author": "hirzi",
     "license": "MIT",
