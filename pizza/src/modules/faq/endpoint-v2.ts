@@ -3,7 +3,7 @@ import { NextFunction } from 'express'
 import faqRepository from '@db/repository/faq.repository'
 import { Response } from '@/utils/responses/success'
 
-import { EndpointAction, Endpoint } from '@/types/endpoint'
+import { Endpoint } from '@/types/endpoint'
 import { IContext, HTTPMethod } from '@/types/action'
 
 const endpoints: Endpoint = {
