@@ -1,10 +1,6 @@
 import NatsFactory from './utils/nats'
 
 const natsWrapper = async () => {
-
-}
-
-const main = async () => {
     await NatsFactory.init()
     const natsConn = NatsFactory.getConnection()
     const auditSubscription = natsConn.subscribe('audit')
@@ -12,6 +8,10 @@ const main = async () => {
     for await (const sub of subscriptions) {
         await NatsFactory.listen(sub)
     }
+}
+
+const main = async () => {
+    await natsWrapper()
 }
 
 (async function () {
