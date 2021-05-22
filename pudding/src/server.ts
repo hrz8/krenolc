@@ -1,19 +1,22 @@
-import { connect as natsConnect } from 'nats'
+import {
+    Codec, connect as natsConnect, JSONCodec as natsJSONCodec, Subscription
+} from 'nats'
 
-const main = async () => {
-    const nc = await natsConnect({
-        servers: '127.0.0.1:4222'
-    })
-    console.log(`connected to ${nc.getServer()}`)
-    const done = nc.closed()
-
-    await nc.close()
-    const err = await done
-    if (err) {
-        console.log('error closing:', err)
+const listen = async (subscribtion: Subscription, codec: Codec<any>) => {
+    for await (const m of subscribtion) {
+        console.log(`subject: ${m.subject}`)
+        console.log(`data: ${JSON.stringify(codec.decode(m.data))}`)
     }
 }
 
 (async function () {
-    await main()
+    const nc = await natsConnect({
+        servers: '127.0.0.1:4222'
+    })
+    console.log(`connected to ${nc.getServer()}`)
+
+    const codec = natsJSONCodec()
+    const subscribtion = nc.subscribe('audit')
+
+    await listen(subscribtion, codec)
 }())

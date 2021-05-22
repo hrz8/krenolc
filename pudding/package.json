@@ -4,7 +4,7 @@
     "description": "audit service of krenolc",
     "main": "src/server.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "tsc:build": "tsc --build"
     },
     "repository": {
         "type": "git",
