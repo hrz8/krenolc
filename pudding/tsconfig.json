@@ -10,6 +10,7 @@
         "sourceMap": true,
         "strict": true, 
         "baseUrl": "./",
+        "esModuleInterop": true,  
         "experimentalDecorators": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
