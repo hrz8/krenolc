@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 import { Request } from 'express'
 import BotTemplate from '../utils/bot/template'

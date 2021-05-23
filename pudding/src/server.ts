@@ -1,10 +1,10 @@
 import NatsFactory from './utils/nats'
+import getNatsSubscriptions from './utils/nats/subscriptions'
 
 const natsWrapper = async () => {
     await NatsFactory.init()
-    const natsConn = NatsFactory.getConnection()
-    const auditSubscription = natsConn.subscribe('audit')
-    const subscriptions = [auditSubscription]
+    const conn = NatsFactory.getConnection()
+    const subscriptions = getNatsSubscriptions(conn)
     for await (const sub of subscriptions) {
         await NatsFactory.listen(sub)
     }
