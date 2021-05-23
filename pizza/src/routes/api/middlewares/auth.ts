@@ -3,12 +3,10 @@ import {
 } from 'express'
 import jwt, { JsonWebTokenError } from 'jsonwebtoken'
 import jwksRsa from 'jwks-rsa'
-import _toNumber from 'lodash/toNumber'
 import _ from 'lodash'
 
 import User from '@db/entities/user.entity'
 import userRepository from '@db/repository/user.repository'
-import roleRepository from '@db/repository/role.repository'
 
 import EnvFactory from '@/utils/env'
 import CacheFactory from '@/utils/cache/factory'
@@ -18,7 +16,6 @@ import log from '@/utils/logger'
 import { EndpointAction } from '@/types/endpoint'
 
 import { ApiError } from '../error'
-import Role from '~/src/db/entities/role.entity'
 
 const verify = (token: string, secret: string): Promise<any> => new Promise((resolve, reject) => {
     jwt.verify(token, secret, {
@@ -61,7 +58,7 @@ export const checkJwt = async (
             endpointId
         }, 'you\'re unauthorized, access token needed ⛔️')
         res
-            .status(_toNumber(noTokenErr.status))
+            .status(_.toNumber(noTokenErr.status))
             .send(noTokenErr)
         return
     }
@@ -112,7 +109,7 @@ export const checkJwt = async (
             endpointId
         }, `access token not valid 🔑${err instanceof JsonWebTokenError ? `, ${err.message}` : ''}`)
         res
-            .status(_toNumber(tokenErr.status))
+            .status(_.toNumber(tokenErr.status))
             .send(tokenErr)
         return
     }
@@ -156,7 +153,7 @@ export const checkBotModule = (
             endpointId
         }, `${req.method} ${req.baseUrl} not available in your bot`)
         res
-            .status(_toNumber(err.status))
+            .status(_.toNumber(err.status))
             .send(err)
         return
     }
@@ -209,7 +206,7 @@ export const checkPermission = (
             endpointId
         }, errorMessage)
         res
-            .status(_toNumber(err.status))
+            .status(_.toNumber(err.status))
             .send(err)
         return
     }

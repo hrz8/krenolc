@@ -8,7 +8,9 @@
     "author": "hirzi",
     "license": "MIT",
     "scripts": {
+        "start": "tsc --build && node src/server",
         "tsc:build": "tsc --build",
+        "docker:build": "docker build . -t hrz8/krenolc-pizza:1.0",
         "db:sync": "tsc --build && typeorm schema:sync",
         "db:drop": "tsc --build && typeorm schema:drop",
         "db:migration": "tsc --build && typeorm migration:create -n",
