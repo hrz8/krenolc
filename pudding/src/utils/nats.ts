@@ -13,7 +13,7 @@ export default class NatsFactory {
 
     public static async init(): Promise<void> {
         this.connection = await natsConnect({
-            servers: '127.0.0.1:4222'
+            servers: process.env.NATS_SERVER
         })
         this.codec = natsJSONCodec()
         const subObjArr = getNatsSubscriptions(this.connection)
