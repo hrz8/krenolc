@@ -2,6 +2,7 @@
 import { Request } from 'express'
 import BotTemplate from '../utils/bot/template'
 import { RedisCacheManager } from '../utils/cache/factory'
+import { INats } from '../utils/nats'
 import { EndpointAction } from './endpoint'
 
 export enum HTTPMethod {
@@ -25,7 +26,8 @@ export interface IContext {
     },
     utils: {
         bot: BotTemplate,
-        cacher: RedisCacheManager
+        cacher: RedisCacheManager,
+        nats: INats
     },
     baseUrl: string,
     action: EndpointAction,

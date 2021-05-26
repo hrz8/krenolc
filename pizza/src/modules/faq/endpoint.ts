@@ -66,7 +66,7 @@ const endpoints: Endpoint = {
         },
         tryError: {
             method: HTTPMethod.GET,
-            async handler(ctx: IContext): Promise<any> {
+            async handler(ctx: IContext): Promise<Response> {
                 throw FaqModuleError.TryError({
                     data: 'foobar'
                 }, 'error message')
@@ -74,16 +74,27 @@ const endpoints: Endpoint = {
         },
         tryErrorJs: {
             method: HTTPMethod.GET,
-            async handler(ctx: IContext): Promise<any> {
+            async handler(ctx: IContext): Promise<Response> {
                 throw Error('ERRRRR')
             }
         },
         tryCache: {
             method: HTTPMethod.GET,
-            async handler(ctx: IContext): Promise<any> {
+            async handler(ctx: IContext): Promise<Response> {
                 const data = await ctx.utils.cacher.get('foo')
                 return new Response({
                     data
+                })
+            }
+        },
+        tryNats: {
+            method: HTTPMethod.POST,
+            async handler(ctx: IContext): Promise<Response> {
+                await ctx.utils.nats.publish('oy.bar', {
+                    bar: 'foo'
+                })
+                return new Response({
+                    bar: 'foo'
                 })
             }
         }
