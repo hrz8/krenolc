@@ -5,6 +5,7 @@ import { HTTPMethod, IContext } from '@/types/action'
 
 import BotTemplate from './bot/template'
 import CacheFactory, { RedisCacheManager } from './cache/factory'
+import nats, { INats } from './nats'
 
 type ContextPayload = { req: Request, bot: BotTemplate, action: EndpointAction }
 
@@ -18,7 +19,8 @@ export default class Context implements IContext {
 
     utils: {
         bot: BotTemplate,
-        cacher: RedisCacheManager
+        cacher: RedisCacheManager,
+        nats: INats
     }
 
     baseUrl: string
@@ -47,7 +49,8 @@ export default class Context implements IContext {
 
         this.utils = {
             bot,
-            cacher: CacheFactory.getCache()
+            cacher: CacheFactory.getCache(),
+            nats
         }
 
         this.baseUrl = baseUrl
