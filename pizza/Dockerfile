@@ -7,6 +7,8 @@ COPY package.json .
 COPY yarn.lock .
 
 RUN yarn
+RUN yarn db:sync
+RUN yarn db:migrate
 
 COPY . .
 

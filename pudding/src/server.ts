@@ -1,9 +1,12 @@
 import subscriptions from './subscriptions'
+import EnvFactory from './utils/env'
 import log from './utils/logger'
 import Nats from './utils/nats'
 
 const main = async () => {
-    const natsServer = 'localhost:4222'
+    EnvFactory.init()
+
+    const natsServer = EnvFactory.get<string>('NATS_SERVER', 'localhost:4222')
     const nats = Nats(natsServer)
 
     nats.use(subscriptions)

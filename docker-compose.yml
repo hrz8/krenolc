@@ -1,0 +1,61 @@
+version: 3.8
+
+services:
+
+  krenolc-postgres:
+    image: postgres:9.6.22-alpine
+    container_name: krenolc-postgres
+    ports:
+      - 5432:5432
+    env_file:
+      - krenolc-postgres.env
+    networks:
+      - krenolc-network
+
+  krenolc-redis:
+    image: redis:6.2.3-alpine
+    container_name: krenolc-redis
+    ports:
+      - 6379:6379
+    networks:
+      - krenolc-network
+
+  krenolc-nats:
+    image: nats:2.2.5-alpine
+    container_name: krenolc-nats
+    ports:
+      - 4222:4222
+      - 6222:6222
+      - 8222:8222
+    networks: 
+      - krenolc-network
+
+  krenolc-pizza:
+    build: ./pizza/
+    image: hrz8/krenolc-pizza:1.0
+    container_name: krenolc-pizza
+    ports:
+      - 3009:3009
+    depends_on: 
+      - postgres-krenolc
+      - redis-krenolc
+      - nats-krenolc
+    env_file:
+      - krenolc-pizza.env
+    networks: 
+      - krenolc-network
+
+  krenolc-pudding:
+    build: ./pudding/
+    image: hrz8/krenolc-pudding:1.0
+    container_name: krenolc-pudding
+    depends_on:
+      - nats-krenolc
+    env_file:
+      - krenolc-pudding.env
+    networks: 
+      - krenolc-network
+
+networks:
+  krenolc-network:
+    name: krenolc-network

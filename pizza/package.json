@@ -15,7 +15,7 @@
         "db:drop": "tsc --build && typeorm schema:drop",
         "db:migration": "tsc --build && typeorm migration:create -n",
         "db:migrate": "tsc --build && typeorm migration:run",
-        "debug": "tsc --build && node -r ts-node/register --nolazy src/server.ts"
+        "debug": "tsc --build && NODE_MODE=debug node -r ts-node/register --nolazy src/server.ts"
     },
     "dependencies": {
         "@types/jsonwebtoken": "^8.5.1",

@@ -3,10 +3,11 @@ import dotenv, { DotenvConfigOptions } from 'dotenv'
 
 export default class EnvFactory {
     public static init(): void {
-        const { NODE_ENV: ENV, NODE_MODE: MODE } = process.env
-        if (MODE === 'debug') {
+        process.env.NODE_ENV = process.env.NODE_ENV || 'dev'
+        const { NODE_ENV: ENV } = process.env
+        if (ENV === 'dev') {
             const envConfig: DotenvConfigOptions = {
-                path : `${__dirname}/../../.env/${ENV || 'development'}.env`,
+                path : `${__dirname}/../../${ENV}.env`,
                 debug: true
             }
             dotenv.config(envConfig)

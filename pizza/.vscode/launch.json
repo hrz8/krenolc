@@ -6,8 +6,8 @@
             "description": "What environment do you want to run?",
             "default": "dev",
             "options": [
-                "dev",
-                "prod"
+                "development",
+                "staging"
             ]
         }
     ],
@@ -26,8 +26,9 @@
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ],
-            "envFile": "${workspaceFolder}/.env/${input:envFile}",
+            "envFile": "${workspaceFolder}/.env/${input:envFile}.env",
             "env": {
+                "NODE_MODE": "debug",
                 "NODE_ENV": "${input:envFile}"
             },
             "console": "integratedTerminal"
