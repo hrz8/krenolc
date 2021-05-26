@@ -1,15 +1,12 @@
-import { Subscription } from 'nats'
+import { NatsError } from 'nats'
+
+export interface IncomingMessage { sub: string; data: Record<string, any> }
 
 export interface SubscriptionHandler {
-    (codec: any, msg: any): void
+    (err: NatsError | null, msg: IncomingMessage): void
 }
 
-export interface SubscriptionObject {
-    sub: Subscription,
-    handler: SubscriptionHandler
-}
-
-export interface SubscriptionObjectRaw {
-    sub: string,
-    handler: SubscriptionHandler
+export interface Subscription {
+    subject: string;
+    handler: SubscriptionHandler;
 }
