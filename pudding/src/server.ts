@@ -1,7 +1,12 @@
-import NatsFactory from './utils/nats'
+import Nats from './utils/nats'
 
 const main = async () => {
-    await NatsFactory.init()
+    const natsServer = 'localhost:4222'
+    const nats = Nats(natsServer)
+
+    nats.listen(() => {
+        console.log('listening to: ', natsServer)
+    })
 }
 
 (async function () {

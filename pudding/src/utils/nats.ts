@@ -4,40 +4,48 @@ import {
 import { Subscription } from '../types/subscription'
 import subscriptions from '../subscriptions'
 
-export default class NatsFactory {
-    private static connection: NatsConnection
+class NatsWrapper {
+    private server: string
 
-    private static codec: Codec<any>
+    private connection: NatsConnection | null = null
 
-    public static async init(): Promise<void> {
-        // core props
-        this.connection = await natsConnect({
-            servers: 'localhost:4222'
-        })
+    private codec: Codec<any>
+
+    constructor(server: string) {
         this.codec = natsJSONCodec()
-
-        // register all subscriptions
-        this.register(subscriptions)
+        this.server = server
     }
 
-    private static async register(
-        subs: Subscription[]
-    ): Promise<void> {
-        for await (const subcription of subs) {
-            await this.connection.subscribe(subcription.subject, {
-                callback: (err, msg) => subcription.handler(err, {
-                    sub : msg.subject,
-                    data: this.codec.decode(msg.data) as Record<string, any>
-                })
+    public async listen(cb: (err: null | any) => any = () => undefined): Promise<void> {
+        try {
+            // core props
+            this.connection = await natsConnect({
+                servers: this.server
             })
+            this.codec = natsJSONCodec()
+
+            // register all subscriptions
+            this.register(subscriptions)
+            cb(null)
+        } catch (error) {
+            cb(error)
         }
     }
 
-    public static getCodec(): Codec<any> {
-        return this.codec
-    }
-
-    public static getConnection(): NatsConnection {
-        return this.connection
+    private async register(
+        subs: Subscription[]
+    ): Promise<void> {
+        if (this.connection) {
+            for await (const subcription of subs) {
+                await this.connection.subscribe(subcription.subject, {
+                    callback: (err, msg) => subcription.handler(err, {
+                        sub : msg.subject,
+                        data: this.codec.decode(msg.data) as Record<string, any>
+                    })
+                })
+            }
+        }
     }
 }
+
+export default (server: string): NatsWrapper => new NatsWrapper(server)
