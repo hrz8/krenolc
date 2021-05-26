@@ -1,13 +1,11 @@
-import { SubscriptionHandler } from '../types/subscription'
+import { Subscription } from '../types/subscription'
 import auditSub from './audit'
 
 const subs = {
     ...auditSub
 }
-const subscriptions: {
-    subject: string;
-    handler: SubscriptionHandler
-}[] = Object.keys(subs)
+
+const subscriptions: Subscription[] = Object.keys(subs)
     .map((sub) => ({
         subject: sub,
         handler: subs[sub].handler

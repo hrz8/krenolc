@@ -2,18 +2,23 @@ import {
     NatsConnection, Codec, connect as natsConnect, JSONCodec as natsJSONCodec
 } from 'nats'
 import { Subscription } from '../types/subscription'
-import subscriptions from '../subscriptions'
 
 class NatsWrapper {
     private server: string
 
     private connection: NatsConnection | null = null
 
+    private subscriptions: Subscription[] = []
+
     private codec: Codec<any>
 
     constructor(server: string) {
         this.codec = natsJSONCodec()
         this.server = server
+    }
+
+    public use(subs: Subscription[]): void {
+        this.subscriptions = subs
     }
 
     public async listen(): Promise<void> {
@@ -24,7 +29,7 @@ class NatsWrapper {
         this.codec = natsJSONCodec()
 
         // register all subscriptions
-        this.register(subscriptions)
+        this.register(this.subscriptions)
     }
 
     private async register(
