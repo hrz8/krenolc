@@ -16,20 +16,15 @@ class NatsWrapper {
         this.server = server
     }
 
-    public async listen(cb: (err: null | any) => any = () => undefined): Promise<void> {
-        try {
-            // core props
-            this.connection = await natsConnect({
-                servers: this.server
-            })
-            this.codec = natsJSONCodec()
+    public async listen(): Promise<void> {
+        // core props
+        this.connection = await natsConnect({
+            servers: this.server
+        })
+        this.codec = natsJSONCodec()
 
-            // register all subscriptions
-            this.register(subscriptions)
-            cb(null)
-        } catch (error) {
-            cb(error)
-        }
+        // register all subscriptions
+        this.register(subscriptions)
     }
 
     private async register(
