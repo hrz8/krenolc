@@ -20,12 +20,12 @@ export default class BotTemplate {
     public constructor(brain = 'system') {
         this.brain = brain
         this.load(brain)
-            .catch(() => log.error('Failed to load bot'))
+            .catch(() => log.error(`Failed to load [${brain}] bot`))
     }
 
     public load(brain: string): Promise<BotTemplate> {
         if (brain !== 'system') {
-            log.info(`Loading ${brain} bot`)
+            log.info(`Loading [${brain}] Bot`)
             return new Promise((res, rej) => {
                 botRepository()
                     .getMetaByBrain(brain)
@@ -38,23 +38,23 @@ export default class BotTemplate {
                                         this.modules.set(moduleId, modules[moduleId])
                                         this.loadModule(moduleId)
                                     })
+                                log.info(`[${brain}] Bot load process completed`)
+                                res(this)
                             } catch (err) {
-                                log.error('failed when load bot modules')
+                                log.error(`failed when load [${brain}] Bot modules`)
                                 log.error(err.message)
                                 rej(err)
                             }
                         }
-                        log.info(`${brain} Bot load process completed`)
-                        res(this)
                     })
                     .catch((err) => {
-                        log.error('failed to fetch bot metadata from db')
+                        log.error(`failed to fetch [${brain}] Bot metadata from db`)
                         log.error(err.message)
                         rej(err)
                     })
             })
         }
-        log.info('Loading system bot')
+        log.info('Loading [system] Bot')
         return new Promise((res, rej) => {
             try {
                 _keys(Modules)
@@ -62,10 +62,10 @@ export default class BotTemplate {
                         this.modules.set(moduleId, Modules[moduleId])
                         this.loadModule(moduleId)
                     })
-                log.info('System Bot load process completed')
+                log.info('[system] Bot load process completed')
                 res(this)
             } catch (err) {
-                log.error('failed when load bot modules')
+                log.error('failed when load [system] bot modules')
                 log.error(err.message)
                 rej(err)
             }
