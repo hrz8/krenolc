@@ -1,11 +1,18 @@
-import { SubscriptionObjectRaw } from '../types/subscription'
+import { IncomingMessage, SubscriptionHandler } from '../types/subscription'
 
-const sub: SubscriptionObjectRaw = {
-    sub    : 'audit',
-    handler: (codec: any, msg: any) => {
-        console.log(`subject: ${msg.subject}`)
-        console.log(`data: ${JSON.stringify(codec.decode(msg.data))}`)
+const subs: Record<string, { handler: SubscriptionHandler }> = {
+    audit: {
+        handler: (err, msg: IncomingMessage): void => {
+            console.log('subject:', msg.sub)
+            console.log('received:', msg.data)
+        }
+    },
+    'oy.*': {
+        handler: (err, msg: IncomingMessage): void => {
+            console.log('subject:', msg.sub)
+            console.log('received:', msg.data)
+        }
     }
 }
 
-export default sub
+export default subs
