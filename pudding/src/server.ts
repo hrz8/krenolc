@@ -1,4 +1,5 @@
 import env from 'env-var'
+import connectDB from './db/connection'
 import subscriptions from './subscriptions'
 import EnvFactory from './utils/env'
 import log from './utils/logger'
@@ -7,22 +8,20 @@ import Nats from './utils/nats'
 const main = async () => {
     EnvFactory.init()
 
-    const natsServer = env.get('NATS_SERVER')
+    const nats = Nats(`${env.get('NATS_SERVER')
         .required()
-        .asString()
-    const natsPort = env.get('NATS_PORT')
+        .asString()}:${env.get('NATS_PORT')
         .required()
-        .asString()
-    const nats = Nats(`${natsServer}:${natsPort}`)
+        .asString()}`)
+
+    await connectDB()
+        .then(() => log.info('Database connected successfully'))
+        .catch((err) => log.error(`encountered connectDB error: ${err.message}`))
 
     nats.use(subscriptions)
     nats.listen()
-        .then(() => {
-            console.log(`listening to: ${natsServer}`)
-        })
-        .catch((err) => {
-            log.error(`encountered nats.listen error: ${err.message}`)
-        })
+        .then(() => log.info('Nats connected successfully'))
+        .catch((err) => log.error(`encountered nats.listen error: ${err.message}`))
 }
 
 (async function () {
