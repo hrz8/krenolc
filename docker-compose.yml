@@ -37,9 +37,9 @@ services:
     ports:
       - 3009:3009
     depends_on: 
-      - postgres-krenolc
-      - redis-krenolc
-      - nats-krenolc
+      - krenolc-postgres
+      - krenolc-redis
+      - krenolc-nats
     env_file:
       - krenolc-pizza.env
     networks: 
@@ -50,7 +50,7 @@ services:
     image: hrz8/krenolc-pudding:1.0
     container_name: krenolc-pudding
     depends_on:
-      - nats-krenolc
+      - krenolc-nats
     env_file:
       - krenolc-pudding.env
     networks: 
