@@ -4,7 +4,9 @@
     "description": "audit service of krenolc",
     "main": "src/server.js",
     "scripts": {
-        "tsc:build": "tsc --build"
+        "start": "tsc --build && node src/server",
+        "tsc:build": "tsc --build",
+        "debug": "tsc --build && NODE_MODE=debug node -r ts-node/register --nolazy src/server.ts"
     },
     "repository": {
         "type": "git",
