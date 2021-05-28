@@ -1,6 +1,7 @@
 import {
     NextFunction, Request, Response
 } from 'express'
+import env from 'env-var'
 import jwt, { JsonWebTokenError } from 'jsonwebtoken'
 import jwksRsa from 'jwks-rsa'
 import _ from 'lodash'
@@ -8,7 +9,6 @@ import _ from 'lodash'
 import User from '@db/entities/user.entity'
 import userRepository from '@db/repository/user.repository'
 
-import EnvFactory from '@/utils/env'
 import CacheFactory from '@/utils/cache/factory'
 import BotFactory from '@/utils/bot/factory'
 import log from '@/utils/logger'
@@ -64,7 +64,9 @@ export const checkJwt = async (
     }
 
     try {
-        const AUTH0_DOMAIN = EnvFactory.get<string>('AUTH0_DOMAIN', 'domain.auth0.com')
+        const AUTH0_DOMAIN = env.get('AUTH0_DOMAIN')
+            .required()
+            .asString()
         const { header } = jwt.decode(token, {
             complete: true
         }) as { header: { kid: string, alg: string, typ: string } }

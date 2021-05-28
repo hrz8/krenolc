@@ -1,7 +1,7 @@
 import {
     connect as natsConnect, JSONCodec as natsJSONCodec, NatsConnection
 } from 'nats'
-import EnvFactory from './env'
+import env from 'env-var'
 
 export interface INats {
     connection: () => Promise<NatsConnection>,
@@ -11,9 +11,14 @@ export interface INats {
 
 const nats: INats = {
     connection(): Promise<NatsConnection> {
-        const serverUrl = EnvFactory.get<string>('NATS_SERVER', 'localhost:4222')
+        const serverUrl = env.get('NATS_SERVER')
+            .required()
+            .asString()
+        const serverPort = env.get('NATS_PORT')
+            .required()
+            .asString()
         return natsConnect({
-            servers: serverUrl
+            servers: `${serverUrl}:${serverPort}`
         })
     },
 

@@ -10,7 +10,10 @@ const main = async () => {
     const natsServer = env.get('NATS_SERVER')
         .required()
         .asString()
-    const nats = Nats(natsServer)
+    const natsPort = env.get('NATS_PORT')
+        .required()
+        .asString()
+    const nats = Nats(`${natsServer}:${natsPort}`)
 
     nats.use(subscriptions)
     nats.listen()
