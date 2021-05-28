@@ -2,6 +2,7 @@ version: 3.8
 
 services:
 
+  # dependencies
   krenolc-postgres:
     image: postgres:9.6.22-alpine
     container_name: krenolc-postgres
@@ -30,8 +31,19 @@ services:
     networks: 
       - krenolc-network
 
+  krenolc-mongo:
+    image: mongo:4.0.24-xenial
+    container_name: krenolc-mongo
+    ports:
+      - 27017:27017
+    env_file:
+      - krenolc-mongo.env
+    networks: 
+      - krenolc-network
+
+  # apps
   krenolc-pizza:
-    build: ./pizza/
+    build: ../pizza/
     image: hrz8/krenolc-pizza:1.0
     container_name: krenolc-pizza
     ports:
@@ -46,11 +58,12 @@ services:
       - krenolc-network
 
   krenolc-pudding:
-    build: ./pudding/
+    build: ../pudding/
     image: hrz8/krenolc-pudding:1.0
     container_name: krenolc-pudding
     depends_on:
       - krenolc-nats
+      - krenolc-mongo
     env_file:
       - krenolc-pudding.env
     networks: 

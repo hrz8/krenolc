@@ -11,6 +11,10 @@
       {
         "name": "pudding",
         "path": "pudding"
+      },
+      {
+        "name": "_docker",
+        "path": "_docker"
       }
     ]
 }
