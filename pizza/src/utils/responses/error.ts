@@ -1,11 +1,9 @@
+import env from 'env-var'
+
 import _toString from 'lodash/toString'
 import _isObjectLike from 'lodash/isObjectLike'
 import _snakeCase from 'lodash/snakeCase'
 import _camelCase from 'lodash/camelCase'
-
-import { BRAIN_DEFAULT } from '@/libs/constant'
-
-import EnvFactory from '../env'
 
 type ErrorPayload = {
     reponseMessage?: string
@@ -16,7 +14,9 @@ type ErrorPayload = {
 
 export class ErrorCode {
     static get namespace(): string {
-        const brain = EnvFactory.get<string>('BRAIN', BRAIN_DEFAULT)
+        const brain = env.get('BRAIN')
+            .default('KRENOLCPIZZA')
+            .asString()
             .replace(/[^0-9a-z]/gi, '')
         return brain.toUpperCase()
     }

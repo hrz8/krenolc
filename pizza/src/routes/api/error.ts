@@ -1,10 +1,10 @@
+import env from 'env-var'
+
 import { Response } from 'express'
 import _isError from 'lodash/isError'
 import _toNumber from 'lodash/toNumber'
 
-import EnvFactory from '@/utils/env'
 import { ErrorCode, ErrorResponse } from '@/utils/responses/error'
-import { BRAIN_DEFAULT } from '@/libs/constant'
 
 type DataPayload = {
     version: string, moduleId: string, endpointId: string
@@ -150,12 +150,16 @@ export const apiErrorDefault = (
     err: any
 ): void => {
     const isErrorObj = _isError(err)
-    const errorData = EnvFactory.get<string>('NODE_ENV', 'dev') === 'dev' ? {
-        message: err?.message || 'Server Error'
-    } : {
-        message: 'Server Error'
-    }
-    const brain = EnvFactory.get<string>('BRAIN', BRAIN_DEFAULT)
+    const errorData = env.get('BRAIN')
+        .default('development')
+        .asString() === 'development' ? {
+            message: err?.message || 'Server Error'
+        } : {
+            message: 'Server Error'
+        }
+    const brain = env.get('BRAIN')
+        .default('KRENOLCPIZZA')
+        .asString()
     const errorResponse = isErrorObj ? new ErrorResponse(
         errorData,
         500,

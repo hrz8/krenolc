@@ -1,3 +1,4 @@
+import env from 'env-var'
 import { createServer } from 'http'
 
 import 'reflect-metadata'
@@ -39,7 +40,9 @@ const main = async () => {
     app.use(errorRouter())
 
     // - http server
-    const PORT = EnvFactory.get<number>('PORT', 3009)
+    const PORT = env.get('APP_PORT')
+        .required()
+        .asIntPositive()
     const server = createServer(app)
     server.listen(
         PORT,

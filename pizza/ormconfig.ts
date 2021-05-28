@@ -1,3 +1,5 @@
+import env from 'env-var'
+
 import { ConnectionOptions } from 'typeorm'
 import EnvFactory from './src/utils/env'
 
@@ -8,13 +10,23 @@ const ormconfig = () => {
     // - set connection options
     const options: ConnectionOptions = {
         // - dbms
-        type       : 'postgres',
+        type: 'postgres',
         // - connection
-        host       : EnvFactory.get<string>('DB_HOST', 'localhost'),
-        port       : EnvFactory.get<number>('DB_PORT', 5432),
-        username   : EnvFactory.get<string>('DB_USER', 'postgres'),
-        password   : EnvFactory.get<string>('DB_PASSWORD', ''),
-        database   : EnvFactory.get<string>('DB_NAME', 'krenolc'),
+        host: env.get('DB_HOST')
+            .required()
+            .asString(),
+        port: env.get('DB_PORT')
+            .required()
+            .asIntPositive(),
+        username: env.get('DB_USER')
+            .required()
+            .asString(),
+        password: env.get('DB_PASSWORD')
+            .required()
+            .asString(),
+        database: env.get('DB_NAME')
+            .required()
+            .asString(),
         // - file-ing
         entities   : [`${__dirname}/src/db/entities/*.js`],
         migrations : [`${__dirname}/src/db/migrations/*.js`],
@@ -26,7 +38,8 @@ const ormconfig = () => {
             subscribersDir: `${__dirname}/src/db/subscribers`
         },
         // - other options
-        logging    : EnvFactory.get<string>('NODE_ENV', 'dev') === 'dev',
+        logging: env.get('NODE_MODE')
+            .asString() === 'debug',
         synchronize: true
     }
     return options
