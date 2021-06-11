@@ -8,3 +8,4 @@
 !*.eslintrc.js
 !*.config.js
 !*svelte.config.cjs
+*.log
