@@ -19,8 +19,7 @@ export default class CacheFactory {
             .required()
             .asIntPositive()
         const authPass = env.get('REDIS_PASSWORD')
-            .required()
-            .asString()
+            .asString() || ''
         const db = env.get('REDIS_DB')
             .required()
             .asIntPositive()
