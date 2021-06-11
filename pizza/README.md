@@ -39,8 +39,8 @@ $ docker container start postgres-krenolc
 $ docker container start redis-krenolc
 ```
 
-## DB Setup 🗄
-### DB Creation 💾
+## Database Setup 🗄
+### Creation 💾
 
 Create the DB with the same name as you put on `DB_NAME` environment.
 
@@ -50,7 +50,7 @@ $ psql
 $ CREATE DATABASE dbname;
 $ \l
 ```
-### DB Migration 🔃
+### Migration 🔃
 
 Pointing `ENV_PATH` with your `.env` file to running the DB Migration
 ```bash
