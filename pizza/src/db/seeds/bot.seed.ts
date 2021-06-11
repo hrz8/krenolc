@@ -12,7 +12,7 @@ const data: BotInsertPayload[] = [
                     enabled: true
                 }
             },
-            content: {
+            contentNode: {
                 conversation_start: {
                     content: {
                         text: 'Welcome to preview bot!'
@@ -36,7 +36,7 @@ const data: BotInsertPayload[] = [
                     enabled: true
                 }
             },
-            content: {
+            contentNode: {
                 conversation_start: {
                     content: {
                         text: 'Welcome to your custom bot!'

@@ -15,7 +15,7 @@ export interface BotMetaData {
             [other: string]: any
         }
     },
-    content: {
+    contentNode: {
         [contentId: string]: {
             content: {
                 text: string | Array<string>,
