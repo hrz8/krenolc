@@ -1,10 +1,11 @@
 # pizza 🍕
 
 ## What's going on here?
-- [Environment Setup 📦](#Environtment-Setup)
-- [Docker Setup 🐳](#Docker-Setup)
-- [Launch 🚀](#Launch)
-- [Health Check 🏥](#Health-Check)
+- [Environment Setup 📦](#environment-setup-)
+- [Docker Setup 🐳](#docker-setup-)
+- [Database Setup 🛠](database-setup-)
+- [Launch 🚀](#launch-)
+- [Health Check 🏥](#health-check-)
 
 ## Environment Setup 📦
 Default config to be sync with `./.vscode/launch.json` is to put `.env` under `./.env/` folder. Here the required environment list:
@@ -38,7 +39,7 @@ $ docker container start postgres-krenolc
 $ docker container start redis-krenolc
 ```
 
-## Launch 🚀
+## DB Setup 🗄
 ### DB Creation 💾
 
 Create the DB with the same name as you put on `DB_NAME` environment.
@@ -57,6 +58,7 @@ $ ENV_PATH=.env/someenv.env yarn db:sync
 $ ENV_PATH=.env/someenv.env yarn db:migrate
 ```
 
+## Launch 🚀
 ### Running pizza 🏃🍕
 
 Run app using `yarn`
@@ -79,7 +81,7 @@ Debug app using VsCode Debugger Tool
 - Choose your `.env` file
 - Done!
 
-### Health Check 🇨🇭
+## Health Check 🇨🇭
 
 ```bash
 $ curl HOST:PORT/api/health-check
