@@ -3,7 +3,7 @@
 ## What's going on here?
 - [Environment Setup 📦](#environment-setup-)
 - [Docker Setup 🐳](#docker-setup-)
-- [Database Setup 🛠](database-setup-)
+- [Database Setup 🛠](#database-setup-)
 - [Launch 🚀](#launch-)
 - [Health Check 🏥](#health-check-)
 
