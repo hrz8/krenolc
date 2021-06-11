@@ -11,4 +11,4 @@ export default {
       url   : 'faq/get-default'
     }
   }
-} as Record<string, Record<string, {method: any, url: string }>>
+} as Record<string, Record<string, { method: any, url: string }>>
