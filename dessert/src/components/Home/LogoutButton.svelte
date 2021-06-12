@@ -1,7 +1,19 @@
 <script lang="ts">
-  import Button from '@smui/button'
-  import Label from '@smui/common'
   import AuthFactory from '@services/auth'
+
+  import { Button } from 'sveltestrap/src'
+  import type { ButtonColor } from 'sveltestrap/src/Button'
+
+  const colors: ButtonColor[] = [
+    'primary',
+    'secondary',
+    'success',
+    'danger',
+    'warning',
+    'info',
+    'light',
+    'dark'
+  ]
 
   function logout() {
     AuthFactory.logout()
@@ -12,9 +24,9 @@
   logout Button
 </button> -->
 
-<Button
-  variant="outlined"
-  class="button-shaped-round"
->
-  <Label>Outlined</Label>
-</Button>
+{#each colors as color}
+<div>
+  <Button {color}>{color}</Button>
+</div>
+{/each}
+<Button color="primary">primary2</Button>

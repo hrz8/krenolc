@@ -1,10 +1,11 @@
 <script lang="ts">
+  import { Styles } from 'sveltestrap'
   import { onMount } from 'svelte'
   import Router from 'svelte-spa-router'
 
   import {
     darkMode as darkModeStore, loadingMsg as loadingMsgStore
-} from './stores/util'
+  } from './stores/util'
   import { isAuthenticated as isAuthenticatedStore } from './stores/auth'
 
   import routes from './routes'
@@ -17,6 +18,8 @@
     await AuthFactory.init()
   })
 </script>
+
+<Styles />
 
 {#if !$isAuthenticatedStore}
   <div>
