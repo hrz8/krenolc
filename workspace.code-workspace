@@ -5,6 +5,10 @@
         "path": "pizza"
       },
       {
+        "name": "doughnut",
+        "path": "doughnut"
+      },
+      {
         "name": "dessert",
         "path": "dessert"
       },
