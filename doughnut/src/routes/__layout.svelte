@@ -19,22 +19,24 @@
 
 <Styles />
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-auto p-0 bg-light" style="height: 100vh; overflow-y: auto;">
-            <Sidebar />
-        </div>
-        <div class="content col-sm p-3 min-vh-100">
+<main style="display: flex;">
+    <Sidebar />
+    <div class="container-fluid">
+        <div class="row">
+        <!-- <div class="col-sm p-3 min-vh-100"></div> -->
             <slot></slot>
         </div>
     </div>
-</div>
+</main>
 
 <style>
-    .content {
-        flex-shrink: 0;
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 0.5em 1.5em rgb(0 0 0 / 10%), inset 0 0.125em 0.5em rgb(0 0 0 / 15%);
+    main {
+        display: flex;
+        flex-wrap: nowrap;
+        height: 100vh;
+        height: -webkit-fill-available;
+        max-height: 100vh;
+        overflow-x: auto;
+        overflow-y: hidden;
     }
 </style>
