@@ -1,17 +1,17 @@
 
 <script lang="ts">
-  import {
-    Icon,
-    Tooltip,
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle
-  } from 'sveltestrap/src'
+import {
+  Icon,
+  Tooltip,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle
+} from 'sveltestrap/src'
 </script>
 
-<div class="d-flex flex-column flex-shrink-0" style="width: 3.5em; height: 100vh; overflow-y: auto; box-shadow: 0 0.125em 0.5em rgb(0 0 0 / 15%);">
-  <a href="/#" id="sidebar-app" class="text-center p-3 link-dark text-decoration-none">
+<div class="d-flex flex-column flex-shrink-0" style="width: 4.5em; height: 100vh; overflow-y: auto; box-shadow: 0 0.125em 0.5em rgb(0 0 0 / 15%);">
+  <a href="/#" id="sidebar-app" class="bg-dark bg-gradient text-light text-center p-3 link-dark text-decoration-none">
     <Icon class="h3" name="controller" />
   </a>
   <Tooltip target="sidebar-app" placement="right">Krenolc Dashboard</Tooltip>
@@ -76,7 +76,7 @@
 </div>
 
 <style>
-  .nav-flush .nav-link {
-    border-radius: 0;
-  }
+.nav-flush .nav-link {
+  border-radius: 0;
+}
 </style>
