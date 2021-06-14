@@ -1,6 +1,13 @@
 
 <script lang="ts">
-  import { Icon, Tooltip, Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'sveltestrap/src';
+  import {
+    Icon,
+    Tooltip,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle
+  } from 'sveltestrap/src'
 </script>
 
 <div class="d-flex flex-column flex-shrink-0" style="width: 3.5em; height: 100vh; overflow-y: auto; box-shadow: 0 0.125em 0.5em rgb(0 0 0 / 15%);">

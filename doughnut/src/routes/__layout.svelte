@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Styles } from 'sveltestrap';
+  import { Styles } from 'sveltestrap'
   import { Button } from 'sveltestrap/src'
   import type { ButtonColor } from 'sveltestrap/src/Button'
 
