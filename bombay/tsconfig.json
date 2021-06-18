@@ -1,0 +1,30 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "lib": [
+            "es5",
+            "es6"
+        ],
+        "sourceMap": true,
+        "strict": true, 
+        "baseUrl": "./",
+        "esModuleInterop": true,  
+        "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "removeComments": true,
+        "paths": {
+            "~/*": [
+                "./*"
+            ],
+            "@/*": [
+                "./src/*"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
