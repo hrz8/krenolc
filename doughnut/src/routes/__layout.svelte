@@ -1,20 +1,42 @@
+<!-- <script lang="ts" context="module">
+  import createAuth0Client, {
+    Auth0Client,
+    Auth0ClientOptions
+  } from '@auth0/auth0-spa-js'
+
+  const authOptions: Auth0ClientOptions = {
+    domain          : 'dev-q3imkb6d.us.auth0.com',
+    client_id       : 'avCrjqvcJSwD4ydZlfyzz3vqA8qHMZRq',
+    audience        : 'https://dev-q3imkb6d.us.auth0.com/api/v2/',
+    useRefreshTokens: true,
+    redirect_uri    : '/'
+  }
+
+  export async function load({
+    page, fetch, session, context
+  }) {
+    const auth0Client = await createAuth0Client(authOptions)
+    auth0Client.getTokenWithPopup()
+  }
+</script> -->
 <script lang="ts">
+  import createAuth0Client, {  Auth0Client } from '@auth0/auth0-spa-js'
+  import { onMount } from 'svelte'
   import { Styles } from 'sveltestrap'
-  import { Button } from 'sveltestrap/src'
-  import type { ButtonColor } from 'sveltestrap/src/Button'
 
   import Sidebar from '../components/sidebar.svelte'
 
-  const colors: ButtonColor[] = [
-    'primary',
-    'secondary',
-    'success',
-    'danger',
-    'warning',
-    'info',
-    'light',
-    'dark'
-  ]
+  onMount(async () => {
+    const authOptions = {
+      domain          : 'dev-q3imkb6d.us.auth0.com',
+      client_id       : 'avCrjqvcJSwD4ydZlfyzz3vqA8qHMZRq',
+      audience        : 'https://dev-q3imkb6d.us.auth0.com/api/v2/',
+      useRefreshTokens: true,
+      redirect_uri    : `${window.location.href}login`
+    }
+    const auth0Client = await createAuth0Client(authOptions)
+    await auth0Client.loginWithRedirect()
+  })
 </script>
 
 <Styles />
