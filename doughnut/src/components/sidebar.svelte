@@ -1,13 +1,20 @@
 
 <script lang="ts">
-import {
-  Icon,
-  Tooltip,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle
-} from 'sveltestrap/src'
+  import { Auth } from '$lib/auth'
+
+  import {
+    Icon,
+    Tooltip,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle
+  } from 'sveltestrap/src'
+
+  const logout = () => {
+    Auth.logout()
+  }
+
 </script>
 
 <div class="d-flex flex-column flex-shrink-0" style="width: 4.5em; height: 100vh; overflow-y: auto; box-shadow: 0 0.125em 0.5em rgb(0 0 0 / 15%);">
@@ -68,7 +75,7 @@ import {
         <Icon class="h4" name="gear" /> Settings
       </DropdownItem>
       <DropdownItem divider />
-      <DropdownItem>
+      <DropdownItem on:click={logout}>
         <Icon class="h4" name="box-arrow-right" /> Sign Out
       </DropdownItem>
     </DropdownMenu>
