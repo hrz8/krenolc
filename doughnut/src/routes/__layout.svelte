@@ -1,40 +1,51 @@
 <script lang="ts" context="module">
-  export const load = ({ session }) => {
-    console.log('session', session)
+  import type SvelteKit from '@sveltejs/kit'
+
+  export const load: SvelteKit.Load = async ({ page }) => {
+    const hasBeenRedirected =
+      page.query.has('code') && page.query.has('state')
+    const errorOccured =
+      page.query.has('error') && page.query.has('error_description')
+
+    // if (errorOccured) {
+    //   const errMsg = (new URLSearchParams(window.location.search))
+    //     .get('error_description')
+    //   window.history.replaceState(
+    //     {}, document.title, `${window.location.pathname}#/`
+    //   )
+    //   return
+    // }
+
     return {
       props: {
-        isAuthenticated: session.token !== 'token000'
+        hasBeenRedirected,
+        errorOccured
       }
     }
   }
 </script>
 
 <script lang="ts">
-  import createAuth0Client from '@auth0/auth0-spa-js'
   import { onMount } from 'svelte'
   import { Styles } from 'sveltestrap'
 
-  import { client as authClientStore } from '../stores/auth'
-
   import Sidebar from '../components/sidebar.svelte'
+  import { Auth } from '$lib/auth'
 
-  export let isAuthenticated
+  export let hasBeenRedirected
+  export let errorOccured
 
   onMount(async () => {
-    console.log('isAuthenticated', isAuthenticated)
-    if (!isAuthenticated) {
-      const authOptions = {
-        domain          : 'dev-q3imkb6d.us.auth0.com',
-        client_id       : 'avCrjqvcJSwD4ydZlfyzz3vqA8qHMZRq',
-        audience        : 'https://dev-q3imkb6d.us.auth0.com/api/v2/',
-        useRefreshTokens: true,
-        redirect_uri    : `${window.location.href}login`
-      }
-      const client = await createAuth0Client(authOptions)
-  
-      authClientStore.set(client)
-      authClientStore.subscribe((cl) => cl.loginWithRedirect())
-    }
+    await Auth.init({
+      domain          : 'dev-q3imkb6d.us.auth0.com',
+      client_id       : 'avCrjqvcJSwD4ydZlfyzz3vqA8qHMZRq',
+      audience        : 'https://dev-q3imkb6d.us.auth0.com/api/v2/',
+      useRefreshTokens: true,
+      redirect_uri    : window.location.href
+    }, {
+      redirected: hasBeenRedirected,
+      error     : errorOccured
+    })
   })
 </script>
 
