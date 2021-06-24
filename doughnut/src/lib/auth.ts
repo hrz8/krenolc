@@ -3,14 +3,11 @@ import createAuth0Client, {
   Auth0ClientOptions
 } from '@auth0/auth0-spa-js'
 
-// import { loadingMsg as loadingMsgStore } from '../stores/util'
 import {
   user as userStore,
   accessToken as tokenStore,
   isAuthenticated as isAuthenticatedStore
 } from '../stores/auth'
-// import Rest from './rest/rest'
-// import { HTTPMethod } from './rest/methods'
 
 export type AuthUserStore = {
   email: string;
@@ -57,11 +54,14 @@ export class Auth {
       userStore.set(this.user)
       return
     }
-    // otherwise, just request login
+
     await this.client.loginWithRedirect()
   }
 
   public static logout(): void {
+    isAuthenticatedStore.set(false)
+    tokenStore.set('')
+    userStore.set(null)
     return this.client.logout()
   }
 }

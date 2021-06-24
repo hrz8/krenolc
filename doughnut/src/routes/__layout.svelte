@@ -7,15 +7,6 @@
     const errorOccured =
       page.query.has('error') && page.query.has('error_description')
 
-    // if (errorOccured) {
-    //   const errMsg = (new URLSearchParams(window.location.search))
-    //     .get('error_description')
-    //   window.history.replaceState(
-    //     {}, document.title, `${window.location.pathname}#/`
-    //   )
-    //   return
-    // }
-
     return {
       props: {
         hasBeenRedirected,
