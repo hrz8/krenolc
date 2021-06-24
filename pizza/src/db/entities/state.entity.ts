@@ -4,25 +4,34 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    JoinColumn,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm'
+import Session from './session.entity'
 
-@Entity()
-export default class Session extends BaseEntity {
+export interface StateMetadata {
+    context: string
+}
+
+Entity()
+export default class State extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string
 
-    @Column()
-    partitionKey!: string;
+    @OneToOne(() => Session)
+    @JoinColumn()
+    session!: Session;
 
     @Column()
-    userId!: string;
+    channel!: string;
 
-    @Column({
-        nullable: true
-    })
-    expiredAt!: Date;
+    @Column('simple-json')
+    metadata!: StateMetadata
+
+    @Column('simple-json')
+    vars!: Record<string, any>
 
     @CreateDateColumn()
     createdAt!: Date

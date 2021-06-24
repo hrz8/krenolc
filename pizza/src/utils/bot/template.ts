@@ -4,7 +4,7 @@ import _kebabCase from 'lodash/kebabCase'
 
 import Modules from '@/modules'
 import botRepository from '@db/repository/bot.repository'
-import { BotMetaData } from '@db/entities/bot.entity'
+import { BotMetadata } from '@db/entities/bot.entity'
 import log from '@/utils/logger'
 
 import { EndpointAction } from '@/types/endpoint'
@@ -29,7 +29,7 @@ export default class BotTemplate {
             return new Promise((res, rej) => {
                 botRepository()
                     .getMetaByBrain(brain)
-                    .then(({ modules }: BotMetaData): void => {
+                    .then(({ modules }: BotMetadata): void => {
                         if (modules) {
                             try {
                                 _keys(modules)
