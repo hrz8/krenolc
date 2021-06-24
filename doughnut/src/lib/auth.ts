@@ -25,10 +25,10 @@ export class Auth {
 
   public static async init(
     options: Auth0ClientOptions, condition: {
-      redirected: boolean; error: boolean
+      redirected: boolean;
+      error: boolean
     }
   ): Promise<void> {
-    // create new instance of auth0 client
     this.client = await createAuth0Client(options)
 
     if (condition.redirected) {

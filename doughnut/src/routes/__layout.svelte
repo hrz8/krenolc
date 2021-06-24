@@ -23,6 +23,10 @@
   import Sidebar from '../components/sidebar.svelte'
   import { Auth } from '$lib/auth'
 
+  import { loadingMsg as loadingMsgStore } from '../stores/common'
+  import { isAuthenticated as isAuthenticatedStore } from '../stores/auth'
+
+
   export let hasBeenRedirected
   export let errorOccured
 
@@ -40,16 +44,21 @@
   })
 </script>
 
-<Styles />
-
-<main>
-  <Sidebar />
-  <div class="container-fluid">
-    <div class="row">
-      <slot></slot>
-    </div>
+{#if !$isAuthenticatedStore}
+  <div>
+    {$loadingMsgStore}
   </div>
-</main>
+{:else}
+  <Styles />
+  <main>
+    <Sidebar />
+    <div class="container-fluid">
+      <div class="row">
+        <slot></slot>
+      </div>
+    </div>
+  </main>
+{/if}
 
 <style>
   main {
