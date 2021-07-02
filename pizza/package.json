@@ -1,7 +1,7 @@
 {
     "name": "krenolc-pizza",
     "version": "1.0.0",
-    "description": "bot module for krenolc",
+    "description": "bot module for krenolc - module service",
     "main": "src/server.js",
     "bin": "src/server.js",
     "repository": "github.com/hrz8/krenolc",
