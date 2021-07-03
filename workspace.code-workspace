@@ -5,6 +5,10 @@
         "path": "pizza"
       },
       {
+        "name": "marshmallow",
+        "path": "marshmallow"
+      },
+      {
         "name": "bombay",
         "path": "bombay"
       },
