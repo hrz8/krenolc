@@ -1,6 +1,8 @@
 import { ServiceBroker } from 'moleculer'
 
-import moleculerConfig from '../moleculer.config'
+import 'tsconfig-paths/register'
+
+import moleculerConfig from '~/moleculer.config'
 
 const broker = new ServiceBroker(moleculerConfig)
 broker.loadService('./src/api.service.js')
