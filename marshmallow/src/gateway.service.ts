@@ -15,7 +15,7 @@ export default class ApiService extends Service {
                         path          : '/api',
                         whitelist     : ['**'],
                         use           : [],
-                        mergeParams   : true,
+                        mergeParams   : false,
                         authentication: false,
                         authorization : false,
                         autoAliases   : true,

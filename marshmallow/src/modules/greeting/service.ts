@@ -1,3 +1,4 @@
+import Joi from 'joi'
 import {
     Service, ServiceBroker, Context
 } from 'moleculer'
@@ -19,11 +20,18 @@ export default class GreeterService extends Service {
                 },
                 welcome: {
                     rest  : '/welcome',
-                    params: {
-                        name: 'string'
-                    },
-                    async handler(ctx: Context<{name: string}>): Promise<string> {
-                        return this.ActionWelcome(ctx.params.name)
+                    params: Joi.object()
+                        .keys({
+                            query: Joi.object()
+                                .keys({
+                                    name: Joi.string()
+                                        .required()
+                                }),
+                            params: Joi.object(),
+                            body  : Joi.object()
+                        }) as any,
+                    async handler(ctx: Context<{ query: { name: string } }>): Promise<string> {
+                        return this.ActionWelcome(ctx.params.query.name)
                     }
                 }
             }

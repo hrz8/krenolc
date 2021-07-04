@@ -1,6 +1,7 @@
 import {
     BrokerOptions, Errors, MetricRegistry
 } from 'moleculer'
+import JoiValidator from '@/utils/validator'
 
 /**
  * Moleculer ServiceBroker configuration file
@@ -150,7 +151,7 @@ const brokerConfig: BrokerOptions = {
     },
 
     // Enable action & event parameter validation. More info: https://moleculer.services/docs/0.14/validating.html
-    validator: true,
+    validator: new JoiValidator(),
 
     errorHandler: null,
 

@@ -5,6 +5,6 @@ import 'tsconfig-paths/register'
 import moleculerConfig from '~/moleculer.config'
 
 const broker = new ServiceBroker(moleculerConfig)
-broker.loadService('./src/api.service.js')
+broker.loadService('./src/gateway.service.js')
 broker.loadServices('./src/modules', '**/*service.js')
 broker.start()

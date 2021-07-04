@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "ioredis": "^4.14.1",
+        "joi": "^17.4.0",
         "moleculer": "^0.14.0",
         "moleculer-db": "^0.8.4",
         "moleculer-db-adapter-mongo": "^0.4.7",
