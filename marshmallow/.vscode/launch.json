@@ -4,18 +4,18 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Debug",
-            "program": "${workspaceRoot}/node_modules/moleculer/bin/moleculer-runner.js",
-            "sourceMaps": true,
-            "runtimeArgs": [
-                "--nolazy",
-                "-r",
-                "ts-node/register"
-            ],
-            "cwd": "${workspaceRoot}",
+            "name": "Marshmallow Debugger",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
+            "program": "${workspaceFolder}/src/server.ts",
+            "restart": true,
+            "preLaunchTask": "tsc: watch - tsconfig.json",
             "args": [
-                "services/**/*.service.ts"
-            ]
+                "--experimental-modules"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ],
+            "console": "integratedTerminal"
         },
         {
             "type": "node",
