@@ -7,8 +7,10 @@ import { Errors } from 'moleculer-web'
 import jwt, { JsonWebTokenError } from 'jsonwebtoken'
 import jwksRsa from 'jwks-rsa'
 
+type MixinSchema = Partial<ServiceSchema> & ThisType<Service>
+
 export default class AuthMixin implements Partial<ServiceSchema>, ThisType<Service> {
-    private schema: Partial<ServiceSchema> & ThisType<Service>;
+    private schema: MixinSchema;
 
     public constructor() {
         this.schema = {
@@ -52,7 +54,7 @@ export default class AuthMixin implements Partial<ServiceSchema>, ThisType<Servi
         }
     }
 
-    public init(): Partial<ServiceSchema> & ThisType<Service> {
+    public init(): MixinSchema {
         return this.schema
     }
 
