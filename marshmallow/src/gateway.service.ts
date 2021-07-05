@@ -1,14 +1,21 @@
+import env from 'env-var'
 import { Service, ServiceBroker } from 'moleculer'
 import ApiGateway from 'moleculer-web'
+import AuthMixin from './mixins/auth.mixin'
 
 export default class ApiService extends Service {
+    private AuthMixin = new AuthMixin()
+        .init()
+
     public constructor(broker: ServiceBroker) {
         super(broker)
         this.parseServiceSchema({
             name    : 'api',
-            mixins  : [ApiGateway],
+            mixins  : [ApiGateway, this.AuthMixin],
             settings: {
-                port: process.env.PORT || 3000,
+                port: env.get('APP_PORT')
+                    .default(3000)
+                    .asString(),
 
                 routes: [
                     {
@@ -42,9 +49,7 @@ export default class ApiService extends Service {
                     folder : 'public',
                     options: {}
                 }
-            },
-
-            methods: {}
+            }
         })
     }
 }

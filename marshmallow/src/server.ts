@@ -1,8 +1,11 @@
 import { ServiceBroker } from 'moleculer'
+import dotenv from 'dotenv'
 
 import 'tsconfig-paths/register'
 
 import moleculerConfig from '~/moleculer.config'
+
+dotenv.config()
 
 const broker = new ServiceBroker(moleculerConfig)
 broker.loadService('./src/gateway.service.js')
