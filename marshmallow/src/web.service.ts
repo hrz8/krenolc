@@ -21,10 +21,18 @@ export default class ApiService extends Service {
                     // greeter module
                     {
                         path          : '/api/greeter',
-                        authentication: false,
+                        authentication: true,
                         aliases       : {
                             'GET hello'  : 'greeter.hello',
                             'GET welcome': 'greeter.welcome'
+                        }
+                    },
+                    {
+                        path          : '/api/v2/greeter',
+                        authentication: false,
+                        aliases       : {
+                            'GET hello'  : 'v2.greeter.hello',
+                            'GET welcome': 'v2.greeter.welcome'
                         }
                     }
                 ],

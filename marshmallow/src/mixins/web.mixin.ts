@@ -88,7 +88,6 @@ export default class AuthMixin implements Partial<ServiceSchema>, ThisType<Servi
 
     private merged(schema: Service): void {
         const mutatedRoutes = schema.settings.routes.map((route: any) => ({
-            ...route,
             mergeParams   : false,
             authentication: true,
             authorization : true,
@@ -103,7 +102,8 @@ export default class AuthMixin implements Partial<ServiceSchema>, ThisType<Servi
                 }
             },
             mappingPolicy: 'all',
-            logging      : true
+            logging      : true,
+            ...route
         }))
         schema.settings.routes = mutatedRoutes
     }
