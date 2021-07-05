@@ -14,6 +14,22 @@ export default class AuthMixin implements Partial<ServiceSchema>, ThisType<Servi
 
     public constructor() {
         this.schema = {
+            settings: {
+                cors: {
+                    origin : '*',
+                    methods: [
+                        'GET',
+                        'OPTIONS',
+                        'POST',
+                        'PUT',
+                        'DELETE'
+                    ],
+                    allowedHeaders: true,
+                    exposedHeaders: true,
+                    credentials   : false,
+                    maxAge        : 3600
+                }
+            },
             methods: {
                 authenticate: async (ctx: Context, route: any, req: IncomingMessage): Promise<any> => {
                     const { authorization } = req.headers
@@ -41,7 +57,7 @@ export default class AuthMixin implements Partial<ServiceSchema>, ThisType<Servi
                         const key = await client.getSigningKey(header?.kid)
                         const secret = key.getPublicKey()
 
-                        const decoded = await this.verify(token, secret)
+                        const decoded = await this.jwtVerify(token, secret)
                         const user = decoded['http://login.hirzi.site/metadata']
                         return user
                     } catch (err) {
@@ -50,7 +66,8 @@ export default class AuthMixin implements Partial<ServiceSchema>, ThisType<Servi
                         })
                     }
                 }
-            }
+            },
+            merged: this.merged
         }
     }
 
@@ -58,7 +75,7 @@ export default class AuthMixin implements Partial<ServiceSchema>, ThisType<Servi
         return this.schema
     }
 
-    private verify(token: string, secret: string): Promise<any> {
+    private jwtVerify(token: string, secret: string): Promise<any> {
         return new Promise((resolve, reject) => jwt.verify(token, secret, {
             algorithms: ['RS256']
         }, (err, decoded) => {
@@ -67,5 +84,27 @@ export default class AuthMixin implements Partial<ServiceSchema>, ThisType<Servi
             }
             resolve(decoded)
         }))
+    }
+
+    private merged(schema: Service): void {
+        const mutatedRoutes = schema.settings.routes.map((route: any) => ({
+            ...route,
+            mergeParams   : false,
+            authentication: true,
+            authorization : true,
+            bodyParsers   : {
+                json: {
+                    strict: false,
+                    limit : '10MB'
+                },
+                urlencoded: {
+                    extended: true,
+                    limit   : '10MB'
+                }
+            },
+            mappingPolicy: 'all',
+            logging      : true
+        }))
+        schema.settings.routes = mutatedRoutes
     }
 }

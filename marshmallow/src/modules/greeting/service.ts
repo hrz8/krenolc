@@ -10,16 +10,11 @@ export default class GreeterService extends Service {
             name   : 'greeter',
             actions: {
                 hello: {
-                    rest: {
-                        method: 'GET',
-                        path  : '/hello'
-                    },
                     async handler(): Promise<string> {
                         return this.ActionHello()
                     }
                 },
                 welcome: {
-                    rest  : '/welcome',
                     params: Joi.object()
                         .keys({
                             query: Joi.object()
