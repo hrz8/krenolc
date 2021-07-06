@@ -8,7 +8,11 @@
     "author": "hirzi",
     "license": "MIT",
     "scripts": {
-        "start": "tsc --build && node src/server"
+        "start": "tsc --build && node src/server",
+        "db:sync": "tsc --build && typeorm schema:sync",
+        "db:drop": "tsc --build && typeorm schema:drop",
+        "db:migration": "tsc --build && typeorm migration:create -n",
+        "db:migrate": "tsc --build && typeorm migration:run"
     },
     "dependencies": {
         "dotenv": "^10.0.0",
