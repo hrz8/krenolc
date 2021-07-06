@@ -18,7 +18,13 @@ export default class ApiService extends Service {
                     .asString(),
 
                 routes: [
-                    // greeter module
+                    {
+                        path          : '/api/restapi/:botName',
+                        authentication: false,
+                        aliases       : {
+                            'POST ': 'restapi.chat'
+                        }
+                    },
                     {
                         path          : '/api/greeter',
                         authentication: true,
