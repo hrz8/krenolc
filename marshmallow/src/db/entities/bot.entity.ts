@@ -40,6 +40,7 @@ export interface BotMetadata {
 }
 
 export interface BotInsertPayload {
+    id?: string;
     name: string;
     modules?: BotModules;
     metadata?: BotMetadata;
