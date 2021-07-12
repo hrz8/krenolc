@@ -19,6 +19,9 @@ export default class ApiService extends Service {
 
                 routes: [
                     {
+                        path: '/api'
+                    },
+                    {
                         path          : '/api/restapi/:botName',
                         authentication: false,
                         aliases       : {

@@ -5,7 +5,7 @@ import createAuth0Client, {
 
 import {
   user as userStore,
-  accessToken as tokenStore,
+  accessToken as accessTokenStore,
   isAuthenticated as isAuthenticatedStore
 } from '../stores/auth'
 
@@ -49,7 +49,7 @@ export class Auth {
     isAuthenticatedStore.set(isAuthenticated)
     if (isAuthenticated) {
       this.token = await this.client.getTokenSilently()
-      tokenStore.set(this.token)
+      accessTokenStore.set(this.token)
       this.user = await this.client.getUser() as AuthUserStore
       userStore.set(this.user)
       return
@@ -60,7 +60,7 @@ export class Auth {
 
   public static logout(): void {
     isAuthenticatedStore.set(false)
-    tokenStore.set('')
+    accessTokenStore.set('')
     userStore.set(null)
     return this.client.logout()
   }
