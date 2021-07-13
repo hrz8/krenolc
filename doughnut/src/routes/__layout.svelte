@@ -24,7 +24,11 @@
   import { Auth } from '$lib/auth'
 
   import { loadingMsg as loadingMsgStore } from '../stores/common'
-  import { isAuthenticated as isAuthenticatedStore } from '../stores/auth'
+  import {
+    isAuthenticated as isAuthenticatedStore,
+    accessToken as accessTokenStore
+} from '../stores/auth'
+  import { Rest } from '$lib/rest'
 
 
   export let hasBeenRedirected
@@ -41,6 +45,13 @@
       redirected: hasBeenRedirected,
       error     : errorOccured
     })
+
+    accessTokenStore.subscribe(async (data) => {
+      await Rest.invoke('auth.login', {
+        token: data
+      })
+    })
+
   })
 </script>
 
