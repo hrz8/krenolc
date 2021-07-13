@@ -1,7 +1,6 @@
-import Joi from 'joi'
-import {
-    Service, ServiceBroker, Context
-} from 'moleculer'
+import { Service, ServiceBroker } from 'moleculer'
+import { v4 as uuid } from 'uuid'
+
 import userRepository from '@db/repository/user.repository'
 
 export default class UserService extends Service {
@@ -15,7 +14,7 @@ export default class UserService extends Service {
                         method: 'POST',
                         path  : '/login'
                     },
-                    handler: async (ctx): Promise<string> => {
+                    handler: async (ctx): Promise<{id: string}> => {
                         const { user } = ctx.meta
                         const userFromDb = await userRepository()
                             .findOne({
@@ -24,7 +23,17 @@ export default class UserService extends Service {
                                 },
                                 relations: ['bots']
                             })
-                        return 'hai'
+                        const userId = userFromDb ? userFromDb.id : uuid()
+                        await userRepository()
+                            .save({
+                                id       : userId,
+                                email    : user.email,
+                                name     : user.name,
+                                lastLogin: new Date()
+                            })
+                        return {
+                            id: userId
+                        }
                     }
                 }
             }
