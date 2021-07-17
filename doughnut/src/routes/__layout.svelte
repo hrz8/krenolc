@@ -21,6 +21,7 @@
   import { Styles } from 'sveltestrap'
 
   import Sidebar from '../components/sidebar.svelte'
+  import Navbar from '../components/navbar.svelte'
   import { Auth } from '$lib/auth'
 
   import { loadingMsg as loadingMsgStore } from '../stores/common'
@@ -62,6 +63,7 @@
     <Sidebar />
     <div class="container-fluid">
       <div class="row">
+        <Navbar />
         <slot></slot>
       </div>
     </div>

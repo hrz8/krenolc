@@ -4,7 +4,7 @@ import createAuth0Client, {
 } from '@auth0/auth0-spa-js'
 
 import { user as userStore } from '../stores/auth'
-import { promiseWrapper } from './helpers'
+import { loadingMsg as loadingMsgStore } from '../stores/common'
 import { Rest } from './rest'
 
 export type AuthUserStore = {
@@ -38,6 +38,9 @@ export class Auth {
       window.history.replaceState(
         {}, document.title, window.location.pathname
       )
+      const errMsg = (new URLSearchParams(window.location.search))
+        .get('error_description')
+      loadingMsgStore.set(errMsg || 'Unknown Error')
       return
     }
 
