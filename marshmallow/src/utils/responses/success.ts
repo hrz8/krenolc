@@ -1,11 +1,8 @@
 import _isObjectLike from 'lodash/isObjectLike'
-import _camelCase from 'lodash/camelCase'
 
 interface SuccessPayload {
     responseMessage?: string;
     apiVersion?: string;
-    module?: string;
-    endpoint?: string;
 }
 
 export class Response {
@@ -35,9 +32,7 @@ export class SuccessResponse {
         meta = {},
         {
             responseMessage = '',
-            apiVersion,
-            module,
-            endpoint
+            apiVersion
         }: SuccessPayload = {} as SuccessPayload
     ) {
         if (!_isObjectLike(data)) {
@@ -48,6 +43,6 @@ export class SuccessResponse {
         this.apiVersion = apiVersion || 'unknown'
         this.data = _isObjectLike(data) ? data : {}
         this.meta = meta
-        this.message = responseMessage || `success ${module} ${_camelCase(endpoint)}`
+        this.message = responseMessage
     }
 }

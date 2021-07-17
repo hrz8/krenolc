@@ -9,7 +9,7 @@ import jwksRsa from 'jwks-rsa'
 
 type MixinSchema = Partial<ServiceSchema> & ThisType<Service>
 
-export default class AuthMixin implements Partial<ServiceSchema>, ThisType<Service> {
+export default class WebMixin implements Partial<ServiceSchema>, ThisType<Service> {
     private schema: MixinSchema;
 
     public constructor() {
