@@ -42,25 +42,24 @@ export class Auth {
     }
 
     const isAuthenticated = await this.client.isAuthenticated()
-    const [user] = await  promiseWrapper(this.client.getUser)
-    const [token] = await promiseWrapper(this.client.getTokenSilently)
-
-    userStore.login({
-      user,
-      token,
-      isAuthenticated
-    })
-
-    if (isAuthenticated)
+    if (isAuthenticated) {
+      const user = await this.client.getUser()
+      const token = await this.client.getTokenSilently()
+      userStore.login({
+        user,
+        token,
+        isAuthenticated
+      })
       return
-
+    }
     await this.client.loginWithRedirect()
   }
 
   public static async load(token: string): Promise<void> {
-    await Rest.invoke('auth.login', {
+    const result = await Rest.invoke('auth.login', {
       token
     })
+    console.log(result)
   }
 
   public static logout(): void {

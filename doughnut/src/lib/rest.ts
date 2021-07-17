@@ -57,6 +57,7 @@ export class Rest {
       actionName
     ] = path.split('.')
     const endpoint = endpoints[module][actionName]
-    await this.hit(endpoint.method, endpoint.url, payload)
+    const result = await this.hit(endpoint.method, endpoint.url, payload)
+    return result
   }
 }
