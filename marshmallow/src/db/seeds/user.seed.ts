@@ -3,9 +3,12 @@ import { UserInsertPayload } from '../entities/user.entity'
 
 const data: UserInsertPayload[] = [
     {
-        email: 'hirzinurfakhrian@gmail.com',
-        name : 'Hirzi Nurfakhrian',
-        bots : [
+        email     : 'hirzinurfakhrian@gmail.com',
+        name      : 'Hirzi Nurfakhrian',
+        defaultBot: {
+            id: 'ecbcb2bc-7649-4680-be31-7918217d99fb'
+        } as Bot,
+        bots: [
             {
                 id: 'ecbcb2bc-7649-4680-be31-7918217d99fb'
             } as Bot,
@@ -15,9 +18,12 @@ const data: UserInsertPayload[] = [
         ]
     },
     {
-        email: 'krenolctesi@gmail.com',
-        name : 'Tesi Krenolc',
-        bots : [
+        email     : 'krenolctesi@gmail.com',
+        name      : 'Krenolc Tesi',
+        defaultBot: {
+            id: '2712869d-5e80-47d0-b52c-ae812a56388b'
+        } as Bot,
+        bots: [
             {
                 id: '2712869d-5e80-47d0-b52c-ae812a56388b'
             } as Bot

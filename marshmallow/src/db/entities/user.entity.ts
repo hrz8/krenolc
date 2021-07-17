@@ -4,8 +4,10 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    JoinColumn,
     JoinTable,
     ManyToMany,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm'
@@ -14,6 +16,7 @@ import Bot from './bot.entity'
 export interface UserInsertPayload {
     email: string;
     name: string;
+    defaultBot: Bot;
     bots: Bot[];
 }
 
@@ -34,6 +37,10 @@ export default class User extends BaseEntity {
         nullable: true
     })
     public lastLogin!: Date;
+
+    @OneToOne(() => Bot)
+    @JoinColumn()
+    public defaultBot?: Bot;
 
     @ManyToMany(() => Bot)
     @JoinTable()
