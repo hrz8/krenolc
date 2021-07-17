@@ -24,15 +24,12 @@
   import { Auth } from '$lib/auth'
 
   import { loadingMsg as loadingMsgStore } from '../stores/common'
-  import {
-    isAuthenticated as isAuthenticatedStore,
-    accessToken as accessTokenStore
-} from '../stores/auth'
-  import { Rest } from '$lib/rest'
-
+  import {  user as userStore } from '../stores/auth'
 
   export let hasBeenRedirected
   export let errorOccured
+
+  let isAuthenticated = false
 
   onMount(async () => {
     await Auth.init({
@@ -46,16 +43,16 @@
       error     : errorOccured
     })
 
-    accessTokenStore.subscribe(async (data) => {
-      await Rest.invoke('auth.login', {
-        token: data
-      })
+    userStore.subscribe(async (data) => {
+      isAuthenticated = data.isAuthenticated
+      if (isAuthenticated)
+        await Auth.load(data.token)
     })
 
   })
 </script>
 
-{#if !$isAuthenticatedStore}
+{#if !isAuthenticated}
   <div>
     {$loadingMsgStore}
   </div>

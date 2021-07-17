@@ -1,12 +1,12 @@
 <script lang="ts">
   import { onMount } from 'svelte'
 
-  import { accessToken as accessTokenStore } from '../stores/auth'
+  import { user as userStore } from '../stores/auth'
 
   onMount(async() => {
-    accessTokenStore.subscribe((data) => {
+    userStore.subscribe((data) => {
       console.debug({
-        token: data
+        token: data.token
       })
     })
   })

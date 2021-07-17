@@ -19,7 +19,6 @@ export const endpoints = {
   }
 } as Record<string, Record<string, { method: any, url: string }>>
 
-
 export class Rest {
   private static baseUrl = import.meta.env.VITE_MODULE_URL
 

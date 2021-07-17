@@ -3,11 +3,9 @@ import createAuth0Client, {
   Auth0ClientOptions
 } from '@auth0/auth0-spa-js'
 
-import {
-  user as userStore,
-  accessToken as accessTokenStore,
-  isAuthenticated as isAuthenticatedStore
-} from '../stores/auth'
+import { user as userStore } from '../stores/auth'
+import { promiseWrapper } from './helpers'
+import { Rest } from './rest'
 
 export type AuthUserStore = {
   email: string;
@@ -20,8 +18,6 @@ export type AuthUserStore = {
 
 export class Auth {
   private static client: Auth0Client = {} as Auth0Client
-  private static user: AuthUserStore | null= {} as AuthUserStore
-  private static token = ''
 
   public static async init(
     options: Auth0ClientOptions, condition: {
@@ -46,22 +42,29 @@ export class Auth {
     }
 
     const isAuthenticated = await this.client.isAuthenticated()
-    isAuthenticatedStore.set(isAuthenticated)
-    if (isAuthenticated) {
-      this.token = await this.client.getTokenSilently()
-      accessTokenStore.set(this.token)
-      this.user = await this.client.getUser() as AuthUserStore
-      userStore.set(this.user)
+    const [user] = await  promiseWrapper(this.client.getUser)
+    const [token] = await promiseWrapper(this.client.getTokenSilently)
+
+    userStore.login({
+      user,
+      token,
+      isAuthenticated
+    })
+
+    if (isAuthenticated)
       return
-    }
 
     await this.client.loginWithRedirect()
   }
 
+  public static async load(token: string): Promise<void> {
+    await Rest.invoke('auth.login', {
+      token
+    })
+  }
+
   public static logout(): void {
-    isAuthenticatedStore.set(false)
-    accessTokenStore.set('')
-    userStore.set(null)
+    userStore.logout()
     return this.client.logout()
   }
 }
