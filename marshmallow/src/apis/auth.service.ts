@@ -1,6 +1,9 @@
 import { Service, ServiceBroker } from 'moleculer'
 import { v4 as uuid } from 'uuid'
 
+import _omit from 'lodash/omit'
+import _set from 'lodash/set'
+
 import userRepository from '@db/repository/user.repository'
 import CommonMixin from '@/mixins/common.mixxin'
 import { Response } from '@/utils/responses/success'
@@ -23,6 +26,12 @@ export default class UserService extends Service {
                                 where: {
                                     email: user.email
                                 },
+                                select: [
+                                    'id',
+                                    'email',
+                                    'name',
+                                    'lastLogin'
+                                ],
                                 relations: ['defaultBot', 'bots']
                             })
                         const userId = userFromDb ? userFromDb.id : uuid()
@@ -33,7 +42,15 @@ export default class UserService extends Service {
                                 name     : user.name,
                                 lastLogin: new Date()
                             })
-                        return new Response(userFromDb)
+
+                        const result = _omit(userFromDb, ['defaultBot', 'bots'])
+                        _set(result, 'defaultBot', _omit(userFromDb.defaultBot, [
+                            'createdAt',
+                            'updatedAt',
+                            'deletedAt'
+                        ]))
+                        _set(result, 'bots', userFromDb.bots.map(o => o.name))
+                        return new Response(result)
                     }
                 }
             }

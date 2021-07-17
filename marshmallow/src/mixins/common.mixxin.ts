@@ -10,7 +10,7 @@ export default class CommonMixin implements Partial<ServiceSchema>, ThisType<Ser
         this.schema = {
             hooks: {
                 after: {
-                    '*': (ctx, res: Response) => {
+                    '*': (ctx, res: Response): SuccessResponse => {
                         const serviceName = ctx.service.name
                         const actionName = ctx.action.rawName
                         const version = ctx.service.version || 1
