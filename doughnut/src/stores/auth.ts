@@ -2,7 +2,7 @@ import type { AuthUserStore } from '$lib/auth'
 import { writable } from 'svelte/store'
 
 type UserStore = {
-  user: AuthUserStore;
+  user: null | AuthUserStore;
   token: string;
   isAuthenticated: boolean
 }
@@ -20,17 +20,19 @@ function createUser() {
 
   return {
     subscribe,
-    login: ({
-      user, token, isAuthenticated
-    }) => update(() => {
+    login: ({ token, isAuthenticated }) => update((prev) => {
       if (isAuthenticated)
         return {
-          user,
+          ...prev,
           token,
           isAuthenticated
         }
       return userDefault
     }),
+    setUser: (user) => update((prev) => ({
+      ...prev,
+      user
+    })),
     logout: () => set(userDefault)
   }
 }

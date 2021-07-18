@@ -10,6 +10,14 @@ export enum HTTPMethod {
   TRACE = 'TRACE'
 }
 
+export type RestResponse = {
+  status: string;
+  apiVersion: string;
+  data: Record<string, any>;
+  meta: Record<string, any>;
+  message: string
+}
+
 export const endpoints = {
   auth: {
     login: {
@@ -26,7 +34,7 @@ export class Rest {
     method: HTTPMethod,
     endpoint: string,
     data?: { payload?: Record<string, any>; token?: string }
-  ): Promise<Record<string, any>> {
+  ): Promise<RestResponse> {
     const option = {
       method,
       headers: {
@@ -51,7 +59,7 @@ export class Rest {
   public static async invoke(
     path: string,
     payload?: { payload?: Record<string, any>; token?: string }
-  ): Promise<any> {
+  ): Promise<RestResponse> {
     const [
       module,
       actionName

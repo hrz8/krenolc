@@ -2,18 +2,17 @@ import createAuth0Client, {
   Auth0Client,
   Auth0ClientOptions
 } from '@auth0/auth0-spa-js'
+import _omit from 'lodash/omit'
 
 import { user as userStore } from '../stores/auth'
 import { loadingMsg as loadingMsgStore } from '../stores/common'
 import { Rest } from './rest'
 
 export type AuthUserStore = {
-  email: string;
-  email_verified: boolean;
+  id: string;
+  email: boolean;
   name: string;
-  nickname: string;
-  picture: string;
-  updated_at: string;
+  lastLogin: string;
 }
 
 export class Auth {
@@ -46,10 +45,8 @@ export class Auth {
 
     const isAuthenticated = await this.client.isAuthenticated()
     if (isAuthenticated) {
-      const user = await this.client.getUser()
       const token = await this.client.getTokenSilently()
       userStore.login({
-        user,
         token,
         isAuthenticated
       })
@@ -62,7 +59,12 @@ export class Auth {
     const result = await Rest.invoke('auth.login', {
       token
     })
-    console.log(result)
+    const userResponse = result.data
+    const user = _omit(userResponse, [
+      'defaultBot',
+      'bots'
+    ])
+    userStore.setUser(user)
   }
 
   public static logout(): void {
