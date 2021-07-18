@@ -26,9 +26,7 @@
 
   import {  loadingMsg as loadingMsgStore } from '../stores/common'
   import { auth as authStore } from '../stores/auth'
-  import {
-    usedBot as botStore, allBots as botsStore
-  } from '../stores/bot'
+  import { Bot } from '../stores/bot'
 
   export let hasBeenRedirected
   export let errorOccured
@@ -51,19 +49,17 @@
       isAuthenticated = data.isAuthenticated
       if (isAuthenticated && !data.user){
         const user = await Auth.load(data.token)
-        botsStore.set(user.bots)
-        console.log(user.defaultBot)
-        botStore.set(user.defaultBot)
+        await Bot.load({
+          bots   : user.bots,
+          default: user.defaultBot
+        })
       }
     })
-
   })
 </script>
 
 {#if !isAuthenticated}
-  <div>
-    {$loadingMsgStore}
-  </div>
+  <div>{$loadingMsgStore}</div>
 {:else}
   <Styles />
   <main>
