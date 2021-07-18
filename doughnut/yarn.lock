@@ -72,7 +72,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@popperjs/core@^2.6.0":
+"@popperjs/core@^2.9.2":
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.2.tgz#adea7b6953cbb34651766b0548468e743c6a2353"
   integrity sha512-VZMYa7+fXHdwIq1TDhSXoVmSPEGM/aa+6Aiq3nVVJ9bXr24zScr+NlKFKC3iPljA7ho/GAZr+d2jOf5GIRC30Q==
@@ -1238,12 +1238,12 @@ svelte@^3.34.0:
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.38.2.tgz#55e5c681f793ae349b5cc2fe58e5782af4275ef5"
   integrity sha512-q5Dq0/QHh4BLJyEVWGe7Cej5NWs040LWjMbicBGZ+3qpFWJ1YObRmUDZKbbovddLC9WW7THTj3kYbTOFmU9fbg==
 
-sveltestrap@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/sveltestrap/-/sveltestrap-5.1.1.tgz#634003fa5bbc3c016d24dcc74d80bd4d9f5a9a8b"
-  integrity sha512-al8ZdC/hx4gbkpGF9vWc6JxpBuDc0Ckj6xC6buly7/fCsxvR4rxAn3mm6/mt6XJYZEXAUZVvmGGPBbTEP4aBLg==
+sveltestrap@^5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/sveltestrap/-/sveltestrap-5.5.0.tgz#406183f38b0d496e4f1429c57db763a2a3b5ea65"
+  integrity sha512-f6vZxyCFlbpMqg0QQqsBUKv7+xiEFrPkcDlw3OVD1Nlp8UqF1gas/buYhmDcbZ5cMhTa8UNTtGaWVU0V0mszqQ==
   dependencies:
-    "@popperjs/core" "^2.6.0"
+    "@popperjs/core" "^2.9.2"
 
 table@^6.0.9:
   version "6.7.1"
