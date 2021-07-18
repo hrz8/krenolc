@@ -22,7 +22,7 @@
 
   import Sidebar from '../components/sidebar.svelte'
   import Navbar from '../components/navbar.svelte'
-  import { Auth } from '$lib/auth'
+  import { Auth } from '../stores/auth'
 
   import {  loadingMsg as loadingMsgStore } from '../stores/common'
   import { auth as authStore } from '../stores/auth'

@@ -1,6 +1,6 @@
 
 <script lang="ts">
-  import { Auth } from '$lib/auth'
+  import { Auth } from '../stores/auth'
 
   import {
     Icon,
