@@ -24,8 +24,11 @@
   import Navbar from '../components/navbar.svelte'
   import { Auth } from '$lib/auth'
 
-  import { loadingMsg as loadingMsgStore } from '../stores/common'
-  import {  auth as authStore } from '../stores/auth'
+  import {  loadingMsg as loadingMsgStore } from '../stores/common'
+  import { auth as authStore } from '../stores/auth'
+  import {
+    usedBot as botStore, allBots as botsStore
+  } from '../stores/bot'
 
   export let hasBeenRedirected
   export let errorOccured
@@ -46,8 +49,12 @@
 
     authStore.subscribe(async (data) => {
       isAuthenticated = data.isAuthenticated
-      if (isAuthenticated && !data.user)
-        await Auth.load(data.token)
+      if (isAuthenticated && !data.user){
+        const user = await Auth.load(data.token)
+        botsStore.set(user.bots)
+        console.log(user.defaultBot)
+        botStore.set(user.defaultBot)
+      }
     })
 
   })

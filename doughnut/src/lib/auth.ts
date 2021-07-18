@@ -5,10 +5,7 @@ import createAuth0Client, {
 import _omit from 'lodash/omit'
 
 import { auth as authStore } from '../stores/auth'
-import {
-  loadingMsg as loadingMsgStore,
-  bots as botsStore
-} from '../stores/common'
+import { loadingMsg as loadingMsgStore } from '../stores/common'
 import { Rest } from './rest'
 
 export type AuthUserStore = {
@@ -58,7 +55,10 @@ export class Auth {
     await this.client.loginWithRedirect()
   }
 
-  public static async load(token: string): Promise<void> {
+  public static async load(token: string): Promise<AuthUserStore & {
+    bots: string[];
+    defaultBot: any;
+  }> {
     const result = await Rest.invoke<
       AuthUserStore & { bots: string[]; defaultBot: any }
     >('auth.login', {
@@ -70,7 +70,7 @@ export class Auth {
       'bots'
     ])
     authStore.setUser(user)
-    botsStore.set(userResponse.bots || [])
+    return userResponse
   }
 
   public static logout(): void {
