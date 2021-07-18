@@ -10,10 +10,10 @@ export enum HTTPMethod {
   TRACE = 'TRACE'
 }
 
-export type RestResponse = {
+export type RestResponse<T> = {
   status: string;
   apiVersion: string;
-  data: Record<string, any>;
+  data: T;
   meta: Record<string, any>;
   message: string
 }
@@ -30,11 +30,11 @@ export const endpoints = {
 export class Rest {
   private static baseUrl = import.meta.env.VITE_MODULE_URL
 
-  public static async hit(
+  public static async hit<T>(
     method: HTTPMethod,
     endpoint: string,
     data?: { payload?: Record<string, any>; token?: string }
-  ): Promise<RestResponse> {
+  ): Promise<RestResponse<T>> {
     const option = {
       method,
       headers: {
@@ -56,16 +56,16 @@ export class Rest {
     return responseData
   }
 
-  public static async invoke(
+  public static async invoke<T>(
     path: string,
     payload?: { payload?: Record<string, any>; token?: string }
-  ): Promise<RestResponse> {
+  ): Promise<RestResponse<T>> {
     const [
       module,
       actionName
     ] = path.split('.')
     const endpoint = endpoints[module][actionName]
-    const result = await this.hit(endpoint.method, endpoint.url, payload)
+    const result = await this.hit<T>(endpoint.method, endpoint.url, payload)
     return result
   }
 }

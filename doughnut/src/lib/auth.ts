@@ -4,8 +4,11 @@ import createAuth0Client, {
 } from '@auth0/auth0-spa-js'
 import _omit from 'lodash/omit'
 
-import { auth as userStore } from '../stores/auth'
-import { loadingMsg as loadingMsgStore } from '../stores/common'
+import { auth as authStore } from '../stores/auth'
+import {
+  loadingMsg as loadingMsgStore,
+  bots as botsStore
+} from '../stores/common'
 import { Rest } from './rest'
 
 export type AuthUserStore = {
@@ -46,7 +49,7 @@ export class Auth {
     const isAuthenticated = await this.client.isAuthenticated()
     if (isAuthenticated) {
       const token = await this.client.getTokenSilently()
-      userStore.login({
+      authStore.login({
         token,
         isAuthenticated
       })
@@ -56,7 +59,9 @@ export class Auth {
   }
 
   public static async load(token: string): Promise<void> {
-    const result = await Rest.invoke('auth.login', {
+    const result = await Rest.invoke<
+      AuthUserStore & { bots: string[]; defaultBot: any }
+    >('auth.login', {
       token
     })
     const userResponse = result.data
@@ -64,12 +69,12 @@ export class Auth {
       'defaultBot',
       'bots'
     ])
-    console.log(user)
-    userStore.setUser(user)
+    authStore.setUser(user)
+    botsStore.set(userResponse.bots || [])
   }
 
   public static logout(): void {
-    userStore.logout()
+    authStore.logout()
     return this.client.logout()
   }
 }

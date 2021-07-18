@@ -6,7 +6,7 @@
     DropdownItem
   } from 'sveltestrap/src'
 
-  import { auth as authStore } from '../stores/auth'
+  import { bots as botsStore } from '../stores/common'
 </script>
 
 <div>
@@ -18,7 +18,9 @@
       </button>
       <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenuBot">
         <DropdownItem header>Available Bots</DropdownItem>
-        <DropdownItem>hirzi-bot</DropdownItem>
+        {#each $botsStore as botName}
+          <DropdownItem>{ botName }</DropdownItem>
+        {/each}
       </ul>
     </div>
   </Navbar>
