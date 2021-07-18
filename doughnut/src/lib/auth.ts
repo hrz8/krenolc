@@ -4,7 +4,7 @@ import createAuth0Client, {
 } from '@auth0/auth0-spa-js'
 import _omit from 'lodash/omit'
 
-import { user as userStore } from '../stores/auth'
+import { auth as userStore } from '../stores/auth'
 import { loadingMsg as loadingMsgStore } from '../stores/common'
 import { Rest } from './rest'
 
@@ -64,6 +64,7 @@ export class Auth {
       'defaultBot',
       'bots'
     ])
+    console.log(user)
     userStore.setUser(user)
   }
 

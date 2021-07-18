@@ -20,7 +20,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Jest",
+            "name": "Marshmallow Jest",
             "program": "${workspaceRoot}/node_modules/jest-cli/bin/jest.js",
             "args": [
                 "--runInBand"

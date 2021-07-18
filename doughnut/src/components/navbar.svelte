@@ -1,9 +1,12 @@
 <script lang="ts">
+
   import {
     Navbar,
     NavbarBrand,
     DropdownItem
   } from 'sveltestrap/src'
+
+  import { auth as authStore } from '../stores/auth'
 </script>
 
 <div>

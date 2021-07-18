@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Marshmallow Debugger",
+      "url": "http://localhost:8009",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}

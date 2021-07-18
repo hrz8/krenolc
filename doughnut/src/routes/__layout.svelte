@@ -25,7 +25,7 @@
   import { Auth } from '$lib/auth'
 
   import { loadingMsg as loadingMsgStore } from '../stores/common'
-  import {  user as userStore } from '../stores/auth'
+  import {  auth as authStore } from '../stores/auth'
 
   export let hasBeenRedirected
   export let errorOccured
@@ -44,9 +44,9 @@
       error     : errorOccured
     })
 
-    userStore.subscribe(async (data) => {
+    authStore.subscribe(async (data) => {
       isAuthenticated = data.isAuthenticated
-      if (isAuthenticated)
+      if (isAuthenticated && !data.user)
         await Auth.load(data.token)
     })
 
