@@ -19,7 +19,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import {
-    navigating, page, session
+    page, session
   } from '$app/stores'
   import { Styles } from 'sveltestrap'
   
