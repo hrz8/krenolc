@@ -18,7 +18,9 @@
 
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { page } from '$app/stores'
+  import {
+    navigating, page, session
+  } from '$app/stores'
   import { Styles } from 'sveltestrap'
   
 
@@ -34,9 +36,11 @@
   export let errorOccured
 
   let loading = true
+  let path = '/'
+
+  let token = null
   let isAuthenticated = false
   let hasBots = false
-  let path = '/'
 
   onMount(async () => {
     await Auth.init({
@@ -55,11 +59,21 @@
     path = data.path
   })
 
+  session.subscribe((data) => {
+    token = data?.token
+    hasBots = data?.hasBots
+    isAuthenticated = data?.isAuthenticated
+  })
+
   authStore.subscribe(async (data) => {
-    isAuthenticated = data.isAuthenticated
-    if (isAuthenticated && !data.user){
+    if (data.isAuthenticated && !token) {
       const user = await Auth.load(data.token)
-      hasBots = !!user.bots.length
+      session.update((session) => ({
+        ...session,
+        token          : data.token,
+        hasBots        : !!user.bots.length,
+        isAuthenticated: data.isAuthenticated
+      }))
       await Bot.load({
         bots   : user.bots,
         default: user.defaultBot

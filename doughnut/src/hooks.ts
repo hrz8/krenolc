@@ -1,5 +1,4 @@
 import type SvelteKit from '@sveltejs/kit'
-import cookie from 'cookie'
 
 export const handle: SvelteKit.Handle = async ({
   request,
@@ -13,8 +12,6 @@ export const handle: SvelteKit.Handle = async ({
   // const cookies = cookie.parse(request.headers.cookie || '')
   // console.log('cookies', cookies)
   // request.locals.token = cookies.token || 'token000'
-  // console.log('request.locals.token', request.locals.token)
-  // console.log('request from hooks', request)
 
   const response = await resolve(request)
 
