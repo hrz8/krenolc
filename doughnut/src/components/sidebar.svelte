@@ -72,7 +72,7 @@
   </ul>
   <Dropdown class="border-top" direction="right" style="position: unset;">
     <DropdownToggle tag="div">
-      <a href="/" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none">
+      <a href="#" on:click="{(e) => e.preventDefault()}" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none">
         <Icon class="h4" name="person-circle" />
       </a>
     </DropdownToggle>

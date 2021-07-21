@@ -16,7 +16,7 @@
     <NavbarBrand href="/">👑 krenolc</NavbarBrand>
     <div class="dropdown">
       <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuBot" data-bs-toggle="dropdown" aria-expanded="false">
-        (hirzi-bot)
+        ({$botStore.name})
       </button>
       <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenuBot">
         <DropdownItem header>Available Bots</DropdownItem>
