@@ -24,8 +24,9 @@
   import { Styles } from 'sveltestrap'
   
 
-  import Sidebar from '../components/sidebar.svelte'
-  import Navbar from '../components/navbar.svelte'
+  import Sidebar from '../components/shared/sidebar.svelte'
+  import Navbar from '../components/shared/navbar.svelte'
+  import Onboard from '../components/onboard.svelte'
   import { Auth } from '../stores/auth'
 
   import { loadingMsg as loadingMsgStore } from '../stores/common'
@@ -98,7 +99,7 @@
     <div class="container-fluid">
       <div class="row">
         {#if !hasBots}
-          Create your bot
+          <Onboard />
         {:else}
           <Navbar />
           <slot></slot>

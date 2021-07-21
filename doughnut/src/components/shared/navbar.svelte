@@ -8,7 +8,7 @@
 
   import {
     allBots as botsStore, usedBot as botStore
-} from '../stores/bot'
+} from '../../stores/bot'
 </script>
 
 <div>

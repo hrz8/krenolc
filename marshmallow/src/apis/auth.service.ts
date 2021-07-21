@@ -45,11 +45,12 @@ export default class UserService extends Service {
 
                         const userFinal = userFromDb || userCreated
                         const result = _omit(userFinal, ['defaultBot', 'bots'])
-                        _set(result, 'defaultBot', _omit(userFinal.defaultBot, [
+                        const resultDefaultBot = _omit(userFinal.defaultBot, [
                             'createdAt',
                             'updatedAt',
                             'deletedAt'
-                        ]))
+                        ])
+                        _set(result, 'defaultBot', resultDefaultBot)
                         _set(result, 'bots', (userFinal.bots || []).map(o => o.name))
                         return new Response(result)
                     }
