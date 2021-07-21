@@ -74,7 +74,6 @@ export class Auth {
     if (condition.error) {
       const errMsg = (new URLSearchParams(window.location.search))
         .get('error_description')
-      console.log('errMsg', errMsg)
       loadingMsgStore.set(errMsg || 'Unknown Error')
       return
     }

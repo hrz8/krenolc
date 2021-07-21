@@ -35,7 +35,7 @@ export default class UserService extends Service {
                                 relations: ['defaultBot', 'bots']
                             })
                         const userId = userFromDb ? userFromDb.id : uuid()
-                        const userFinal = await userRepository()
+                        const userCreated = await userRepository()
                             .save({
                                 id       : userId,
                                 email    : user.email,
@@ -43,6 +43,7 @@ export default class UserService extends Service {
                                 lastLogin: new Date()
                             })
 
+                        const userFinal = userFromDb || userCreated
                         const result = _omit(userFinal, ['defaultBot', 'bots'])
                         _set(result, 'defaultBot', _omit(userFinal.defaultBot, [
                             'createdAt',
