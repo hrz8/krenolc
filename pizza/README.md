@@ -1,4 +1,4 @@
-# pizza 🍕
+# pizza 🍕 (drop soon)
 
 ## What's going on here?
 - [Environment Setup 📦](#environment-setup-)
