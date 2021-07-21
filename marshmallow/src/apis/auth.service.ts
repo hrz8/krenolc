@@ -35,21 +35,21 @@ export default class UserService extends Service {
                                 relations: ['defaultBot', 'bots']
                             })
                         const userId = userFromDb ? userFromDb.id : uuid()
-                        await userRepository()
+                        const userFinal = await userRepository()
                             .save({
                                 id       : userId,
                                 email    : user.email,
-                                name     : user.name,
+                                name     : user.name || user.email,
                                 lastLogin: new Date()
                             })
 
-                        const result = _omit(userFromDb, ['defaultBot', 'bots'])
-                        _set(result, 'defaultBot', _omit(userFromDb.defaultBot, [
+                        const result = _omit(userFinal, ['defaultBot', 'bots'])
+                        _set(result, 'defaultBot', _omit(userFinal.defaultBot, [
                             'createdAt',
                             'updatedAt',
                             'deletedAt'
                         ]))
-                        _set(result, 'bots', userFromDb.bots.map(o => o.name))
+                        _set(result, 'bots', (userFinal.bots || []).map(o => o.name))
                         return new Response(result)
                     }
                 }

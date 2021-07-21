@@ -66,7 +66,10 @@
   })
 
   authStore.subscribe(async (data) => {
-    if (data.isAuthenticated && !token) {
+    if (
+      (data.isAuthenticated && !token) ||
+      (data.isAuthenticated && !data.user)
+    ) {
       const user = await Auth.load(data.token)
       session.update((session) => ({
         ...session,
