@@ -17,8 +17,8 @@
   $: isDisabled = () => disabled ? 'disabled': ''
   $: isActive = (curr, exact = false) => {
     if (exact)
-      return curr === path ? 'active' : ''
-    return path.startsWith(`/${curr}`) ? 'active' : ''
+      return (!disabled && curr === path) ? 'active' : ''
+    return (!disabled && path.startsWith(`/${curr}`)) ? 'active' : ''
   }
 
   const logout = () => {
