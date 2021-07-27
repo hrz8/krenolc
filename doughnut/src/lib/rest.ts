@@ -23,9 +23,17 @@ export const endpoints = {
     login: {
       method: HTTPMethod.POST,
       url   : 'auth/login'
-    }
+    },
+    switchBot: (params: string) => ({
+      method: HTTPMethod.POST,
+      url   : `auth/switch-bot/${params}`
+    })
   }
-} as Record<string, Record<string, { method: any, url: string }>>
+}
+// as Record<string, Record<string, {
+//   method: HTTPMethod,
+//   url: string
+// } | ((args: string) => { method: HTTPMethod; url: string; })>>
 
 export class Rest {
   private static baseUrl = import.meta.env.VITE_MODULE_URL
@@ -58,13 +66,16 @@ export class Rest {
 
   public static async invoke<T>(
     path: string,
-    payload?: { payload?: Record<string, any>; token?: string }
+    payload?: { payload?: Record<string, any>; token?: string; params?: string }
   ): Promise<RestResponse<T>> {
     const [
       module,
       actionName
     ] = path.split('.')
-    const endpoint = endpoints[module][actionName]
+    const { params } = payload
+    const endpoint = (params)
+      ? endpoints[module][actionName](params)
+      : endpoints[module][actionName]
     const result = await this.hit<T>(endpoint.method, endpoint.url, payload)
     return result
   }

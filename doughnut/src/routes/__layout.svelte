@@ -104,7 +104,7 @@
         {#if !hasBots}
           <Onboard />
         {:else}
-          <Navbar />
+          <Navbar {token} />
           <slot></slot>
         {/if}
       </div>

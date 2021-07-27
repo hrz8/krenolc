@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Rest } from '$lib/rest'
+
   import {
     Navbar,
     NavbarBrand,
@@ -9,8 +11,14 @@
     allBots as botsStore, Bot, usedBot as botStore
   } from '../../stores/bot'
 
+  export let token = ''
+
   const switchBot = async (botName: string): Promise<void> => {
     console.log(botName)
+    const result = await Rest.invoke<any>('auth.switchBot', {
+      token,
+      params: botName
+    })
     // await Bot.load({
     //   bots   : user.bots,
     //   default: user.defaultBot

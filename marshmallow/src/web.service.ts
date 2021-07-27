@@ -19,7 +19,12 @@ export default class ApiService extends Service {
 
                 routes: [
                     {
-                        path: '/api'
+                        path          : '/api/auth',
+                        authentication: true,
+                        aliases       : {
+                            'POST login'               : 'auth.login',
+                            'POST /switch-bot/:botName': 'auth.switchBot'
+                        }
                     },
                     {
                         path          : '/api/restapi/:botName',

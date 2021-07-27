@@ -20,10 +20,6 @@ export default class UserService extends Service {
             mixins : [this.commonMixin],
             actions: {
                 login: {
-                    rest: {
-                        method: 'POST',
-                        path  : '/login'
-                    },
                     params: Joi.object()
                         .keys({
                             query : Joi.object(),
@@ -66,11 +62,7 @@ export default class UserService extends Service {
                         return new Response(result)
                     }
                 },
-                switchDefaultBot: {
-                    rest: {
-                        method: 'POST',
-                        path  : '/switch-bot'
-                    },
+                switchBot: {
                     params: Joi.object()
                         .keys({
                             query : Joi.object(),
