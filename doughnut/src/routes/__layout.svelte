@@ -81,6 +81,9 @@
         hasBots        : !!user.bots.length,
         isAuthenticated: data.isAuthenticated
       }))
+      console.log({
+        user
+      })
       await Bot.load({
         bots   : user.bots,
         default: user.defaultBot

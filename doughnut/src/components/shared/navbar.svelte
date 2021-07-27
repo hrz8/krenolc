@@ -1,5 +1,4 @@
 <script lang="ts">
-
   import {
     Navbar,
     NavbarBrand,
@@ -7,8 +6,16 @@
   } from 'sveltestrap/src'
 
   import {
-    allBots as botsStore, usedBot as botStore
-} from '../../stores/bot'
+    allBots as botsStore, Bot, usedBot as botStore
+  } from '../../stores/bot'
+
+  const switchBot = async (botName: string): Promise<void> => {
+    console.log(botName)
+    // await Bot.load({
+    //   bots   : user.bots,
+    //   default: user.defaultBot
+    // })
+  }
 </script>
 
 <div>
@@ -21,7 +28,13 @@
       <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenuBot">
         <DropdownItem header>Available Bots</DropdownItem>
         {#each $botsStore as botName}
-          <DropdownItem active={botName === $botStore.name}>{ botName }</DropdownItem>
+          <li>
+            <button
+              disabled="{botName === $botStore.name}"
+              class="dropdown-item {botName === $botStore.name ? 'active' : ''}"
+              on:click={async () => {await switchBot(botName)}}
+            >{ botName }</button>
+          </li>
         {/each}
       </ul>
     </div>

@@ -2,6 +2,7 @@ import {
     BrokerOptions, Errors, MetricRegistry
 } from 'moleculer'
 import JoiValidator from '@/utils/validator'
+import env from 'env-var'
 
 /**
  * Moleculer ServiceBroker configuration file
@@ -75,7 +76,9 @@ const brokerConfig: BrokerOptions = {
     serializer: 'JSON',
 
     // Number of milliseconds to wait before reject a request with a RequestTimeout error. Disabled: 0
-    requestTimeout: 10 * 1000,
+    requestTimeout: env.get('NODE_ENV')
+        .default('development')
+        .asString() === 'development' ? 0 : 10 * 1000,
 
     // Retry policy settings. More info: https://moleculer.services/docs/0.14/fault-tolerance.html#Retry
     retryPolicy: {
