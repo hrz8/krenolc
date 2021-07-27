@@ -15,6 +15,10 @@
   let invitationCode = ''
 </script>
 
+<svelte:head>
+	<title>On-Board</title>
+</svelte:head>
+
 <div style="padding: 20px">
   <TabContent pills>
     <TabPane tabId="newBot" tab="New Bot" active>

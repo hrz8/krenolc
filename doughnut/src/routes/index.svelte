@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>Dashboard</title>
+  <title>Dashboard</title>
 </svelte:head>
 
 <h1>Welcome to Krenolc</h1>
