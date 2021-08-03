@@ -26,25 +26,23 @@
   }
 </script>
 
-<div>
-  <Navbar color="light" light expand="md">
-    <NavbarBrand href="/">👑 krenolc</NavbarBrand>
-    <div class="dropdown">
-      <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuBot" data-bs-toggle="dropdown" aria-expanded="false">
-        ({$botStore.name})
-      </button>
-      <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenuBot">
-        <DropdownItem header>Available Bots</DropdownItem>
-        {#each $botsStore as botName}
-          <li>
-            <button
-              disabled="{botName === $botStore.name}"
-              class="dropdown-item {botName === $botStore.name ? 'active' : ''}"
-              on:click={async () => {await switchBot(botName)}}
-            >{ botName }</button>
-          </li>
-        {/each}
-      </ul>
-    </div>
-  </Navbar>
-</div>
+<Navbar color="light" light expand="md">
+  <NavbarBrand href="/">👑</NavbarBrand>
+  <div class="dropdown">
+    <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuBot" data-bs-toggle="dropdown" aria-expanded="false">
+      ({$botStore.name})
+    </button>
+    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenuBot">
+      <DropdownItem header>Available Bots</DropdownItem>
+      {#each $botsStore as botName}
+        <li>
+          <button
+            disabled="{botName === $botStore.name}"
+            class="dropdown-item {botName === $botStore.name ? 'active' : ''}"
+            on:click={async () => {await switchBot(botName)}}
+          >{ botName }</button>
+        </li>
+      {/each}
+    </ul>
+  </div>
+</Navbar>

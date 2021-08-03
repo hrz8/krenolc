@@ -1,5 +1,40 @@
+<script>
+  import Tree from '../../components/editor/tree.svelte'
+
+  const trees = [
+    {
+      label   : 'conversation',
+      children: [
+        {
+          label: 'start'
+        },
+        {
+          label: 'end'
+        },
+        {
+          label: 'California'
+        },
+        {
+          label: 'San Francisco'
+        },
+        {
+          label: 'Los Angeles'
+        },
+        {
+          label: 'Sacramento'
+        }
+      ]
+    },
+    {
+      label: 'handover'
+    }
+  ]
+</script>
+
 <svelte:head>
   <title>Editor</title>
 </svelte:head>
 
-<h1>Editor page</h1>
+{#each trees as tree}
+  <Tree {tree} />
+{/each}
