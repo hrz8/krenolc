@@ -16,8 +16,8 @@
 <ul transition:slide>
 	<li>
 		{#if children}
-			<span on:click={toggleExpansion}>
-				<span class="arrow" class:arrowDown>&#x25b6</span>
+			<span on:click={toggleExpansion} style="cursor: pointer;">
+				<span class="arrow" class:arrowDown style="color: #a9a9a9">&#x25b6</span>
 				{label}
 			</span>
 			{#if expanded}
@@ -26,7 +26,7 @@
 				{/each}
 			{/if}
 		{:else}
-			<span>
+			<span style="cursor: pointer;">
 				<span class="no-arrow"/>
 				{label}
 			</span>
