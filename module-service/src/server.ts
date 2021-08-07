@@ -27,11 +27,11 @@ connectDB()
         const botStorage = new BotStorage(botName)
         broker.logger.info(`[${botName} Bot] loading...`)
         botStorage.load()
-            .then(async () => {
-                // bot loaded
-                const { modules } = botStorage
+            .then(async loadedBot => {
+                // bot loaded, inject then
+                const { modules } = loadedBot
                 broker.logger.info(`[${botName} Bot] load process completed!`)
-                broker.bot = botStorage
+                broker.bot = loadedBot
 
                 // create web api gateway service
                 const webMixin = new WebMixin()

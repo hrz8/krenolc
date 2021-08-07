@@ -18,7 +18,7 @@ export interface BotModules {
 }
 
 export interface BotMetadata {
-    node: {
+    nodes: {
         [nodeId: string]: {
             content: {
                 text: string | string[];
@@ -28,7 +28,7 @@ export interface BotMetadata {
             options?: any;
         };
     };
-    trigger: {
+    triggers: {
         [triggerId: string]: {
             pattern: string;
             event: string;

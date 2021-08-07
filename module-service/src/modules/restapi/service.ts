@@ -13,12 +13,12 @@ export default class RestapiService extends Service {
                     params: Joi.object()
                         .keys({
                             query : Joi.object(),
-                            params: Joi.object()
+                            params: Joi.object(),
+                            body  : Joi.object()
                                 .keys({
                                     foo: Joi.string()
                                         .required()
-                                }),
-                            body: Joi.object()
+                                })
                         }) as any,
                     async handler(ctx: Context<{ params: { foo: string } }>): Promise<string> {
                         const { foo } = ctx.params.params

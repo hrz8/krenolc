@@ -11,7 +11,7 @@ const data: BotInsertPayload[] = [
             }
         },
         metadata: {
-            node: {
+            nodes: {
                 conversationStart: {
                     content: {
                         text: 'Welcome to Eminem bot!'
@@ -23,7 +23,7 @@ const data: BotInsertPayload[] = [
                     }
                 }
             },
-            trigger: {
+            triggers: {
                 conversationStart: {
                     pattern: '\u002F^what is your name?$\u002Fi',
                     event  : 'goto',
@@ -42,7 +42,7 @@ const data: BotInsertPayload[] = [
             }
         },
         metadata: {
-            node: {
+            nodes: {
                 conversationStart: {
                     content: {
                         text: 'Welcome to Tupac bot!'
@@ -54,7 +54,7 @@ const data: BotInsertPayload[] = [
                     }
                 }
             },
-            trigger: {
+            triggers: {
                 conversationStart: {
                     pattern: '\u002F^what is your name?$\u002Fi',
                     event  : 'goto',
