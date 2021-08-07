@@ -1,0 +1,36 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es6",
+        "lib": [
+            "es5",
+            "es6"
+        ],
+        "esModuleInterop": true,
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "sourceMap": true,
+        "pretty": true,
+        "baseUrl": "./",
+        "paths": {
+            "~/*": [
+                "./*"
+            ],
+            "@/*": [
+                "./src/*"
+            ],
+            "@db/*": [
+                "./src/db/*"
+            ]
+        },
+    },
+    "include": ["./**/*"],
+    "exclude": [
+        "node_modules/**/*",
+        "test"
+    ]
+}

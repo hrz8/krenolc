@@ -1,6 +1,11 @@
 {
     "folders": [
       {
+        "name": "module-service",
+        "path": "module-service"
+      },
+      {
+      {
         "name": "pizza",
         "path": "pizza"
       },
