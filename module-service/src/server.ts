@@ -38,8 +38,8 @@ connectDB()
                     .init()
                 const routes = await Array.from(modules.keys())
                     .reduce(async (acc, moduleId) => {
-                        const endpoint = (await import(`@/modules/${moduleId}/endpoint`)).default
-                        return [...acc, endpoint]
+                        const moduleEndpoint = (await import(`@/modules/${moduleId}/endpoint`)).default
+                        return [...acc, ...moduleEndpoint]
                     }, [] as any)
                 broker.createService({
                     name    : 'module-service-gateway',
@@ -48,7 +48,6 @@ connectDB()
                         port: env.get('APP_PORT')
                             .default(3000)
                             .asString(),
-
                         routes: [
                             {
                                 path          : '/api/auth',

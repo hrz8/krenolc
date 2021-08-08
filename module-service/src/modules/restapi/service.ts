@@ -1,7 +1,7 @@
-import Joi from 'joi'
 import {
     Service, ServiceBroker, Context
 } from 'moleculer'
+import chatValidator from './validator'
 
 export default class RestapiService extends Service {
     public constructor(public broker: ServiceBroker) {
@@ -10,16 +10,7 @@ export default class RestapiService extends Service {
             name   : 'restapi',
             actions: {
                 chat: {
-                    params: Joi.object()
-                        .keys({
-                            query : Joi.object(),
-                            params: Joi.object(),
-                            body  : Joi.object()
-                                .keys({
-                                    foo: Joi.string()
-                                        .required()
-                                })
-                        }) as any,
+                    params: chatValidator.chat,
                     async handler(ctx: Context<{ params: { foo: string } }>): Promise<string> {
                         const { foo } = ctx.params.params
                         return this.ActionHello(foo)

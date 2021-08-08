@@ -5,6 +5,9 @@
         "path": "module-service"
       },
       {
+        "name": "dashboard-ui",
+        "path": "dashboard-ui"
+      },
       {
         "name": "pizza",
         "path": "pizza"

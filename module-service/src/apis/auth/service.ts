@@ -1,8 +1,9 @@
 import { Service, ServiceBroker } from 'moleculer'
-import Joi from 'joi'
 
 import CommonMixin from '@/mixins/common.mixin'
 import { Response } from '@/utils/responses/success'
+
+import authValidator from './validator'
 
 export default class UserService extends Service {
     private commonMixin = new CommonMixin()
@@ -14,13 +15,8 @@ export default class UserService extends Service {
             name   : 'auth',
             mixins : [this.commonMixin],
             actions: {
-                login: {
-                    params: Joi.object()
-                        .keys({
-                            query : Joi.object(),
-                            params: Joi.object(),
-                            body  : Joi.object()
-                        }) as any,
+                auth0Login: {
+                    params : authValidator.auth0Login,
                     handler: async (ctx): Promise<Response> => new Response({
                         foo: 'bar'
                     })
