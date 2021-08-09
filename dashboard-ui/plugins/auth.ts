@@ -11,15 +11,12 @@ abstract class IAuth {
   user?: Auth0User | null
   isAuthenticated?: boolean
 }
+
 @Component
-export class Auth0Mixin extends Vue implements IAuth {
+export class Auth0Mixin extends Vue {
   private auth0: Auth0Client | null = null
 
-  token?: string
-  user?: Auth0User | null
-  isAuthenticated?: boolean
-
-  async initializeAuth0Client() {
+  async initializeAuth0Client(parent: AuthComponent) {
     const clientOptions: Auth0ClientOptions = {
       domain          : 'dev-q3imkb6d.us.auth0.com',
       client_id       : 'avCrjqvcJSwD4ydZlfyzz3vqA8qHMZRq',
@@ -41,14 +38,14 @@ export class Auth0Mixin extends Vue implements IAuth {
           document.title,
           window.location.pathname
         )
-        this.token = await this.auth0.getTokenSilently(clientOptions)
       }
 
       const hasAuthenticated = await this.auth0.isAuthenticated()
-      this.isAuthenticated = hasAuthenticated
+      parent.isAuthenticated = hasAuthenticated
       if (hasAuthenticated){
-        this.user = await this.auth0.getUser()
-      } else if (!this.user && !this.isAuthenticated) {
+        parent.user = (await this.auth0.getUser()) || null
+        parent.token = await this.auth0.getTokenSilently(clientOptions)
+      } else if (!parent.user && !parent.isAuthenticated) {
         this.auth0.loginWithRedirect()
       }
     } catch (e) {
@@ -60,7 +57,7 @@ export class Auth0Mixin extends Vue implements IAuth {
 @Component
 export class AuthComponent extends Mixins(Auth0Mixin) implements IAuth {
   token: string = '';
-  user: Auth0User | null= null;
+  user: Auth0User | null = null;
   isAuthenticated: boolean = false;
 
   async created() {
@@ -68,7 +65,7 @@ export class AuthComponent extends Mixins(Auth0Mixin) implements IAuth {
   }
 
   async initAuthProvider() {
-    await this.initializeAuth0Client()
+    await this.initializeAuth0Client(this)
   }
 }
 
