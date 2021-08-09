@@ -3,15 +3,21 @@ import {
 } from 'vue-property-decorator'
 import { Plugin } from '@nuxt/types'
 import createAuth0Client, {
-  Auth0Client, Auth0ClientOptions
+  Auth0Client, Auth0ClientOptions, User as Auth0User
 } from '@auth0/auth0-spa-js'
 
+abstract class IAuth {
+  token?: string
+  user?: Auth0User | null
+  isAuthenticated?: boolean
+}
 @Component
-export class Auth0Mixin extends Vue {
-  auth0: Auth0Client | null = null;
-  token: string = '';
-  user: any = null;
-  isAuthenticated: boolean = false;
+export class Auth0Mixin extends Vue implements IAuth {
+  private auth0: Auth0Client | null = null
+
+  token?: string
+  user?: Auth0User | null
+  isAuthenticated?: boolean
 
   async initializeAuth0Client() {
     const clientOptions: Auth0ClientOptions = {
@@ -40,26 +46,29 @@ export class Auth0Mixin extends Vue {
 
       const hasAuthenticated = await this.auth0.isAuthenticated()
       this.isAuthenticated = hasAuthenticated
-      if (hasAuthenticated)
+      if (hasAuthenticated){
         this.user = await this.auth0.getUser()
-
+      } else if (!this.user && !this.isAuthenticated) {
+        this.auth0.loginWithRedirect()
+      }
     } catch (e) {
-      console.error(e)
+      // console.error(e)
     }
   }
 }
 
 @Component
-export class AuthComponent extends Mixins(Auth0Mixin) {
+export class AuthComponent extends Mixins(Auth0Mixin) implements IAuth {
+  token: string = '';
+  user: Auth0User | null= null;
+  isAuthenticated: boolean = false;
+
   async created() {
-    await this.initializeAuthProvider()
+    await this.initAuthProvider()
   }
 
-  async initializeAuthProvider() {
+  async initAuthProvider() {
     await this.initializeAuth0Client()
-    if (this.auth0 && !this.user && !this.isAuthenticated)
-      this.auth0.loginWithRedirect()
-
   }
 }
 

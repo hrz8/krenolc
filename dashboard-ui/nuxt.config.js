@@ -1,6 +1,8 @@
 export default {
+  ssr   : false,
+  target: 'static',
   // Global page headers: https://go.nuxtjs.dev/config-head
-  head: {
+  head  : {
     title    : 'dashboard-ui',
     htmlAttrs: {
       lang: 'en'
@@ -38,7 +40,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '@/plugins/element-ui',
-    '@/plugins/auth.client'
+    '@/plugins/auth'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
