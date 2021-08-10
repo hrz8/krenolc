@@ -18,11 +18,13 @@ export default class UserStoreModule extends VuexModule {
     return this.users
   }
 
+  // mutations
   @VuexMutation
   setUsers(users: any[]) {
     this.users = users
   }
 
+  // actions
   @VuexAction({
     rawError: true
   })

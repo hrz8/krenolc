@@ -14,5 +14,10 @@ import Hello from '@/components/Hello.vue'
     Hello
   }
 })
-export default class PageIndexComponent extends Vue {}
+export default class PageIndexComponent extends Vue {
+  mounted() {
+    console.log('uy')
+    this.$api.call('placeholder.users')
+  }
+}
 </script>
