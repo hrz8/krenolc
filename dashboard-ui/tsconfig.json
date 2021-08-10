@@ -28,10 +28,6 @@
       "@nuxtjs/axios",
       "@types/node"
     ],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./typings"
-    ]
   },
   "exclude": [
     "node_modules",
