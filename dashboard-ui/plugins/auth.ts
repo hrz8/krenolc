@@ -70,10 +70,10 @@ export class AuthComponent extends Mixins(Auth0Mixin) implements AuthAbstract {
   }
 }
 
-const AuthPlugin: Plugin = (_, inject) => {
-  // await context.store.dispatch('users/fetchUsers')
-  // const users = context.store.getters['users/getUsers']
-  // console.log('users', users)
+const AuthPlugin: Plugin = async (context, inject) => {
+  await context.store.dispatch('users/fetchUsers')
+  const users = context.store.getters['users/getUsers']
+  console.log('users', users)
   inject('auth', new AuthComponent())
 }
 

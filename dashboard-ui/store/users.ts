@@ -11,6 +11,7 @@ import {
   namespaced  : true
 })
 export default class UserStoreModule extends VuexModule {
+  // state
   private users: any[] = []
 
   // getters
@@ -29,8 +30,7 @@ export default class UserStoreModule extends VuexModule {
     rawError: true
   })
   async fetchUsers() {
-    const response = await fetch('https://jsonplaceholder.typicode.com/users')
-    const users = await response.json()
-    this.setUsers(users)
+    const response = await this.store.$api.call('placeholder.users')
+    this.setUsers(response)
   }
 }
