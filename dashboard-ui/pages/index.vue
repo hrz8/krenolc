@@ -5,8 +5,14 @@
 <script lang="ts">
 import {
   Vue, Component
-} from 'vue-property-decorator'
+} from 'nuxt-property-decorator'
 
-@Component
+import Hello from '@/components/Hello.vue'
+
+@Component({
+  components: {
+    Hello
+  }
+})
 export default class PageIndexComponent extends Vue {}
 </script>
