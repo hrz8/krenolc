@@ -57,7 +57,7 @@ export class Auth0Mixin extends Vue implements AuthMixins {
     }
   }
 
-  public auth0OnRedirectCallback(appState: any) {
+  public auth0OnRedirectCallback(_appState: any) {
     window.history.replaceState({}, document.title, window.location.pathname)
   };
 

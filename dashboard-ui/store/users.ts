@@ -29,7 +29,7 @@ export default class UserStoreModule extends VuexModule {
   @VuexAction({
     rawError: true
   })
-  async fetchUsers() {
+  async fetchUsersAsync() {
     const response = await this.store.$api.call('placeholder.users')
     this.setUsers(response)
   }

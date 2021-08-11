@@ -13,15 +13,15 @@ import {
 export default class AppStoreModule extends VuexModule {
     // state
     private botLoaded: boolean = false
-    private profileLoaded: boolean = false
+    private userProfileLoaded: boolean = false
 
     // getters
     get getBotLoaded() {
       return this.botLoaded
     }
 
-    get getProfileLoaded() {
-      return this.profileLoaded
+    get getUserProfileLoaded() {
+      return this.userProfileLoaded
     }
 
     // mutations
@@ -31,7 +31,7 @@ export default class AppStoreModule extends VuexModule {
     }
 
     @VuexMutation
-    mutateProfileLoaded(value: boolean) {
-      this.profileLoaded = value
+    mutateUserProfileLoaded(value: boolean) {
+      this.userProfileLoaded = value
     }
 }

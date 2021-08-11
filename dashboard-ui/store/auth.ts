@@ -3,7 +3,10 @@ import {
   VuexModule,
   VuexAction,
   VuexMutation
+  // getModule
 } from 'nuxt-property-decorator'
+
+// import AppStore from './app'
 
 @Module({
   name        : 'auth',
@@ -41,5 +44,8 @@ export default class AuthStoreModule extends VuexModule {
   create(payload: { user: any; token: string }) {
     this.mutateUserData(payload.user)
     this.mutateUserAccessToken(payload.token)
+    this.store.commit('app/mutateUserProfileLoaded', true)
+    // getModule(AppStore, this.store as any)
+    //   .mutateUserProfileLoaded(true)
   }
 }

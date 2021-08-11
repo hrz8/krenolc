@@ -25,6 +25,7 @@ declare module 'nuxt-property-decorator' {
     store: {
       $auth: AuthComponent;
       $api: () => any;
+      [key: string]: any
     }
   }
 }

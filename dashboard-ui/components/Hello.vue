@@ -1,5 +1,8 @@
 <template>
-  <div>Hello, World! {{ $auth.token }}</div>
+  <div>
+    <div>Hello, World! {{ token }}</div>
+    <div>Hello, World! {{ user }}</div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -10,11 +13,11 @@ import {
 @Component
 export default class HelloComponent extends Vue {
   get token() {
-    return this.$auth.token
+    return this.$store.getters['auth/getUserAccessToken']
   }
 
-  mounted() {
-    console.log(this.$auth.user)
+  get user() {
+    return this.$store.getters['auth/getUserData']
   }
 }
 </script>

@@ -1,6 +1,4 @@
-import {
-  Vue, Component
-} from 'nuxt-property-decorator'
+import { Component } from 'nuxt-property-decorator'
 import { Mixins } from 'vue-property-decorator'
 import {
   Context,
@@ -28,9 +26,7 @@ export class AuthComponent extends Mixins(Auth0Mixin) {
   }
 
   public async getProvider() {
-    const response = this.context
-      ? await this.context.$api.call('auth.getProvider')
-      : {}
+    const response = await this.context!.$api.call('auth.getProvider')
     const provider = response.data?.authProvider || AuthProvider.AUTH0
     this.provider = provider
   }
@@ -40,18 +36,22 @@ export class AuthComponent extends Mixins(Auth0Mixin) {
       await this.initializeAuth0Client()
       if (!this.loading && !this.auth0User && !this.isAuthenticated) {
         await this.auth0Login()
+      } else {
+        this.context!.store.dispatch('auth/create', {
+          user : this.user,
+          token: this.token
+        })
       }
     }
   }
 }
 
 const AuthPlugin: Plugin = (context, inject): void => {
-  const authInstance = new AuthComponent({
+  inject('auth', new AuthComponent({
     data: () => ({
       context
     })
-  })
-  inject('auth', authInstance)
+  }))
 }
 
 export default AuthPlugin
