@@ -19,6 +19,10 @@ export default class AuthStoreModule extends VuexModule {
     return this.userData
   }
 
+  get getUserAccessToken() {
+    return this.userAccessToken
+  }
+
   // mutations
   @VuexMutation
   mutateUserData(data: any) {
@@ -35,6 +39,7 @@ export default class AuthStoreModule extends VuexModule {
     rawError: true
   })
   create(payload: { user: any; token: string }) {
-    this.mutateUserData(payload)
+    this.mutateUserData(payload.user)
+    this.mutateUserAccessToken(payload.token)
   }
 }

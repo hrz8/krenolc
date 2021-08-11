@@ -41,7 +41,7 @@ export default {
   plugins: [
     '@/plugins/element-ui',
     '@/plugins/api/index',
-    '@/plugins/auth'
+    '@/plugins/auth/index'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

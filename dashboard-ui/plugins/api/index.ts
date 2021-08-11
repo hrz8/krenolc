@@ -21,10 +21,8 @@ async function ajax(this: any, context: any) {
   return response.data
 }
 
-function caller(app: NuxtAppOptions) {
+export function api(app: NuxtAppOptions) {
   return function (this: string, args: Record<string, any>[] = []) {
-    console.log('endpoint', this)
-    console.log('endpoints', endpoints)
     const endpoint = this
     const [
       name,
@@ -64,7 +62,7 @@ function caller(app: NuxtAppOptions) {
 }
 
 const ApiPlugin: Plugin = (context, inject) => {
-  inject('api', caller(context.app))
+  inject('api', api(context.app))
 }
 
 export default ApiPlugin

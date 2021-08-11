@@ -1,5 +1,5 @@
 <template>
-  <div>Hello, World! {{ token }}</div>
+  <div>Hello, World! {{ $auth.token }}</div>
 </template>
 
 <script lang="ts">
@@ -10,15 +10,11 @@ import {
 @Component
 export default class HelloComponent extends Vue {
   get token() {
-    return (async () => {
-      try {
-        return await this.$auth.getToken()
-      } catch(e) {
-        return ''
-      }
-    })()
+    return this.$auth.token
   }
 
-
+  mounted() {
+    console.log(this.$auth.user)
+  }
 }
 </script>
