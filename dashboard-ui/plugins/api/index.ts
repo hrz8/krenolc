@@ -23,6 +23,8 @@ async function ajax(this: any, context: any) {
 
 function caller(app: NuxtAppOptions) {
   return function (this: string, args: Record<string, any>[] = []) {
+    console.log('endpoint', this)
+    console.log('endpoints', endpoints)
     const endpoint = this
     const [
       name,

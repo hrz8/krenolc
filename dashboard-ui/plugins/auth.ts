@@ -7,26 +7,26 @@ import createAuth0Client, {
   Auth0Client, Auth0ClientOptions, User as Auth0User
 } from '@auth0/auth0-spa-js'
 
-abstract class AuthAbstract {
-  abstract token: string
-  abstract user: Auth0User | null
-  abstract isAuthenticated: boolean
+export enum AuthProvider {
+  AUTH0 = 'AUTH0',
+  KEYCLOAK = 'KEYCLOAK',
 }
 
 @Component
-export class Auth0Mixin extends Vue {
+class Auth0Mixin extends Vue {
   private auth0: Auth0Client | null = null
+  private token: string = ''
+  private clientOptions: Auth0ClientOptions = {
+    domain          : 'dev-q3imkb6d.us.auth0.com',
+    client_id       : 'avCrjqvcJSwD4ydZlfyzz3vqA8qHMZRq',
+    audience        : 'https://dev-q3imkb6d.us.auth0.com/api/v2/',
+    useRefreshTokens: true,
+    redirect_uri    : window.location.href,
+    cacheLocation   : 'localstorage'
+  }
 
   public async initializeAuth0Client(superComponent: AuthComponent) {
-    const clientOptions: Auth0ClientOptions = {
-      domain          : 'dev-q3imkb6d.us.auth0.com',
-      client_id       : 'avCrjqvcJSwD4ydZlfyzz3vqA8qHMZRq',
-      audience        : 'https://dev-q3imkb6d.us.auth0.com/api/v2/',
-      useRefreshTokens: true,
-      redirect_uri    : window.location.href,
-      cacheLocation   : 'localstorage'
-    }
-    this.auth0 = await createAuth0Client(clientOptions)
+    this.auth0 = await createAuth0Client(this.clientOptions)
 
     try {
       const hasBeenRedirected =
@@ -39,13 +39,13 @@ export class Auth0Mixin extends Vue {
           document.title,
           window.location.pathname
         )
+        this.token = await this.auth0.getTokenSilently(this.clientOptions)
       }
 
       const hasAuthenticated = await this.auth0.isAuthenticated()
       superComponent.isAuthenticated = hasAuthenticated
       if (hasAuthenticated){
         superComponent.user = (await this.auth0.getUser()) || null
-        superComponent.token = await this.auth0.getTokenSilently(clientOptions)
       } else if (!superComponent.user && !superComponent.isAuthenticated) {
         this.auth0.loginWithRedirect()
       }
@@ -53,28 +53,51 @@ export class Auth0Mixin extends Vue {
       // console.error(e)
     }
   }
+
+  public async getAuth0Token(): Promise<string> {
+    return this.token
+      || (await this.auth0?.getTokenSilently(this.clientOptions))
+  }
 }
 
 @Component
-export class AuthComponent extends Mixins(Auth0Mixin) implements AuthAbstract {
-  public token: string = '';
+export class AuthComponent extends Mixins(Auth0Mixin) {
+  private ctx: any = {}
+  public provider: AuthProvider = AuthProvider.AUTH0
   public user: Auth0User | null = null;
   public isAuthenticated: boolean = false;
 
   public async created() {
-    await this.initAuthProvider()
+    await this.getProvider()
+    await this.initProvider()
   }
 
-  public async initAuthProvider() {
-    await this.initializeAuth0Client(this)
+  public async getProvider() {
+    const response = await this.ctx.$api.call('auth.getProvider')
+    const provider = response.data?.authProvider || AuthProvider.AUTH0
+    this.provider = provider
+  }
+
+  public async initProvider() {
+    if (this.provider === AuthProvider.AUTH0) {
+      await this.initializeAuth0Client(this)
+    }
+  }
+
+  public async getToken() {
+    if (this.provider === AuthProvider.AUTH0) {
+      return await this.getAuth0Token()
+    }
   }
 }
 
-const AuthPlugin: Plugin = async (context, inject) => {
-  await context.store.dispatch('users/fetchUsers')
-  const users = context.store.getters['users/getUsers']
-  console.log('users', users)
-  inject('auth', new AuthComponent())
+const AuthPlugin: Plugin = (context, inject) => {
+  const authInstance = new AuthComponent({
+    data: () => ({
+      ctx: context
+    })
+  })
+  inject('auth', authInstance)
 }
 
 export default AuthPlugin

@@ -12,7 +12,7 @@ import {
 })
 export default class AuthStoreModule extends VuexModule {
   private userData: any = {}
-  private accessToken: string = ''
+  private userAccessToken: string = ''
 
   // getters
   get getUserData() {
@@ -21,15 +21,20 @@ export default class AuthStoreModule extends VuexModule {
 
   // mutations
   @VuexMutation
-  mutateUserData(userData: any) {
-    this.userData = userData
+  mutateUserData(data: any) {
+    this.userData = data
+  }
+
+  @VuexMutation
+  mutateUserAccessToken(token: string) {
+    this.userAccessToken = token
   }
 
   // actions
   @VuexAction({
     rawError: true
   })
-  create(payload: any) {
+  create(payload: { user: any; token: string }) {
     this.mutateUserData(payload)
   }
 }

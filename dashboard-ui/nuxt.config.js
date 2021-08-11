@@ -63,7 +63,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'https://jsonplaceholder.typicode.com'
+    baseURL: 'http://localhost:3009/api'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

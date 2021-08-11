@@ -5,13 +5,17 @@ export type Endpoints = Record<string, Record<string, Endpoint>>
 
 const endpoints: Endpoints = {
   auth: {
-    login: {
+    loginAuth0: {
       method: 'post',
-      url   : '/auth/login'
+      url   : '/auth/login-auth0'
     },
-    getType: {
+    loginKeycloak: {
       method: 'post',
-      url   : '/auth/type'
+      url   : '/auth/login-keycloak'
+    },
+    getProvider: {
+      method: 'get',
+      url   : '/auth/provider'
     }
   },
   placeholder: {

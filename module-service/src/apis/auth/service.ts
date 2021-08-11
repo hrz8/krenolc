@@ -1,3 +1,4 @@
+import env from 'env-var'
 import { Service, ServiceBroker } from 'moleculer'
 
 import CommonMixin from '@/mixins/common.mixin'
@@ -5,7 +6,7 @@ import { Response } from '@/utils/responses/success'
 
 import authValidator from './validator'
 
-export default class UserService extends Service {
+export default class AuthService extends Service {
     private commonMixin = new CommonMixin()
         .init()
 
@@ -15,8 +16,23 @@ export default class UserService extends Service {
             name   : 'auth',
             mixins : [this.commonMixin],
             actions: {
-                auth0Login: {
-                    params : authValidator.auth0Login,
+                provider: {
+                    params : authValidator.provider,
+                    handler: async (ctx): Promise<Response> => new Response({
+                        authProvider: env.get('AUTH_PROVIDER')
+                            .default('AUTH0')
+                            .asString()
+                    })
+
+                },
+                loginAuth0: {
+                    params : authValidator.loginAuth0,
+                    handler: async (ctx): Promise<Response> => new Response({
+                        foo: 'bar'
+                    })
+                },
+                loginKeycloak: {
+                    params : authValidator.loginKeycloak,
                     handler: async (ctx): Promise<Response> => new Response({
                         foo: 'bar'
                     })

@@ -5,12 +5,20 @@
 <script lang="ts">
 import {
   Vue, Component
-} from 'vue-property-decorator'
+} from 'nuxt-property-decorator'
 
 @Component
 export default class HelloComponent extends Vue {
   get token() {
-    return this.$auth.token || ''
+    return (async () => {
+      try {
+        return await this.$auth.getToken()
+      } catch(e) {
+        return ''
+      }
+    })()
   }
+
+
 }
 </script>
