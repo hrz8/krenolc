@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Vue from 'vue'
+import { Store } from 'vuex'
 import { AuthComponent } from '~/plugins/auth'
 
 declare module 'vue/types/vue' {
@@ -25,7 +26,6 @@ declare module 'nuxt-property-decorator' {
     store: {
       $auth: AuthComponent;
       $api: () => any;
-      [key: string]: any
-    }
+    } & Store<any>
   }
 }
