@@ -1,8 +1,12 @@
 export default {
-  ssr   : false,
-  target: 'static',
+  ssr    : false,
+  target : 'static',
+  loading: {
+    color : '#3480eb',
+    height: '2px'
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
-  head  : {
+  head: {
     title    : 'dashboard-ui',
     htmlAttrs: {
       lang: 'en'
