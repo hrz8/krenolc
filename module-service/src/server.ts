@@ -8,6 +8,7 @@ import 'tsconfig-paths/register'
 import connectDB from '@db/connection'
 import WebMixin from '@/mixins/web.mixin'
 import BotStorage from '@/utils/bot/storage'
+import routes from '@/routes'
 
 import moleculerConfig from '~/moleculer.config'
 
@@ -36,7 +37,7 @@ connectDB()
                 // create web api gateway service
                 const webMixin = new WebMixin()
                     .init()
-                const routes = await Array.from(modules.keys())
+                const moduleRoutes = await Array.from(modules.keys())
                     .reduce(async (acc, moduleId) => {
                         const moduleEndpoint = (await import(`@/modules/${moduleId}/endpoint`)).default
                         return [...acc, ...moduleEndpoint]
@@ -48,24 +49,7 @@ connectDB()
                         port: env.get('APP_PORT')
                             .default(3000)
                             .asString(),
-                        routes: [
-                            {
-                                path          : '/api/auth',
-                                authentication: false,
-                                aliases       : {
-                                    'GET provider': 'auth.provider'
-                                }
-                            },
-                            {
-                                path          : '/api/auth',
-                                authentication: true,
-                                aliases       : {
-                                    'POST login-auth0'   : 'auth.loginAuth0',
-                                    'POST login-keycloak': 'auth.loginKeycloak'
-                                }
-                            },
-                            ...routes
-                        ],
+                        routes          : [...routes, ...moduleRoutes],
                         log4XXResponses : false,
                         logRequestParams: null,
                         logResponseData : null

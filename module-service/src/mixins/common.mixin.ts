@@ -21,7 +21,6 @@ export default class CommonMixin implements Partial<ServiceSchema>, ThisType<Ser
                             {
                                 responseMessage: responseMessage || `success ${actionName} ${serviceName}`,
                                 apiVersion     : `v${version}`
-
                             }
                         )
                     }
