@@ -3,15 +3,15 @@ export default [
         path          : '/api/auth',
         authentication: false,
         aliases       : {
-            'GET provider': 'auth.provider'
+            'GET provider': 'web-auth.provider'
         }
     },
     {
         path          : '/api/auth',
         authentication: true,
         aliases       : {
-            'POST login-auth0'   : 'auth.loginAuth0',
-            'POST login-keycloak': 'auth.loginKeycloak'
+            'POST login-auth0'   : 'web-auth.loginAuth0',
+            'POST login-keycloak': 'web-auth.loginKeycloak'
         }
     }
 ]

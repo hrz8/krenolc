@@ -7,6 +7,7 @@ import 'tsconfig-paths/register'
 import connectDB from '@db/connection'
 import BotStorage from '@/utils/bot/storage'
 import WebService from '@/services/web/web.service'
+import ApolloService from '@/services/apollo/apollo.service'
 
 import moleculerConfig from '~/moleculer.config'
 
@@ -38,14 +39,22 @@ connectDB()
                         const moduleEndpoint = (await import(`@/modules/${moduleId}/endpoint`)).default
                         return [...acc, ...moduleEndpoint]
                     }, [] as any)
-                const webService = await WebService(moduleRoutes)
+                const webServicePort = env.get('WEB_PORT')
+                    .required()
+                    .asInt()
+                const webService = await WebService(webServicePort, moduleRoutes)
                 broker.createService(webService)
 
                 // create apollo api gateway service
+                const apolloServicePort = env.get('WEB_PORT')
+                    .required()
+                    .asInt()
+                const apolloService = ApolloService(apolloServicePort)
+                broker.createService(apolloService)
 
                 // load default services
-                broker.loadServices('./src/web', '**/*service.js')
-                broker.loadServices('./src/apollo', '**/*service.js')
+                broker.loadServices('./src/services/web', '**/service.js')
+                broker.loadServices('./src/services/apollo', '**/service.js')
 
                 // load module services
                 for (const [moduleId] of modules) {

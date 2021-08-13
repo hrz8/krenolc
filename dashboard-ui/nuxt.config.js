@@ -74,7 +74,7 @@ export default {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: 'http://localhost:3009'
+        httpEndpoint: 'http://localhost:3010'
       }
     }
   },

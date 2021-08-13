@@ -6,7 +6,7 @@ export default class UserService extends Service {
     public constructor(public broker: ServiceBroker) {
         super(broker)
         this.parseServiceSchema({
-            name   : 'user',
+            name   : 'web-user',
             actions: {
                 list: {
                     params : userValidator.list,

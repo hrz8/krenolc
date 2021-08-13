@@ -13,7 +13,7 @@ export default class AuthService extends Service {
     public constructor(public broker: ServiceBroker) {
         super(broker)
         this.parseServiceSchema({
-            name   : 'auth',
+            name   : 'web-auth',
             mixins : [this.commonMixin],
             actions: {
                 provider: {
