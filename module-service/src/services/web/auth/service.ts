@@ -23,7 +23,6 @@ export default class AuthService extends Service {
                             .default('AUTH0')
                             .asString()
                     })
-
                 },
                 loginAuth0: {
                     params : authValidator.loginAuth0,

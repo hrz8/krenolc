@@ -1,5 +1,7 @@
 import {
-    Service, ServiceBroker, Context
+    Service,
+    ServiceBroker,
+    Context
 } from 'moleculer'
 import chatValidator from './validator'
 

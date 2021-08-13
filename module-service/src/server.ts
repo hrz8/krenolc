@@ -1,14 +1,12 @@
 import { ServiceBroker } from 'moleculer'
 import dotenv from 'dotenv'
 import env from 'env-var'
-import ApiGateway from 'moleculer-web'
 
 import 'tsconfig-paths/register'
 
 import connectDB from '@db/connection'
-import WebMixin from '@/mixins/web.mixin'
 import BotStorage from '@/utils/bot/storage'
-import routes from '@/routes'
+import WebService from '@/services/web/web.service'
 
 import moleculerConfig from '~/moleculer.config'
 
@@ -35,29 +33,19 @@ connectDB()
                 broker.bot = loadedBot
 
                 // create web api gateway service
-                const webMixin = new WebMixin()
-                    .init()
                 const moduleRoutes = await Array.from(modules.keys())
                     .reduce(async (acc, moduleId) => {
                         const moduleEndpoint = (await import(`@/modules/${moduleId}/endpoint`)).default
                         return [...acc, ...moduleEndpoint]
                     }, [] as any)
-                broker.createService({
-                    name    : 'module-service-gateway',
-                    mixins  : [ApiGateway, webMixin],
-                    settings: {
-                        port: env.get('APP_PORT')
-                            .default(3000)
-                            .asString(),
-                        routes          : [...routes, ...moduleRoutes],
-                        log4XXResponses : false,
-                        logRequestParams: null,
-                        logResponseData : null
-                    }
-                })
+                const webService = await WebService(moduleRoutes)
+                broker.createService(webService)
+
+                // create apollo api gateway service
 
                 // load default services
-                broker.loadServices('./src/apis', '**/*service.js')
+                broker.loadServices('./src/web', '**/*service.js')
+                broker.loadServices('./src/apollo', '**/*service.js')
 
                 // load module services
                 for (const [moduleId] of modules) {

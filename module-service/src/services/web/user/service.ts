@@ -1,5 +1,7 @@
 import { Service, ServiceBroker } from 'moleculer'
 
+import userValidator from './validator'
+
 export default class UserService extends Service {
     public constructor(public broker: ServiceBroker) {
         super(broker)
@@ -7,10 +9,7 @@ export default class UserService extends Service {
             name   : 'user',
             actions: {
                 list: {
-                    rest: {
-                        method: 'GET',
-                        path  : '/'
-                    },
+                    params : userValidator.list,
                     handler: async (ctx): Promise<string> => 'user list'
                 }
             }
