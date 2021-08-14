@@ -25,7 +25,7 @@ export default (port: number): ServiceSchema => {
                 },
                 routeOptions: {
                     path         : '/graphql',
-                    // cors         : true,
+                    cors         : false,
                     mappingPolicy: 'restrict'
                 }
             })

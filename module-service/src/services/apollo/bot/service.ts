@@ -22,7 +22,7 @@ export default class BotService extends Service {
             actions: {
                 hello: {
                     graphql: {
-                        query: 'bot: Bot'
+                        query: 'bot: JSON'
                     },
                     handler: (ctx: Context) => {
                         console.log(ctx.broker.bot.botRaw)
