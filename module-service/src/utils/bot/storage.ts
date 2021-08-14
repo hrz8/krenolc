@@ -6,16 +6,18 @@ export default class BotStorage {
 
     public nodes = new Map<string, any>()
 
+    public triggers = new Map<string, any>()
+
     private name: string
 
-    private bot: Bot
+    private botRaw: Bot
 
     public constructor(name: string) {
         this.name = name
     }
 
     public async load(): Promise<BotStorage> {
-        this.bot = await botRepository()
+        this.botRaw = await botRepository()
             .findOne({
                 where: {
                     name: this.name
@@ -24,25 +26,35 @@ export default class BotStorage {
 
         this.loadModules()
         this.loadNodes()
+        this.loadTriggers()
 
         return this
     }
 
     private loadModules(): void {
-        if (this.bot.modules) {
-            Object.keys(this.bot.modules)
-                .filter((moduleId): boolean => this.bot.modules[moduleId]?.enabled)
+        if (this.botRaw.modules) {
+            Object.keys(this.botRaw.modules)
+                .filter((moduleId): boolean => this.botRaw.modules[moduleId]?.enabled)
                 .forEach((moduleId): void => {
-                    this.modules.set(moduleId, this.bot.modules[moduleId])
+                    this.modules.set(moduleId, this.botRaw.modules[moduleId])
                 })
         }
     }
 
     private loadNodes(): void {
-        if (this.bot.metadata?.nodes) {
-            Object.keys(this.bot.metadata.nodes)
+        if (this.botRaw.metadata?.nodes) {
+            Object.keys(this.botRaw.metadata.nodes)
                 .forEach((nodeId): void => {
-                    this.nodes.set(nodeId, this.bot.metadata.nodes[nodeId])
+                    this.nodes.set(nodeId, this.botRaw.metadata.nodes[nodeId])
+                })
+        }
+    }
+
+    private loadTriggers(): void {
+        if (this.botRaw.metadata?.triggers) {
+            Object.keys(this.botRaw.metadata.triggers)
+                .forEach((triggerId): void => {
+                    this.triggers.set(triggerId, this.botRaw.metadata.triggers[triggerId])
                 })
         }
     }

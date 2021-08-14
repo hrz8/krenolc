@@ -46,7 +46,7 @@ connectDB()
                 broker.createService(webService)
 
                 // create apollo api gateway service
-                const apolloServicePort = env.get('WEB_PORT')
+                const apolloServicePort = env.get('APOLLO_PORT')
                     .required()
                     .asInt()
                 const apolloService = ApolloService(apolloServicePort)
