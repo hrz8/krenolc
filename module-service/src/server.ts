@@ -49,7 +49,7 @@ connectDB()
                 const apolloServicePort = env.get('APOLLO_PORT')
                     .required()
                     .asInt()
-                const apolloService = ApolloService(apolloServicePort)
+                const apolloService = await ApolloService(apolloServicePort)
                 broker.createService(apolloService)
 
                 // load default services

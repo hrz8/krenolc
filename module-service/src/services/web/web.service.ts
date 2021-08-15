@@ -5,14 +5,19 @@ import WebMixin from '@/mixins/web.mixin'
 
 const services = ['auth', 'user']
 
-export default async (port: number, moduleRoutes: any): Promise<ServiceSchema> => {
-    const webMixin = new WebMixin()
-        .init()
+const routesBuilder = async (svcs: string[]): Promise<any[]> => {
     const routes = []
-    for await (const serviceId of services) {
+    for await (const serviceId of svcs) {
         const serviceEndpoint = (await import(`@/services/web/${serviceId}/endpoint`)).default
         routes.push(...serviceEndpoint)
     }
+    return routes
+}
+
+export default async (port: number, moduleRoutes: any): Promise<ServiceSchema> => {
+    const webMixin = new WebMixin()
+        .init()
+    const routes = await routesBuilder(services)
     return {
         name    : 'module-service-web-gateway',
         mixins  : [ApiGateway, webMixin],

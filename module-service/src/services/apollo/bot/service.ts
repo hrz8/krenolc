@@ -1,33 +1,33 @@
 import {
-    Context, Service, ServiceBroker
+    Context,
+    Service,
+    ServiceBroker
 } from 'moleculer'
-import { gql } from 'moleculer-apollo-server'
+import { moleculerGql as gql } from 'moleculer-apollo-server'
 
-export default class BotService extends Service {
+import botSchema from './schema'
+
+export default class BotApolloService extends Service {
     public constructor(public broker: ServiceBroker) {
         super(broker)
         this.parseServiceSchema({
             name    : 'apollo-bot',
             settings: {
-                graphql: {
-                    type: `
-                        type Bot {
-                            metadata: JSON,
-                            modules: JSON,
-                            name: String
-                        }
-                    `
-                }
+                graphql: botSchema
             },
             actions: {
-                hello: {
+                api: {
                     graphql: {
-                        query: 'bot: JSON'
+                        query: gql`
+                            type Query {
+                                BotAPI: BotAPI
+                            }
+                        `
                     },
-                    handler: (ctx: Context) => {
-                        console.log(ctx.broker.bot.botRaw)
-                        return ctx.broker.bot.botRaw
-                    }
+                    handler: (): {} => ({})
+                },
+                get: {
+                    handler: (ctx: Context) => ctx.broker.bot.botRaw
                 }
             }
         })
