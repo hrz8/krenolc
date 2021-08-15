@@ -27,7 +27,7 @@ export default class BotApolloService extends Service {
                     handler: (): {} => ({})
                 },
                 get: {
-                    handler: (ctx: Context) => ctx.broker.bot.botRaw
+                    handler: (ctx: Context): any => ctx.broker.bot.botRaw
                 }
             }
         })
