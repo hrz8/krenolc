@@ -6,7 +6,7 @@ import { Response } from '@/utils/responses/success'
 
 import authValidator from './validator'
 
-export default class AuthService extends Service {
+export default class WebAuthService extends Service {
     private commonMixin = new CommonMixin()
         .init()
 

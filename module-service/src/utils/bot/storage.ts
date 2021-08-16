@@ -1,5 +1,5 @@
+import Bot from '@/db/entities/bot.entity'
 import botRepository from '@/db/repository/bot.repository'
-import Bot from '~/src/db/entities/bot.entity'
 
 export default class BotStorage {
     public modules = new Map<string, any>()

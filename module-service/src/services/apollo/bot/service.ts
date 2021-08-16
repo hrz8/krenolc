@@ -7,7 +7,7 @@ import { moleculerGql as gql } from 'moleculer-apollo-server'
 
 import botSchema from './schema'
 
-export default class BotApolloService extends Service {
+export default class ApolloBotService extends Service {
     public constructor(public broker: ServiceBroker) {
         super(broker)
         this.parseServiceSchema({

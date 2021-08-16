@@ -1,6 +1,6 @@
 import { ServiceSchema } from 'moleculer'
 import ApiGateway from 'moleculer-web'
-import { ApolloService, gql } from 'moleculer-apollo-server'
+import { ApolloService, moleculerGql as gql } from 'moleculer-apollo-server'
 import { GraphQLScalarType, Kind } from 'graphql'
 import GraphQLJSON from 'graphql-type-json'
 
@@ -37,7 +37,8 @@ export default async (port: number): Promise<ServiceSchema> => ({
             typeDefs: gql`
                 scalar JSON
                 scalar Date
-            ` as any,
+                scalar Timestamp
+            `,
             resolvers: {
                 JSON     : GraphQLJSON,
                 Date     : GraphQLDate,

@@ -3,7 +3,7 @@ import ApiGateway from 'moleculer-web'
 
 import WebMixin from '@/mixins/web.mixin'
 
-const services = ['auth', 'user']
+const services = ['auth']
 
 const routesBuilder = async (svcs: string[]): Promise<any[]> => {
     const routes = []
