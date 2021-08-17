@@ -30,7 +30,10 @@ const GraphQLTimestamp = new GraphQLScalarType({
 })
 
 export default async (port: number): Promise<ServiceSchema> => ({
-    name  : 'module-service-apollo-gateway',
+    name    : 'module-service-apollo-gateway',
+    settings: {
+        port
+    },
     mixins: [
         ApiGateway,
         ApolloService({
@@ -46,12 +49,9 @@ export default async (port: number): Promise<ServiceSchema> => ({
             },
             routeOptions: {
                 path         : '/graphql',
-                cors         : false,
+                cors         : true,
                 mappingPolicy: 'restrict'
             }
         })
-    ],
-    settings: {
-        port
-    }
+    ]
 })

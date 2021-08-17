@@ -1,7 +1,12 @@
 <template>
-  <div v-if="loaded">
-    <Nuxt />
-    {{ loadingMessage }}
+  <div v-if="initialized">
+    <el-container
+      v-loading="!loaded"
+      :element-loading-text="loadingMessage"
+      style="height: 100%"
+    >
+      <Nuxt />
+    </el-container>
   </div>
   <div v-else class="logo">
      <img src="~/assets/logo.png" width="64" height="64" />
@@ -18,11 +23,17 @@ import {
 @Component
 export default class LayoutDefaultWrapper extends Vue {
   // data
-  public loaded = false
+  public initialized = false
 
   // computed
   public get isAuthenticated() {
     return this.$auth.isAuthenticated || false
+  }
+
+  public get loaded() {
+    const botLoaded = this.$store.getters['app/getBotLoaded']
+    const userProfileLoaded = this.$store.getters['app/getUserProfileLoaded']
+    return botLoaded && userProfileLoaded
   }
 
   public get loadingMessage() {
@@ -53,16 +64,17 @@ export default class LayoutDefaultWrapper extends Vue {
     ])
   }
 
-  // methods
-
-  // built-in
+  // built-in methods
   public mounted() {
-
+    this.$store.dispatch('app/fetchBotAsync')
+    this.initialized = true
   }
+
+  // methods
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .logo {
   display: flex;
   place-content: center;

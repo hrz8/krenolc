@@ -21,7 +21,7 @@ export default class UserStoreModule extends VuexModule {
 
   // mutations
   @VuexMutation
-  setUsers(users: any[]) {
+  mutateUsers(users: any[]) {
     this.users = users
   }
 
@@ -31,6 +31,6 @@ export default class UserStoreModule extends VuexModule {
   })
   async fetchUsersAsync() {
     const response = await this.store.$api.call('placeholder.users')
-    this.setUsers(response)
+    this.mutateUsers(response)
   }
 }

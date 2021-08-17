@@ -7,6 +7,7 @@ declare module 'vue/types/vue' {
   interface Vue {
     $auth: AuthComponent;
     $api: () => any;
+    $apollo: any;
   }
 }
 
@@ -14,10 +15,12 @@ declare module '@nuxt/types' {
   interface NuxtAppOptions {
     $auth: AuthComponent;
     $api: () => any;
+    $apollo: any;
   }
   interface Context {
     $auth: AuthComponent;
     $api: () => any;
+    $apollo: any;
   }
 }
 
@@ -26,6 +29,7 @@ declare module 'nuxt-property-decorator' {
     store: {
       $auth: AuthComponent;
       $api: () => any;
+      $apollo: any;
     } & Store<any>
   }
 }

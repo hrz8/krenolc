@@ -33,14 +33,19 @@ export class AuthComponent extends Mixins(Auth0Mixin) {
 
   public async initProvider(): Promise<void> {
     if (this.provider === AuthProvider.AUTH0) {
+      // auth0 provider handler
       await this.initializeAuth0Client()
       if (!this.loading && !this.auth0User && !this.isAuthenticated) {
+        // asking login with redirect login form
         await this.auth0Login()
       } else {
+        // set store with existing user and token
         this.context!.store.dispatch('auth/create', {
           user : this.user,
           token: this.token
         })
+        // set axios token
+        this.context!.$axios.setToken(this.token, 'Bearer')
       }
     }
   }
