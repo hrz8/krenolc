@@ -1,6 +1,7 @@
 import qs from 'qs'
 import {
-  NuxtAppOptions, Plugin
+  NuxtAppOptions,
+  Plugin
 } from '@nuxt/types'
 import endpoints, { Endpoint } from './endpoints'
 

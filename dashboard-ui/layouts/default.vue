@@ -15,6 +15,7 @@
 
 <script lang="ts">
 import _sample from 'lodash/sample'
+import { Watch } from 'nuxt-property-decorator'
 import {
   Vue,
   Component
@@ -65,9 +66,21 @@ export default class LayoutDefaultWrapper extends Vue {
   }
 
   // built-in methods
-  public mounted() {
-    this.$store.dispatch('app/fetchBotAsync')
-    this.initialized = true
+  public async mounted() {
+    this.onIsAuthenticatedChanged(this.isAuthenticated)
+  }
+
+  @Watch("isAuthenticated")
+  public onIsAuthenticatedChanged(val: boolean) {
+    if (val) {
+      (this as any).$apolloHelpers.onLogin(this.$auth.token).then(() => {
+        this.initialized = true
+        this.$store.dispatch('app/fetchBotAsync')
+        setTimeout(() => {
+          console.log("tokenize", (this as any).$apolloHelpers.getToken())
+        }, 200)
+      })
+    }
   }
 
   // methods

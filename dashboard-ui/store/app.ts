@@ -26,6 +26,10 @@ export default class AppStoreModule extends VuexModule {
       return this.userProfileLoaded
     }
 
+    get getBot() {
+      return this.bot
+    }
+
     // mutations
     @VuexMutation
     mutateBotLoaded(value: boolean) {
@@ -47,12 +51,10 @@ export default class AppStoreModule extends VuexModule {
       rawError: true
     })
     async fetchBotAsync() {
-      const { data: { BotAPI: { bot } } } = await this.store.app
-        .apolloProvider
-        .defaultClient
-        .query({
+      const $apollo = this.store.app.apolloProvider.defaultClient
+      const { data: { BotAPI: { bot } } } = await $apollo.query({
           query: gql`
-            query {
+            query GetBot {
               BotAPI {
                 bot {
                   name

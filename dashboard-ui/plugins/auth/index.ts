@@ -35,7 +35,7 @@ export class AuthComponent extends Mixins(Auth0Mixin) {
     if (this.provider === AuthProvider.AUTH0) {
       // auth0 provider handler
       await this.initializeAuth0Client()
-      if (!this.loading && !this.auth0User && !this.isAuthenticated) {
+      if (this.loading && !this.auth0User && !this.isAuthenticated) {
         // asking login with redirect login form
         await this.auth0Login()
       } else {
