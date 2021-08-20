@@ -41,6 +41,7 @@ export class AuthComponent extends Mixins(Auth0Mixin) {
       } else {
         // set store with existing user and token
         this.context!.store.dispatch('auth/create', {
+          isAuthenticated: this.isAuthenticated,
           user : this.user,
           token: this.token
         })

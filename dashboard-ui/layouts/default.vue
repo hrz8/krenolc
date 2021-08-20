@@ -27,8 +27,12 @@ export default class LayoutDefaultWrapper extends Vue {
   public initialized = false
 
   // computed
-  public get isAuthenticated() {
-    return this.$auth.isAuthenticated || false
+  get token() {
+    return this.$store.getters['auth/getUserAccessToken']
+  }
+
+  get isAuthenticated() {
+    return this.$store.getters['auth/getIsAuthenticated']
   }
 
   public get loaded() {
@@ -66,19 +70,16 @@ export default class LayoutDefaultWrapper extends Vue {
   }
 
   // built-in methods
-  public async mounted() {
-    this.onIsAuthenticatedChanged(this.isAuthenticated)
+  public mounted() {
   }
 
   @Watch("isAuthenticated")
-  public onIsAuthenticatedChanged(val: boolean) {
-    if (val) {
-      (this as any).$apolloHelpers.onLogin(this.$auth.token).then(() => {
+  public onIsAuthenticatedChanged(val: boolean, prev: boolean) {
+    console.log(val, this.token)
+    if (val && this.token) {
+      (this as any).$apolloHelpers.onLogin(this.token).then(() => {
         this.initialized = true
         this.$store.dispatch('app/fetchBotAsync')
-        setTimeout(() => {
-          console.log("tokenize", (this as any).$apolloHelpers.getToken())
-        }, 200)
       })
     }
   }
