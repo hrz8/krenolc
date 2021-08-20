@@ -3,16 +3,22 @@
 </template>
 
 <script lang="ts">
-import {
-  Vue, Component
-} from 'nuxt-property-decorator'
-
+import Vue from 'vue'
+import { MetaInfo } from 'vue-meta'
 import Hello from '@/components/Hello.vue'
 
-@Component({
+export default Vue.extend({
   components: {
     Hello
+  },
+  head (): MetaInfo {
+    return {
+      title: 'Home'
+      // meta: [{
+      //   name: 'message',
+      //   content: this.computedMessage
+      // }]
+    }
   }
 })
-export default class PageIndexComponent extends Vue {}
 </script>

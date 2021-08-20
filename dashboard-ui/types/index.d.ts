@@ -6,15 +6,18 @@ import { AuthComponent } from '~/plugins/auth'
 declare module 'vue/types/vue' {
   interface Vue {
     $api: () => any;
+    $apolloHelpers: any;
   }
 }
 
 declare module '@nuxt/types' {
   interface NuxtAppOptions {
     $api: () => any;
+    $apolloHelpers: any;
   }
   interface Context {
     $api: () => any;
+    $apolloHelpers: any;
   }
 }
 
@@ -22,6 +25,7 @@ declare module 'nuxt-property-decorator' {
   interface VuexModule {
     store: {
       $api: () => any;
+      $apolloHelpers: any;
     } & Store<any>
   }
 }

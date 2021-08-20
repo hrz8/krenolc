@@ -6,18 +6,16 @@
 </template>
 
 <script lang="ts">
-import {
-  Vue, Component
-} from 'nuxt-property-decorator'
+import Vue from 'vue'
 
-@Component
-export default class HelloComponent extends Vue {
-  get token() {
-    return this.$store.getters['auth/getUserAccessToken']
+export default Vue.extend({
+  computed: {
+    token(): string {
+      return this.$store.getters['auth/getUserAccessToken']
+    },
+    user() {
+      return this.$store.getters['auth/getUserData']
+    }
   }
-
-  get user() {
-    return this.$store.getters['auth/getUserData']
-  }
-}
+})
 </script>
